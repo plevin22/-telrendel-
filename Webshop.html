@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Webshop</title>
+</head>
+    <style> 
+        h1
+        {
+            margin:auto;
+            text-align: center;
+            font-size: 70px;
+        }
+        body 
+        {
+            background-color: antiquewhite;
+            background-image: url('kaja_bgi.jpg');
+        }
+        table 
+        {
+            margin-left: auto;
+            margin-right: auto;
+            border: 3px solid black;
+            border-collapse: collapse;
+        }
+        td,tr 
+        {
+            border: 2px solid black;
+            font-size: 20px;
+        }
+        div 
+        {
+            background-color: rgb(75, 190, 175); /* háttérszín */
+            color: rgb(0, 0, 0);             /* szöveg színe */
+            padding: 20px;               /* belső margó */
+            margin: 10px auto;           /* külső margó, középre igazítás */
+            width: 300px;                /* szélesség */
+            border-radius: 10px;         /* lekerekített sarkok */
+            box-shadow: 2px 2px 8px gray; /* árnyék */
+            font-family: Arial, sans-serif; /* betűtípus */
+        }
+        p 
+        {
+            font-size: 35px;
+            text-align: center;
+        }
+    </style>
+<body>
+    <h1>KLSZ Faloda</h1>
+        <p>Üdvozoljuk a KLSZ Falodaban!</p>
+        <div class="header" >
+            <table>
+                <tr>
+                    <td>
+                        <button onclick="location.href='menu.html'">Menük</button>
+                    </td>
+                    <td>
+                        <button onclick="location.href='Pizzak.html'">Pizzak</button>
+                    </td>
+                    <td>
+                        <button onclick="location.href='Szendvicsek.html'">Szendvicsek</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+</body>
+</html>
