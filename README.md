@@ -1,2 +1,0 @@
-# -telrendel-
-Ételrendelő Webshop project
