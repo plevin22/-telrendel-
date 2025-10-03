@@ -132,7 +132,7 @@ INSERT INTO `dishes` (`restaurant_id`, `name`, `description`, `price`, `image_ur
 (1, 'Palacsinta nutellával', 'Friss palacsinta nutella töltelékkel', 890.00, '', TRUE);
 
 -- --------------------------------------------------------
--- CRUD Példák
+-- CRUD 
 -- --------------------------------------------------------
 
 -- USERS
