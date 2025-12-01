@@ -1,0 +1,12 @@
+com\mycompany\vizsgaremek\config\JWTFilter.class
+com\mycompany\vizsgaremek\model\Dishes.class
+com\mycompany\vizsgaremek\model\Payments.class
+com\mycompany\vizsgaremek\model\OrderItems.class
+com\mycompany\vizsgaremek\controller\UsersController.class
+com\mycompany\vizsgaremek\model\Orders.class
+com\mycompany\vizsgaremek\config\JWT.class
+com\mycompany\vizsgaremek\model\Users.class
+com\mycompany\vizsgaremek\service\UsersService.class
+com\mycompany\vizsgaremek\service\EmailService.class
+com\mycompany\vizsgaremek\config\JWTNeeded.class
+com\mycompany\vizsgaremek\model\Restaurants.class
