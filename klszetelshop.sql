@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: localhost:8889
--- Létrehozás ideje: 2025. Dec 08. 09:34
+-- Létrehozás ideje: 2025. Dec 09. 08:55
 -- Kiszolgáló verziója: 5.7.24
 -- PHP verzió: 8.3.1
 
@@ -126,11 +126,11 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `UpdateRestaurant` (IN `restaurant_i
     UPDATE restaurants SET name = name, description = description, address = address, phone = phone, open_hours = open_hours WHERE restaurant_id = restaurant_id;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `UpdateUser` (IN `user_id` INT, IN `name` VARCHAR(255), IN `email` VARCHAR(255), IN `password_hash` VARCHAR(255), IN `phone` VARCHAR(50), IN `address` TEXT, IN `role` ENUM('customer','admin','restaurant_owner'))   BEGIN
+CREATE DEFINER=`root`@`localhost` PROCEDURE `UpdateUser` (IN `user_id` INT, IN `name` VARCHAR(255), IN `email` VARCHAR(255), IN `password` VARCHAR(255), IN `phone` VARCHAR(50), IN `address` TEXT, IN `role` ENUM('customer','admin','restaurant_owner'))   BEGIN
     UPDATE users
     SET name = name,
         email = email,
-        password_hash = password_hash,
+        password = password,
         phone = phone,
         address = address,
         role = role
