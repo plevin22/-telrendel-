@@ -1,0 +1,124 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package com.mycompany.vizsgaremek1.model;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+
+/**
+ *
+ * @author djhob
+ */
+@Entity
+@Table(name = "order_items")
+@NamedQueries({
+    @NamedQuery(name = "OrderItems.findAll", query = "SELECT o FROM OrderItems o"),
+    @NamedQuery(name = "OrderItems.findByOrderItemId", query = "SELECT o FROM OrderItems o WHERE o.orderItemId = :orderItemId"),
+    @NamedQuery(name = "OrderItems.findByQuantity", query = "SELECT o FROM OrderItems o WHERE o.quantity = :quantity"),
+    @NamedQuery(name = "OrderItems.findByPrice", query = "SELECT o FROM OrderItems o WHERE o.price = :price")})
+public class OrderItems implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "order_item_id")
+    private Integer orderItemId;
+    @Column(name = "quantity")
+    private Integer quantity;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Column(name = "price")
+    private BigDecimal price;
+    @JoinColumn(name = "dish_id", referencedColumnName = "dish_id")
+    @ManyToOne(optional = false)
+    private Dishes dishId;
+    @JoinColumn(name = "order_id", referencedColumnName = "order_id")
+    @ManyToOne(optional = false)
+    private Orders orderId;
+
+    public OrderItems() {
+    }
+
+    public OrderItems(Integer orderItemId) {
+        this.orderItemId = orderItemId;
+    }
+
+    public Integer getOrderItemId() {
+        return orderItemId;
+    }
+
+    public void setOrderItemId(Integer orderItemId) {
+        this.orderItemId = orderItemId;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+    public Dishes getDishId() {
+        return dishId;
+    }
+
+    public void setDishId(Dishes dishId) {
+        this.dishId = dishId;
+    }
+
+    public Orders getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(Orders orderId) {
+        this.orderId = orderId;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (orderItemId != null ? orderItemId.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof OrderItems)) {
+            return false;
+        }
+        OrderItems other = (OrderItems) object;
+        if ((this.orderItemId == null && other.orderItemId != null) || (this.orderItemId != null && !this.orderItemId.equals(other.orderItemId))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "com.mycompany.vizsgaremek1.model.OrderItems[ orderItemId=" + orderItemId + " ]";
+    }
+    
+}

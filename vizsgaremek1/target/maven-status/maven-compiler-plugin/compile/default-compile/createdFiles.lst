@@ -1,0 +1,11 @@
+com\mycompany\vizsgaremek1\model\Orders.class
+com\mycompany\vizsgaremek1\controller\UsersController.class
+com\mycompany\vizsgaremek1\service\UsersService.class
+com\mycompany\vizsgaremek1\config\JWT.class
+com\mycompany\vizsgaremek1\model\Dishes.class
+com\mycompany\vizsgaremek1\model\Payments.class
+com\mycompany\vizsgaremek1\model\Users.class
+com\mycompany\vizsgaremek1\model\Users$UserRole.class
+com\mycompany\vizsgaremek1\model\Restaurants.class
+com\mycompany\vizsgaremek1\controller\ApplicationConfig.class
+com\mycompany\vizsgaremek1\model\OrderItems.class
