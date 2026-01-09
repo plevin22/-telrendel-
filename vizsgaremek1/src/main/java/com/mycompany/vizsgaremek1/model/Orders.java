@@ -1,83 +1,53 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompany.vizsgaremek1.model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Collection;
-import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import java.sql.Timestamp;
+import javax.persistence.*;
 
-/**
- *
- * @author djhob
- */
 @Entity
 @Table(name = "orders")
-@NamedQueries({
-    @NamedQuery(name = "Orders.findAll", query = "SELECT o FROM Orders o"),
-    @NamedQuery(name = "Orders.findByOrderId", query = "SELECT o FROM Orders o WHERE o.orderId = :orderId"),
-    @NamedQuery(name = "Orders.findByStatus", query = "SELECT o FROM Orders o WHERE o.status = :status"),
-    @NamedQuery(name = "Orders.findByTotalPrice", query = "SELECT o FROM Orders o WHERE o.totalPrice = :totalPrice"),
-    @NamedQuery(name = "Orders.findByCreatedAt", query = "SELECT o FROM Orders o WHERE o.createdAt = :createdAt")})
 public class Orders implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
     @Column(name = "order_id")
     private Integer orderId;
-    @Size(max = 10)
+
+    @Column(name = "user_id", nullable = false)
+    private Integer userId;
+
+    @Column(name = "restaurant_id", nullable = false)
+    private Integer restaurantId;
+
+    @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    private String status;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Column(name = "total_price")
+    private OrderStatus status = OrderStatus.pending;
+
+    @Column(name = "total_price", precision = 10, scale = 2)
     private BigDecimal totalPrice;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "created_at")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createdAt;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "orderId")
-    private Collection<Payments> paymentsCollection;
-    @JoinColumn(name = "restaurant_id", referencedColumnName = "restaurant_id")
-    @ManyToOne(optional = false)
-    private Restaurants restaurantId;
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
-    @ManyToOne(optional = false)
-    private Users userId;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "orderId")
-    private Collection<OrderItems> orderItemsCollection;
+
+    @Column(name = "created_at", insertable = false, updatable = false)
+    private Timestamp createdAt;
+
+    public enum OrderStatus {
+        pending,
+        preparing,
+        delivering,
+        completed,
+        cancelled
+    }
 
     public Orders() {
     }
 
-    public Orders(Integer orderId) {
-        this.orderId = orderId;
-    }
-
-    public Orders(Integer orderId, Date createdAt) {
-        this.orderId = orderId;
-        this.createdAt = createdAt;
+    public Orders(Integer userId, Integer restaurantId, OrderStatus status, BigDecimal totalPrice) {
+        this.userId = userId;
+        this.restaurantId = restaurantId;
+        this.status = status;
+        this.totalPrice = totalPrice;
     }
 
     public Integer getOrderId() {
@@ -88,11 +58,27 @@ public class Orders implements Serializable {
         this.orderId = orderId;
     }
 
-    public String getStatus() {
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+    public Integer getRestaurantId() {
+        return restaurantId;
+    }
+
+    public void setRestaurantId(Integer restaurantId) {
+        this.restaurantId = restaurantId;
+    }
+
+    public OrderStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(OrderStatus status) {
         this.status = status;
     }
 
@@ -104,69 +90,11 @@ public class Orders implements Serializable {
         this.totalPrice = totalPrice;
     }
 
-    public Date getCreatedAt() {
+    public Timestamp getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
     }
-
-    public Collection<Payments> getPaymentsCollection() {
-        return paymentsCollection;
-    }
-
-    public void setPaymentsCollection(Collection<Payments> paymentsCollection) {
-        this.paymentsCollection = paymentsCollection;
-    }
-
-    public Restaurants getRestaurantId() {
-        return restaurantId;
-    }
-
-    public void setRestaurantId(Restaurants restaurantId) {
-        this.restaurantId = restaurantId;
-    }
-
-    public Users getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Users userId) {
-        this.userId = userId;
-    }
-
-    public Collection<OrderItems> getOrderItemsCollection() {
-        return orderItemsCollection;
-    }
-
-    public void setOrderItemsCollection(Collection<OrderItems> orderItemsCollection) {
-        this.orderItemsCollection = orderItemsCollection;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (orderId != null ? orderId.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Orders)) {
-            return false;
-        }
-        Orders other = (Orders) object;
-        if ((this.orderId == null && other.orderId != null) || (this.orderId != null && !this.orderId.equals(other.orderId))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "com.mycompany.vizsgaremek1.model.Orders[ orderId=" + orderId + " ]";
-    }
-    
 }
