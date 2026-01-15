@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KLSZ Faloda - Éttermeink Listája</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(to bottom, #3a3a3a 0%, #2c2c2c 100%);
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background-color: rgba(0, 0, 0, 0.8) !important;
+            padding: 1rem 0;
+        }
+
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #ffffff !important;
+        }
+
+        .navbar-nav .nav-link {
+            color: #cccccc !important;
+            margin: 0 1rem;
+            transition: color 0.3s;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #ffffff !important;
+        }
+
+
+        .restaurants-section {
+            padding: 60px 0 80px;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: #ffc107;
+            margin-bottom: 1rem;
+        }
+
+        .section-subtitle {
+            color: #cccccc;
+            font-size: 1rem;
+            margin-bottom: 3rem;
+        }
+
+        .restaurant-card {
+            background-color: #d9d9d9;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 1.5rem;
+        }
+
+        .restaurant-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .restaurant-image {
+            width: 100%;
+            height: 200px;
+            background-color: #c0c0c0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .restaurant-body {
+            padding: 1.25rem;
+            text-align: center;
+            background-color: #d9d9d9;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .restaurant-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #000000;
+            margin-bottom: 1rem;
+        }
+
+        .btn-view-restaurant {
+            background-color: #333333;
+            color: #ffffff;
+            border: none;
+            padding: 10px 25px;
+            font-size: 0.9rem;
+            border-radius: 5px;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-view-restaurant:hover {
+            background-color: #555555;
+            color: #ffffff;
+        }
+
+        .features-section {
+            background-color: #2a2a2a;
+            padding: 50px 0;
+        }
+
+        .features-title {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 2.5rem;
+        }
+
+        .feature-box {
+            text-align: center;
+            padding: 1.5rem 1rem;
+        }
+
+        .feature-box h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+        }
+
+        .feature-box p {
+            color: #cccccc;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        footer {
+            background-color: #1a1a1a;
+            padding: 30px 0;
+            text-align: center;
+            border-top: 1px solid #333333;
+        }
+
+        footer p {
+            margin: 0.5rem 0;
+            color: #cccccc;
+        }
+
+        footer a {
+            color: #ffc107;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        footer a:hover {
+            color: #ffb300;
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .restaurant-image {
+                height: 180px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">KLSZ Faloda</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Főoldal</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="registration.html">Regisztráció</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Kosár</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Restaurants Section -->
+    <section class="restaurants-section">
+        <div class="container">
+            <h1 class="section-title">Éttermeink Listája</h1>
+            <p class="section-subtitle">Pécs legjobb éttermel egy helyen - rendelj könyelemsen!</p>
+            
+            <div class="row">
+                <!-- Restaurant Card 1 -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="restaurant-card">
+                        <div class="restaurant-image">
+                            <span style="color: #888; font-size: 1.2rem;">Kép helye</span>
+                        </div>
+                        <div class="restaurant-body">
+                            <h3 class="restaurant-name">Reggeli Étterem</h3>
+                            <a href="#" class="btn-view-restaurant">ugrás az oldalra</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Restaurant Card 2 -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="restaurant-card">
+                        <div class="restaurant-image">
+                            <span style="color: #888; font-size: 1.2rem;">Kép helye</span>
+                        </div>
+                        <div class="restaurant-body">
+                            <h3 class="restaurant-name">Szünet Kávézó</h3>
+                            <a href="#" class="btn-view-restaurant">ugrás az oldalra</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Restaurant Card 3 -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="restaurant-card">
+                        <div class="restaurant-image">
+                            <span style="color: #888; font-size: 1.2rem;">Kép helye</span>
+                        </div>
+                        <div class="restaurant-body">
+                            <h3 class="restaurant-name">Csülök Bár</h3>
+                            <a href="#" class="btn-view-restaurant">ugrás az oldalra</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Restaurant Card 4 -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="restaurant-card">
+                        <div class="restaurant-image">
+                            <span style="color: #888; font-size: 1.2rem;">Kép helye</span>
+                        </div>
+                        <div class="restaurant-body">
+                            <h3 class="restaurant-name">JuiceBoo Pécs Smoothie Bar</h3>
+                            <a href="#" class="btn-view-restaurant">ugrás az oldalra</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Restaurant Card 5 -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="restaurant-card">
+                        <div class="restaurant-image">
+                            <span style="color: #888; font-size: 1.2rem;">Kép helye</span>
+                        </div>
+                        <div class="restaurant-body">
+                            <h3 class="restaurant-name">Élémiédia Bistro</h3>
+                            <a href="#" class="btn-view-restaurant">ugrás az oldalra</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Restaurant Card 6 -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="restaurant-card">
+                        <div class="restaurant-image">
+                            <span style="color: #888; font-size: 1.2rem;">Kép helye</span>
+                        </div>
+                        <div class="restaurant-body">
+                            <h3 class="restaurant-name">Mátyás Király Vendéglő</h3>
+                            <a href="#" class="btn-view-restaurant">ugrás az oldalra</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Restaurant Card 7 -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="restaurant-card">
+                        <div class="restaurant-image">
+                            <span style="color: #888; font-size: 1.2rem;">Kép helye</span>
+                        </div>
+                        <div class="restaurant-body">
+                            <h3 class="restaurant-name">Teca Mama Kávézóitaló</h3>
+                            <a href="#" class="btn-view-restaurant">ugrás az oldalra</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Restaurant Card 8 -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="restaurant-card">
+                        <div class="restaurant-image">
+                            <span style="color: #888; font-size: 1.2rem;">Kép helye</span>
+                        </div>
+                        <div class="restaurant-body">
+                            <h3 class="restaurant-name">Pizza Hut</h3>
+                            <a href="#" class="btn-view-restaurant">ugrás az oldalra</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Restaurant Card 9 -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="restaurant-card">
+                        <div class="restaurant-image">
+                            <span style="color: #888; font-size: 1.2rem;">Kép helye</span>
+                        </div>
+                        <div class="restaurant-body">
+                            <h3 class="restaurant-name">Best Food Grill Pécs</h3>
+                            <a href="#" class="btn-view-restaurant">ugrás az oldalra</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section">
+        <div class="container">
+            <h2 class="features-title">Miérrt válassz minket?</h2>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="feature-box">
+                        <h3>Villámgyirs kiszállítás</h3>
+                        <p>Pécs legnagyobb Futárpartnerével dolgozunk</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-box">
+                        <h3>Elégedett vásárlók</h3>
+                        <p>Átlagosan 4.8/5 értékelés a felhasználóinktól</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-box">
+                        <h3>Nagy választék</h3>
+                        <p>Több mint 60 pácsi étterem kínálata egy helyen.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>© 2025 Ételrendelés Pécs</p>
+            <div>
+                <a href="#">ÁSZF</a>
+                <span style="color: #666;">|</span>
+                <a href="#">Kapcsolat</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
