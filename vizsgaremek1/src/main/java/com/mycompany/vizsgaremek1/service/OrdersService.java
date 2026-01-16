@@ -48,12 +48,8 @@ public class OrdersService {
 
     /**
      * Új rendelés létrehozása - AddOrder eljárás.
-     * @param userId
-     * @param restaurantId
-     * @param status
-     * @param totalPrice
      */
-    public void AddOrder(Integer userId, Integer restaurantId, String status, BigDecimal totalPrice) {
+    public void addOrder(Integer userId, Integer restaurantId, String status, BigDecimal totalPrice) {
         StoredProcedureQuery sp = em.createStoredProcedureQuery("AddOrder");
         
         sp.registerStoredProcedureParameter("user_id", Integer.class, ParameterMode.IN);
