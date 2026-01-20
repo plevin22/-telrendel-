@@ -1,6 +1,7 @@
 package com.mycompany.vizsgaremek1.service;
 
 import com.mycompany.vizsgaremek1.model.Users;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.*;
 import org.mindrot.jbcrypt.BCrypt;
@@ -10,6 +11,13 @@ public class UsersService {
 
     @PersistenceContext(unitName = "com.mycompany_vizsgaremek1_war_1.0-SNAPSHOTPU")
     private EntityManager em;
+
+    /**
+     * Felhasználó keresése ID alapján.
+     */
+    public Users findUserById(Integer userId) {
+        return em.find(Users.class, userId);
+    }
 
     /**
      * Felhasználó keresése email alapján.
@@ -25,33 +33,84 @@ public class UsersService {
     }
 
     /**
-     * Jelszó hashelése BCrypt algoritmussal.
+     * Összes felhasználó lekérdezése.
      */
-    public String hashPassword(String password) {
-        return BCrypt.hashpw(password, BCrypt.gensalt());
+    @SuppressWarnings("unchecked")
+    public List<Users> getAllUsers() {
+        StoredProcedureQuery sp = em.createStoredProcedureQuery("GetAllUsers", Users.class);
+        return sp.getResultList();
     }
 
     /**
-     * Új felhasználó létrehozása a CreateUser tárolt eljárással.
+     * Új felhasználó létrehozása - CreateUser eljárás.
      */
-    public void createUser(String name, String email, String hashedPassword, 
-                          String phone, String address, String role) {
+    public void createUser(String name, String email, String password, String phone, String address, String role) {
         StoredProcedureQuery sp = em.createStoredProcedureQuery("CreateUser");
         
-        sp.registerStoredProcedureParameter("name", String.class, ParameterMode.IN);
-        sp.registerStoredProcedureParameter("email", String.class, ParameterMode.IN);
-        sp.registerStoredProcedureParameter("password", String.class, ParameterMode.IN);
-        sp.registerStoredProcedureParameter("phone", String.class, ParameterMode.IN);
-        sp.registerStoredProcedureParameter("address", String.class, ParameterMode.IN);
-        sp.registerStoredProcedureParameter("role", String.class, ParameterMode.IN);
+        sp.registerStoredProcedureParameter("p_name", String.class, ParameterMode.IN);
+        sp.registerStoredProcedureParameter("p_email", String.class, ParameterMode.IN);
+        sp.registerStoredProcedureParameter("p_password", String.class, ParameterMode.IN);
+        sp.registerStoredProcedureParameter("p_phone", String.class, ParameterMode.IN);
+        sp.registerStoredProcedureParameter("p_address", String.class, ParameterMode.IN);
+        sp.registerStoredProcedureParameter("p_role", String.class, ParameterMode.IN);
 
-        sp.setParameter("name", name);
-        sp.setParameter("email", email);
-        sp.setParameter("password", hashedPassword);
-        sp.setParameter("phone", phone);
-        sp.setParameter("address", address);
-        sp.setParameter("role", role);
+        sp.setParameter("p_name", name);
+        sp.setParameter("p_email", email);
+        sp.setParameter("p_password", password);
+        sp.setParameter("p_phone", phone);
+        sp.setParameter("p_address", address);
+        sp.setParameter("p_role", role);
 
         sp.execute();
+    }
+
+    /**
+     * Felhasználó frissítése - UpdateUser eljárás.
+     */
+    public void updateUser(Integer userId, String name, String email, String password, 
+                          String phone, String address, String role) {
+        StoredProcedureQuery sp = em.createStoredProcedureQuery("UpdateUser");
+        
+        sp.registerStoredProcedureParameter("p_user_id", Integer.class, ParameterMode.IN);
+        sp.registerStoredProcedureParameter("p_name", String.class, ParameterMode.IN);
+        sp.registerStoredProcedureParameter("p_email", String.class, ParameterMode.IN);
+        sp.registerStoredProcedureParameter("p_password", String.class, ParameterMode.IN);
+        sp.registerStoredProcedureParameter("p_phone", String.class, ParameterMode.IN);
+        sp.registerStoredProcedureParameter("p_address", String.class, ParameterMode.IN);
+        sp.registerStoredProcedureParameter("p_role", String.class, ParameterMode.IN);
+
+        sp.setParameter("p_user_id", userId);
+        sp.setParameter("p_name", name);
+        sp.setParameter("p_email", email);
+        sp.setParameter("p_password", password);
+        sp.setParameter("p_phone", phone);
+        sp.setParameter("p_address", address);
+        sp.setParameter("p_role", role);
+
+        sp.execute();
+    }
+
+    /**
+     * Felhasználó törlése - DeleteUser eljárás.
+     */
+    public void deleteUser(Integer userId) {
+        StoredProcedureQuery sp = em.createStoredProcedureQuery("DeleteUser");
+        sp.registerStoredProcedureParameter("p_user_id", Integer.class, ParameterMode.IN);
+        sp.setParameter("p_user_id", userId);
+        sp.execute();
+    }
+
+    /**
+     * Jelszó hash-elése BCrypt-tel.
+     */
+    public String hashPassword(String plainPassword) {
+        return BCrypt.hashpw(plainPassword, BCrypt.gensalt(10));
+    }
+
+    /**
+     * Jelszó ellenőrzése BCrypt-tel.
+     */
+    public boolean checkPassword(String plainPassword, String hashedPassword) {
+        return BCrypt.checkpw(plainPassword, hashedPassword);
     }
 }

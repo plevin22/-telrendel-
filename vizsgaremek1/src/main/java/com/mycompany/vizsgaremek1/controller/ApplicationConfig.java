@@ -27,7 +27,9 @@ Do not modify addRestResourceClasses() method. It is automatically
 populated with all resources defined in the project. If required, comment
 out calling this method in getClasses().*/
 private void addRestResourceClasses(Set<Class<?>> resources) {
-    resources.add(com.mycompany.vizsgaremek1.controller.OrderItemsController.class);
+    resources.add(com.mycompany.vizsgaremek1.controller.DishesController.class);
+        resources.add(com.mycompany.vizsgaremek1.controller.EmailController.class);
+        resources.add(com.mycompany.vizsgaremek1.controller.OrderItemsController.class);
         resources.add(com.mycompany.vizsgaremek1.controller.OrdersController.class);
         resources.add(com.mycompany.vizsgaremek1.controller.UsersController.class);
 }

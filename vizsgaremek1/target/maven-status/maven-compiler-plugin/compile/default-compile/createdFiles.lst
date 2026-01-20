@@ -1,7 +1,10 @@
+com\mycompany\vizsgaremek1\controller\DishesController.class
 com\mycompany\vizsgaremek1\model\Orders.class
 com\mycompany\vizsgaremek1\controller\UsersController.class
+com\mycompany\vizsgaremek1\controller\EmailController.class
 com\mycompany\vizsgaremek1\config\JWT.class
 com\mycompany\vizsgaremek1\model\Dishes.class
+com\mycompany\vizsgaremek1\config\Email.class
 com\mycompany\vizsgaremek1\model\Users$UserRole.class
 com\mycompany\vizsgaremek1\model\Orders$OrderStatus.class
 com\mycompany\vizsgaremek1\service\OrdersService.class
@@ -13,4 +16,5 @@ com\mycompany\vizsgaremek1\service\UsersService.class
 com\mycompany\vizsgaremek1\model\Payments.class
 com\mycompany\vizsgaremek1\model\Users.class
 com\mycompany\vizsgaremek1\service\OrderItemsService.class
+com\mycompany\vizsgaremek1\service\DishesService.class
 com\mycompany\vizsgaremek1\model\Restaurants.class

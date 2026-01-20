@@ -27,7 +27,7 @@ public class Users implements Serializable {
     @Column(name = "phone", length = 50)
     private String phone;
 
-    @Column(name = "address", length = 255)
+    @Column(name = "address", columnDefinition = "TEXT")
     private String address;
 
     @Enumerated(EnumType.STRING)
