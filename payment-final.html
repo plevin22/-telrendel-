@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KLSZ Faloda - Fizetés</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(to bottom, #1a1a1a 10%, #343333 25%);
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            padding-top: 70px;
+        }
+
+        .navbar {
+            background-color: rgba(0, 0, 0, 0.9) !important;
+            padding: 1rem 0;
+        }
+
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #ffffff !important;
+        }
+
+        .navbar-nav .nav-link {
+            color: #cccccc !important;
+            margin: 0 1rem;
+            transition: color 0.3s;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #ffffff !important;
+        }
+
+        .payment-section {
+            padding: 60px 0;
+        }
+
+        .payment-container {
+            max-width: 500px;
+            margin: 0 auto;
+            background-color: #2a2a2a;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .payment-title {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #ffc107;
+            margin-bottom: 30px;
+        }
+
+        .payment-methods {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 35px;
+        }
+
+        .pm-btn {
+            flex: 1;
+            padding: 15px;
+            border: 2px solid #555;
+            background: #3a3a3a;
+            color: #cccccc;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1rem;
+        }
+
+        .pm-btn:hover {
+            background: #4a4a4a;
+            border-color: #ffc107;
+            color: #ffffff;
+        }
+
+        .pm-btn.active {
+            background: #ffc107;
+            color: #000000;
+            border-color: #ffc107;
+        }
+
+        /* ===== VIRTUÁLIS BANKKÁRTYA ===== */
+        .card-wrapper {
+            perspective: 1000px;
+            margin-bottom: 35px;
+        }
+
+        .credit-card {
+            width: 100%;
+            height: 240px;
+            border-radius: 15px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.7s;
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 15px;
+            backface-visibility: hidden;
+            padding: 30px;
+            box-sizing: border-box;
+            color: white;
+        }
+
+        .card-front {
+            background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
+            box-shadow: 0 10px 30px rgba(255, 193, 7, 0.4);
+        }
+
+        .chip {
+            width: 60px;
+            height: 45px;
+            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+            border-radius: 8px;
+            margin-bottom: 40px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+
+        .card-back {
+            background: linear-gradient(135deg, #ff9800 0%, #ffc107 100%);
+            transform: rotateY(180deg);
+            box-shadow: 0 10px 30px rgba(255, 152, 0, 0.4);
+        }
+
+        .black-strip {
+            background: #000000;
+            height: 55px;
+            width: 100%;
+            margin-top: 15px;
+            margin-left: -30px;
+            width: calc(100% + 60px);
+        }
+
+        .cvc-box {
+            background: white;
+            width: 90%;
+            height: 50px;
+            margin: 60px auto 0;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            padding: 0 15px;
+        }
+
+        .cvc-input {
+            width: 100%;
+            border: none;
+            outline: none;
+            font-size: 22px;
+            color: #000000;
+            letter-spacing: 4px;
+            font-weight: 700;
+            text-align: center;
+            background: transparent;
+        }
+
+        .card-input {
+            position: absolute;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #1a1a1a;
+            font-weight: 700;
+            font-size: 18px;
+            letter-spacing: 2px;
+        }
+
+        .card-input::placeholder {
+            color: rgba(26, 26, 26, 0.5);
+        }
+
+        .card-input.number {
+            top: 110px;
+            left: 30px;
+            width: 85%;
+            font-size: 24px;
+        }
+
+        .card-input.name {
+            bottom: 35px;
+            left: 30px;
+            width: 55%;
+            text-transform: uppercase;
+            font-size: 17px;
+        }
+
+        .card-input.expiry {
+            bottom: 35px;
+            right: 30px;
+            width: 80px;
+            font-size: 17px;
+        }
+
+        .flip {
+            transform: rotateY(180deg);
+        }
+
+        .form-label {
+            color: #cccccc;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .form-control {
+            background-color: #3a3a3a;
+            border: 2px solid #555;
+            color: #ffffff;
+            padding: 12px;
+            border-radius: 6px;
+        }
+
+        .form-control:focus {
+            background-color: #4a4a4a;
+            border-color: #ffc107;
+            color: #ffffff;
+            box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.25);
+        }
+
+        .form-control::placeholder {
+            color: #888;
+        }
+
+        .btn-pay {
+            background-color: #ffc107;
+            color: #000000;
+            border: none;
+            padding: 15px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            border-radius: 8px;
+            width: 100%;
+            margin-top: 25px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .btn-pay:hover {
+            background-color: #ffb300;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 193, 7, 0.4);
+        }
+
+        .alert-custom {
+            margin-top: 20px;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        .features-section {
+            background-color: #2a2a2a;
+            padding: 50px 0;
+        }
+
+        .features-title {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 2.5rem;
+        }
+
+        .feature-box {
+            text-align: center;
+            padding: 1.5rem 1rem;
+        }
+
+        .feature-box h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+        }
+
+        .feature-box p {
+            color: #cccccc;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        footer {
+            background-color: #1a1a1a;
+            padding: 30px 0;
+            text-align: center;
+            border-top: 1px solid #333333;
+        }
+
+        footer p {
+            margin: 0.5rem 0;
+            color: #cccccc;
+        }
+
+        footer a {
+            color: #ffc107;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        footer a:hover {
+            color: #ffb300;
+            text-decoration: underline;
+        }
+
+        @media (max-width: 576px) {
+            .payment-container {
+                padding: 25px;
+            }
+
+            .payment-methods {
+                flex-direction: column;
+            }
+
+            .credit-card {
+                height: 210px;
+            }
+
+            .card-input.number {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">KLSZ Faloda</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Főoldal</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="profile.html">fiók</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="cart.html">Kosár</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Payment Section -->
+    <section class="payment-section">
+        <div class="container">
+            <div class="payment-container">
+                <h2 class="payment-title">Fizetés</h2>
+
+                <!-- Fizetési módok -->
+                <div class="payment-methods">
+                    <button type="button" class="pm-btn active" data-method="visa">Visa</button>
+                    <button type="button" class="pm-btn" data-method="mastercard">Mastercard</button>
+                </div>
+
+                <!-- Virtuális bankkártya -->
+                <div class="card-wrapper">
+                    <div class="credit-card" id="credit-card">
+                        <!-- Kártya előlap -->
+                        <div class="card-face card-front">
+                            <div class="chip"></div>
+                            <input id="card-number" class="card-input number" maxlength="19" placeholder="1234 1234 1234 1234">
+                            <input id="card-name" class="card-input name" placeholder="KÁRTYABIRTOKOS">
+                            <input id="card-expiry" class="card-input expiry" maxlength="5" placeholder="MM/YY">
+                        </div>
+
+                        <!-- Kártya hátlap -->
+                        <div class="card-face card-back">
+                            <div class="black-strip"></div>
+                            <div class="cvc-box">
+                                <input id="card-cvc" class="cvc-input" maxlength="3" placeholder="CVC">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CVC instrukció és gomb -->
+                <div class="text-center mb-4">
+                    <button type="button" class="btn btn-outline-warning btn-sm" id="flip-card-btn">
+                        🔄 Kártya megfordítása (CVC kód)
+                    </button>
+                </div>
+
+                <!-- Fizetés gomb -->
+                <button id="pay" class="btn-pay">Fizetés Befejezése</button>
+
+                <!-- Hibaüzenet -->
+                <div id="alert-box" style="display:none;"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section">
+        <div class="container">
+            <h2 class="features-title">Miért válassz minket?</h2>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="feature-box">
+                        <h3>Villámgyors kiszállítás</h3>
+                        <p>Pécs legnagyobb Futárpartnerével dolgozunk</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-box">
+                        <h3>Elégedett vásárlók</h3>
+                        <p>Átlagosan 4.8/5 értékelés a felhasználóinktól</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-box">
+                        <h3>Nagy választék</h3>
+                        <p>Több mint 60 pácsi étterem kínálata egy helyen.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>© 2025 Ételrendelés Pécs</p>
+            <div>
+                <a href="#">ÁSZF</a>
+                <span style="color: #666;">|</span>
+                <a href="#">Kapcsolat</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Fizetési mód gombok - adatok törlése kártyatípus váltáskor
+        document.querySelectorAll('.pm-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.pm-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                // Mezők törlése kártyatípus váltáskor
+                document.getElementById('card-number').value = '';
+                document.getElementById('card-name').value = '';
+                document.getElementById('card-expiry').value = '';
+                document.getElementById('card-cvc').value = '';
+                
+                // Kártya visszaforgatása
+                card.classList.remove('flip');
+                
+                // Alert elrejtése
+                const alertBox = document.getElementById('alert-box');
+                alertBox.style.display = 'none';
+            });
+        });
+
+        // Fizetés gomb
+        document.getElementById('pay').addEventListener('click', () => {
+            const cardNum = document.getElementById('card-number').value.replace(/\s+/g, '');
+            const cardName = document.getElementById('card-name').value.trim();
+            const cardExpiry = document.getElementById('card-expiry').value.trim();
+            const cardCvc = document.getElementById('card-cvc').value.trim();
+            const alertBox = document.getElementById('alert-box');
+
+            // Validáció
+            if (!/^\d{16}$/.test(cardNum)) {
+                showAlert('A kártyaszámnak 16 számjegyből kell állnia.', 'danger');
+                return;
+            }
+            if (cardName.length < 2) {
+                showAlert('A kártyabirtokos nevének legalább 2 karakterből kell állnia.', 'danger');
+                return;
+            }
+            if (!/^\d{2}\/\d{2}$/.test(cardExpiry)) {
+                showAlert('A lejárati dátum formátuma: MM/YY', 'danger');
+                return;
+            }
+            if (!/^\d{3}$/.test(cardCvc)) {
+                showAlert('A CVC kódnak 3 számjegyből kell állnia.', 'danger');
+                return;
+            }
+
+            // Sikeres fizetés
+            showAlert('Fizetés feldolgozása...', 'warning');
+            
+            setTimeout(() => {
+                showAlert('✅ Fizetés sikeres! Köszönjük a rendelést!', 'success');
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 2000);
+            }, 1500);
+        });
+
+        function showAlert(message, type) {
+            const alertBox = document.getElementById('alert-box');
+            alertBox.className = `alert alert-${type} alert-custom`;
+            alertBox.innerHTML = message;
+            alertBox.style.display = 'block';
+        }
+
+        // ===== VIRTUÁLIS KÁRTYA BEVITEL ÉS FORGATÁS =====
+        const card = document.getElementById("credit-card");
+        const cardNumber = document.getElementById("card-number");
+        const cardName = document.getElementById("card-name");
+        const cardExpiry = document.getElementById("card-expiry");
+        const cardCvc = document.getElementById("card-cvc");
+        const flipCardBtn = document.getElementById("flip-card-btn");
+
+        // Flip gomb
+        flipCardBtn.addEventListener("click", () => {
+            if (card.classList.contains("flip")) {
+                card.classList.remove("flip");
+                flipCardBtn.innerHTML = '🔄 Kártya megfordítása (CVC kód)';
+            } else {
+                card.classList.add("flip");
+                flipCardBtn.innerHTML = '🔄 Vissza az előlapra';
+                // Fókusz a CVC mezőre
+                setTimeout(() => cardCvc.focus(), 400);
+            }
+        });
+
+        // Kártyaszám formázása
+        cardNumber.addEventListener("input", (e) => {
+            let value = e.target.value.replace(/\D/g, "").slice(0, 16);
+            e.target.value = value.replace(/(.{4})/g, "$1 ").trim();
+        });
+
+        // Lejárat formázása
+        cardExpiry.addEventListener("input", (e) => {
+            let value = e.target.value.replace(/\D/g, "").slice(0, 4);
+            if (value.length > 2) {
+                value = value.slice(0, 2) + "/" + value.slice(2);
+            }
+            e.target.value = value;
+        });
+
+        // Név nagybetű
+        cardName.addEventListener("input", (e) => {
+            e.target.value = e.target.value.toUpperCase();
+        });
+
+        // CVC csak számok
+        cardCvc.addEventListener("input", (e) => {
+            let value = e.target.value.replace(/\D/g, "").slice(0, 3);
+            e.target.value = value;
+        });
+
+        // CVC -> megfordul a kártya
+        cardCvc.addEventListener("focus", () => {
+            card.classList.add("flip");
+            flipCardBtn.innerHTML = '🔄 Vissza az előlapra';
+        });
+
+        // Visszafordul ha más mezőre kattintunk
+        [cardNumber, cardName, cardExpiry].forEach(input => {
+            input.addEventListener("focus", () => {
+                card.classList.remove("flip");
+                flipCardBtn.innerHTML = '🔄 Kártya megfordítása (CVC kód)';
+            });
+        });
+    </script>
+</body>
+</html>
