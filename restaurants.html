@@ -35,7 +35,6 @@
             color: #ffffff !important;
         }
 
-
         .restaurants-section {
             padding: 60px 0 80px;
         }
@@ -76,10 +75,17 @@
         .restaurant-image {
             width: 100%;
             height: 200px;
-            background-color: #c0c0c0;
+            background-color: #ffffff;
             display: flex;
             align-items: center;
             justify-content: center;
+            overflow: hidden;
+        }
+
+        .restaurant-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
         }
 
         .restaurant-body {
@@ -109,6 +115,7 @@
             transition: all 0.3s;
             text-decoration: none;
             display: inline-block;
+            cursor: pointer;
         }
 
         .btn-view-restaurant:hover {
@@ -183,7 +190,7 @@
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="#">KLSZ Faloda</a>
+            <a class="navbar-brand" href="index.html">KLSZ Faloda</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -196,7 +203,7 @@
                         <a class="nav-link" href="registration.html">Regisztráció</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Kosár</a>
+                        <a class="nav-link" href="cart.html">Kosár</a>
                     </li>
                 </ul>
             </div>
@@ -214,11 +221,11 @@
                 <div class="col-lg-4 col-md-6">
                     <div class="restaurant-card">
                         <div class="restaurant-image">
-                            <span style="color: #888; font-size: 1.2rem;">Kép helye</span>
+                            <img src="reggeli.jpg" alt="Reggeli Étterem">
                         </div>
                         <div class="restaurant-body">
                             <h3 class="restaurant-name">Reggeli Étterem</h3>
-                            <a href="restaurant-reggeli.html" class="btn-view-restaurant">ugrás az oldalra</a>
+                            <a href="restaurant-menu.html" class="btn-view-restaurant">ugrás az oldalra</a>
                         </div>
                     </div>
                 </div>
@@ -227,11 +234,11 @@
                 <div class="col-lg-4 col-md-6">
                     <div class="restaurant-card">
                         <div class="restaurant-image">
-                            <span style="color: #888; font-size: 1.2rem;">Kép helye</span>
+                            <img src="szunetkavezo.webp" alt="Szünet Kávézó">
                         </div>
                         <div class="restaurant-body">
                             <h3 class="restaurant-name">Szünet Kávézó</h3>
-                            <a href="restaurant-sablon.html" class="btn-view-restaurant">ugrás az oldalra</a>
+                            <a href="restaurant-menu.html" class="btn-view-restaurant">ugrás az oldalra</a>
                         </div>
                     </div>
                 </div>
@@ -240,11 +247,11 @@
                 <div class="col-lg-4 col-md-6">
                     <div class="restaurant-card">
                         <div class="restaurant-image">
-                            <span style="color: #888; font-size: 1.2rem;">Kép helye</span>
+                            <img src="csulokbar másolata (2).webp" alt="Csülök Bár">
                         </div>
                         <div class="restaurant-body">
                             <h3 class="restaurant-name">Csülök Bár</h3>
-                            <a href="restaurant-csulokbar.html" class="btn-view-restaurant">ugrás az oldalra</a>
+                            <a href="restaurant-menu.html" class="btn-view-restaurant">ugrás az oldalra</a>
                         </div>
                     </div>
                 </div>
@@ -253,11 +260,11 @@
                 <div class="col-lg-4 col-md-6">
                     <div class="restaurant-card">
                         <div class="restaurant-image">
-                            <span style="color: #888; font-size: 1.2rem;">Kép helye</span>
+                            <img src="Juice&Co..jpg" alt="JuiceBoo Pécs Smoothie Bar">
                         </div>
                         <div class="restaurant-body">
                             <h3 class="restaurant-name">JuiceBoo Pécs Smoothie Bar</h3>
-                            <a href="restaurant-JuiceBoo_Pécs_Smoothie_Bar.html" class="btn-view-restaurant">ugrás az oldalra</a>
+                            <a href="restaurant-menu.html" class="btn-view-restaurant">ugrás az oldalra</a>
                         </div>
                     </div>
                 </div>
@@ -266,11 +273,11 @@
                 <div class="col-lg-4 col-md-6">
                     <div class="restaurant-card">
                         <div class="restaurant-image">
-                            <span style="color: #888; font-size: 1.2rem;">Kép helye</span>
+                            <img src="elemozsiabisztro.png" alt="Élémiédia Bistro">
                         </div>
                         <div class="restaurant-body">
-                            <h3 class="restaurant-name">Élemozsia Bistro</h3>
-                            <a href="restaurant-Élemozsia Bistro.html" class="btn-view-restaurant">ugrás az oldalra</a>
+                            <h3 class="restaurant-name">Élémiédia Bistro</h3>
+                            <a href="restaurant-menu.html" class="btn-view-restaurant">ugrás az oldalra</a>
                         </div>
                     </div>
                 </div>
@@ -279,11 +286,11 @@
                 <div class="col-lg-4 col-md-6">
                     <div class="restaurant-card">
                         <div class="restaurant-image">
-                            <span style="color: #888; font-size: 1.2rem;">Kép helye</span>
+                            <img src="matyaskiralyvendeglo.png" alt="Mátyás Király Vendéglő">
                         </div>
                         <div class="restaurant-body">
                             <h3 class="restaurant-name">Mátyás Király Vendéglő</h3>
-                            <a href="restaurant-Mátyás_Király_Vendéglő.html" class="btn-view-restaurant">ugrás az oldalra</a>
+                            <a href="restaurant-menu.html" class="btn-view-restaurant">ugrás az oldalra</a>
                         </div>
                     </div>
                 </div>
@@ -292,11 +299,11 @@
                 <div class="col-lg-4 col-md-6">
                     <div class="restaurant-card">
                         <div class="restaurant-image">
-                            <span style="color: #888; font-size: 1.2rem;">Kép helye</span>
+                            <img src="tecamama.avif" alt="Teca Mama Kávézóitaló">
                         </div>
                         <div class="restaurant-body">
-                            <h3 class="restaurant-name">Teca Mama vendéglője</h3>
-                            <a href="restaurant-Teca_Mama_Vendéglője.html" class="btn-view-restaurant">ugrás az oldalra</a>
+                            <h3 class="restaurant-name">Teca Mama Kávézóitaló</h3>
+                            <a href="restaurant-menu.html" class="btn-view-restaurant">ugrás az oldalra</a>
                         </div>
                     </div>
                 </div>
@@ -305,11 +312,11 @@
                 <div class="col-lg-4 col-md-6">
                     <div class="restaurant-card">
                         <div class="restaurant-image">
-                            <span style="color: #888; font-size: 1.2rem;">Kép helye</span>
+                            <img src="pizzahut.png" alt="Pizza Hut">
                         </div>
                         <div class="restaurant-body">
                             <h3 class="restaurant-name">Pizza Hut</h3>
-                            <a href="restaurant-Pizza_Hut.html" class="btn-view-restaurant">ugrás az oldalra</a>
+                            <a href="restaurant-menu.html" class="btn-view-restaurant">ugrás az oldalra</a>
                         </div>
                     </div>
                 </div>
@@ -318,11 +325,11 @@
                 <div class="col-lg-4 col-md-6">
                     <div class="restaurant-card">
                         <div class="restaurant-image">
-                            <span style="color: #888; font-size: 1.2rem;">Kép helye</span>
+                            <img src="BestFoodGrill.png" alt="Best Food Grill">
                         </div>
                         <div class="restaurant-body">
                             <h3 class="restaurant-name">Best Food Grill Pécs</h3>
-                            <a href="restaurant-Best_Food_Grill.html" class="btn-view-restaurant">ugrás az oldalra</a>
+                            <a href="restaurant-menu.html" class="btn-view-restaurant">ugrás az oldalra</a>
                         </div>
                     </div>
                 </div>
@@ -333,7 +340,7 @@
     <!-- Features Section -->
     <section class="features-section">
         <div class="container">
-            <h2 class="features-title">Miért válassz minket?</h2>
+            <h2 class="features-title">Miérrt válassz minket?</h2>
             <div class="row">
                 <div class="col-md-4">
                     <div class="feature-box">
