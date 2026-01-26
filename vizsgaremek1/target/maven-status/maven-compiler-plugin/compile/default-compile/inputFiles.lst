@@ -5,6 +5,7 @@ C:\Suli\vizsgaremek\vizsgaremek1\src\main\java\com\mycompany\vizsgaremek1\contro
 C:\Suli\vizsgaremek\vizsgaremek1\src\main\java\com\mycompany\vizsgaremek1\controller\EmailController.java
 C:\Suli\vizsgaremek\vizsgaremek1\src\main\java\com\mycompany\vizsgaremek1\controller\OrderItemsController.java
 C:\Suli\vizsgaremek\vizsgaremek1\src\main\java\com\mycompany\vizsgaremek1\controller\OrdersController.java
+C:\Suli\vizsgaremek\vizsgaremek1\src\main\java\com\mycompany\vizsgaremek1\controller\PaymentsController.java
 C:\Suli\vizsgaremek\vizsgaremek1\src\main\java\com\mycompany\vizsgaremek1\controller\UsersController.java
 C:\Suli\vizsgaremek\vizsgaremek1\src\main\java\com\mycompany\vizsgaremek1\model\Dishes.java
 C:\Suli\vizsgaremek\vizsgaremek1\src\main\java\com\mycompany\vizsgaremek1\model\OrderItems.java
@@ -16,4 +17,5 @@ C:\Suli\vizsgaremek\vizsgaremek1\src\main\java\com\mycompany\vizsgaremek1\servic
 C:\Suli\vizsgaremek\vizsgaremek1\src\main\java\com\mycompany\vizsgaremek1\service\EmailService.java
 C:\Suli\vizsgaremek\vizsgaremek1\src\main\java\com\mycompany\vizsgaremek1\service\OrderItemsService.java
 C:\Suli\vizsgaremek\vizsgaremek1\src\main\java\com\mycompany\vizsgaremek1\service\OrdersService.java
+C:\Suli\vizsgaremek\vizsgaremek1\src\main\java\com\mycompany\vizsgaremek1\service\PaymentsService.java
 C:\Suli\vizsgaremek\vizsgaremek1\src\main\java\com\mycompany\vizsgaremek1\service\UsersService.java
