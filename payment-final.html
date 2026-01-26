@@ -58,7 +58,7 @@
 
         .payment-methods {
             display: flex;
-            gap: 15px;
+            gap: 12px;
             justify-content: center;
             margin-bottom: 35px;
         }
@@ -114,24 +114,77 @@
             color: white;
         }
 
-        .card-front {
-            background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
-            box-shadow: 0 10px 30px rgba(255, 193, 7, 0.4);
+        /* VISA CARD */
+        .card-front.visa {
+            background: linear-gradient(135deg, #1a1f71 0%, #0f3d91 100%);
+            box-shadow: 0 10px 30px rgba(26, 31, 113, 0.4);
+        }
+
+        .card-back.visa {
+            background: linear-gradient(135deg, #0f3d91 0%, #1a1f71 100%);
+            transform: rotateY(180deg);
+            box-shadow: 0 10px 30px rgba(15, 61, 145, 0.4);
+        }
+
+        /* MASTERCARD */
+        .card-front.mastercard {
+            background: linear-gradient(135deg, #eb001b 0%, #f79e1b 100%);
+            box-shadow: 0 10px 30px rgba(235, 0, 27, 0.4);
+        }
+
+        .card-back.mastercard {
+            background: linear-gradient(135deg, #f79e1b 0%, #eb001b 100%);
+            transform: rotateY(180deg);
+            box-shadow: 0 10px 30px rgba(247, 158, 27, 0.4);
+        }
+
+        /* VISA Logo */
+        .visa-logo {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            font-size: 2rem;
+            font-weight: 700;
+            font-style: italic;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        /* MASTERCARD Circles */
+        .mastercard-logo {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            width: 60px;
+            height: 40px;
+        }
+
+        .mastercard-circle {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            position: absolute;
+            top: 5px;
+        }
+
+        .mastercard-circle.red {
+            background: #eb001b;
+            left: 0;
+        }
+
+        .mastercard-circle.yellow {
+            background: #f79e1b;
+            right: 0;
+            opacity: 0.85;
         }
 
         .chip {
             width: 60px;
             height: 45px;
-            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+            background: linear-gradient(135deg, #d4af37, #ffd700);
             border-radius: 8px;
             margin-bottom: 40px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-        }
-
-        .card-back {
-            background: linear-gradient(135deg, #ff9800 0%, #ffc107 100%);
-            transform: rotateY(180deg);
-            box-shadow: 0 10px 30px rgba(255, 152, 0, 0.4);
         }
 
         .black-strip {
@@ -171,14 +224,14 @@
             background: transparent;
             border: none;
             outline: none;
-            color: #1a1a1a;
+            color: white;
             font-weight: 700;
             font-size: 18px;
             letter-spacing: 2px;
         }
 
         .card-input::placeholder {
-            color: rgba(26, 26, 26, 0.5);
+            color: rgba(255, 255, 255, 0.6);
         }
 
         .card-input.number {
@@ -207,31 +260,6 @@
             transform: rotateY(180deg);
         }
 
-        .form-label {
-            color: #cccccc;
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
-
-        .form-control {
-            background-color: #3a3a3a;
-            border: 2px solid #555;
-            color: #ffffff;
-            padding: 12px;
-            border-radius: 6px;
-        }
-
-        .form-control:focus {
-            background-color: #4a4a4a;
-            border-color: #ffc107;
-            color: #ffffff;
-            box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.25);
-        }
-
-        .form-control::placeholder {
-            color: #888;
-        }
-
         .btn-pay {
             background-color: #ffc107;
             color: #000000;
@@ -256,6 +284,37 @@
             margin-top: 20px;
             border-radius: 8px;
             font-weight: 600;
+        }
+
+        /* PayPal Section */
+        .paypal-section {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 20px 0;
+        }
+
+        .paypal-info {
+            text-align: center;
+        }
+
+        .paypal-info h3 {
+            color: #856404;
+            font-weight: 700;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+
+        .paypal-info p {
+            margin: 0 0 20px;
+            color: #856404;
+            font-weight: 500;
+        }
+
+        .paypal-logo {
+            font-size: 3rem;
+            margin-bottom: 15px;
         }
 
         .features-section {
@@ -343,7 +402,7 @@
                         <a class="nav-link" href="index.html">Főoldal</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="profile.html">fiók</a>
+                        <a class="nav-link" href="registration.html">Regisztráció</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="cart.html">Kosár</a>
@@ -363,38 +422,57 @@
                 <div class="payment-methods">
                     <button type="button" class="pm-btn active" data-method="visa">Visa</button>
                     <button type="button" class="pm-btn" data-method="mastercard">Mastercard</button>
+                    <button type="button" class="pm-btn" data-method="paypal">PayPal</button>
                 </div>
 
-                <!-- Virtuális bankkártya -->
-                <div class="card-wrapper">
-                    <div class="credit-card" id="credit-card">
-                        <!-- Kártya előlap -->
-                        <div class="card-face card-front">
-                            <div class="chip"></div>
-                            <input id="card-number" class="card-input number" maxlength="19" placeholder="1234 1234 1234 1234">
-                            <input id="card-name" class="card-input name" placeholder="KÁRTYABIRTOKOS">
-                            <input id="card-expiry" class="card-input expiry" maxlength="5" placeholder="MM/YY">
-                        </div>
+                <!-- Kártyás fizetés -->
+                <div id="card-section">
+                    <!-- Virtuális bankkártya -->
+                    <div class="card-wrapper">
+                        <div class="credit-card" id="credit-card">
+                            <!-- Kártya előlap -->
+                            <div class="card-face card-front visa" id="card-front">
+                                <div class="visa-logo" id="visa-logo">VISA</div>
+                                <div class="mastercard-logo" id="mastercard-logo" style="display:none;">
+                                    <div class="mastercard-circle red"></div>
+                                    <div class="mastercard-circle yellow"></div>
+                                </div>
+                                <div class="chip"></div>
+                                <input id="card-number" class="card-input number" maxlength="19" placeholder="1234 1234 1234 1234">
+                                <input id="card-name" class="card-input name" placeholder="KÁRTYABIRTOKOS">
+                                <input id="card-expiry" class="card-input expiry" maxlength="5" placeholder="MM/YY">
+                            </div>
 
-                        <!-- Kártya hátlap -->
-                        <div class="card-face card-back">
-                            <div class="black-strip"></div>
-                            <div class="cvc-box">
-                                <input id="card-cvc" class="cvc-input" maxlength="3" placeholder="CVC">
+                            <!-- Kártya hátlap -->
+                            <div class="card-face card-back visa" id="card-back">
+                                <div class="black-strip"></div>
+                                <div class="cvc-box">
+                                    <input id="card-cvc" class="cvc-input" maxlength="3" placeholder="CVC">
+                                </div>
                             </div>
                         </div>
                     </div>
+
+                    <!-- CVC instrukció és gomb -->
+                    <div class="text-center mb-4">
+                        <button type="button" class="btn btn-outline-warning btn-sm" id="flip-card-btn">
+                            🔄 Kártya megfordítása (CVC kód)
+                        </button>
+                    </div>
                 </div>
 
-                <!-- CVC instrukció és gomb -->
-                <div class="text-center mb-4">
-                    <button type="button" class="btn btn-outline-warning btn-sm" id="flip-card-btn">
-                        🔄 Kártya megfordítása (CVC kód)
-                    </button>
+                <!-- PayPal szekció -->
+                <div id="paypal-section" class="paypal-section" style="display:none;">
+                    <div class="paypal-info">
+                        <div class="paypal-logo">💳</div>
+                        <h3>PayPal Fizetés</h3>
+                        <p>🔒 Biztonságos fizetés PayPal-lal</p>
+                        <p>Átirányítunk a PayPal oldalára a fizetés befejezéséhez.</p>
+                    </div>
                 </div>
 
                 <!-- Fizetés gomb -->
-                <button id="pay" class="btn-pay">Fizetés Befejezése</button>
+                <button id="pay" class="btn-pay">Fizetés véglegesítése</button>
 
                 <!-- Hibaüzenet -->
                 <div id="alert-box" style="display:none;"></div>
@@ -405,11 +483,11 @@
     <!-- Features Section -->
     <section class="features-section">
         <div class="container">
-            <h2 class="features-title">Miért válassz minket?</h2>
+            <h2 class="features-title">Miérrt válassz minket?</h2>
             <div class="row">
                 <div class="col-md-4">
                     <div class="feature-box">
-                        <h3>Villámgyors kiszállítás</h3>
+                        <h3>Villámgyirs kiszállítás</h3>
                         <p>Pécs legnagyobb Futárpartnerével dolgozunk</p>
                     </div>
                 </div>
@@ -443,36 +521,73 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Fizetési mód gombok - adatok törlése kártyatípus váltáskor
+        // Fizetési mód gombok
         document.querySelectorAll('.pm-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 document.querySelectorAll('.pm-btn').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
                 
-                // Mezők törlése kártyatípus váltáskor
+                const method = btn.dataset.method;
+                const cardSection = document.getElementById('card-section');
+                const paypalSection = document.getElementById('paypal-section');
+                const cardFront = document.getElementById('card-front');
+                const cardBack = document.getElementById('card-back');
+                const visaLogo = document.getElementById('visa-logo');
+                const mastercardLogo = document.getElementById('mastercard-logo');
+                const card = document.getElementById('credit-card');
+                
+                if (method === 'paypal') {
+                    cardSection.style.display = 'none';
+                    paypalSection.style.display = 'block';
+                } else {
+                    cardSection.style.display = 'block';
+                    paypalSection.style.display = 'none';
+                    
+                    // Kártya visszaforgatása
+                    card.classList.remove('flip');
+                    document.getElementById('flip-card-btn').innerHTML = '🔄 Kártya megfordítása (CVC kód)';
+                    
+                    // Kártya dizájn váltása
+                    if (method === 'visa') {
+                        cardFront.className = 'card-face card-front visa';
+                        cardBack.className = 'card-face card-back visa';
+                        visaLogo.style.display = 'block';
+                        mastercardLogo.style.display = 'none';
+                    } else if (method === 'mastercard') {
+                        cardFront.className = 'card-face card-front mastercard';
+                        cardBack.className = 'card-face card-back mastercard';
+                        visaLogo.style.display = 'none';
+                        mastercardLogo.style.display = 'block';
+                    }
+                }
+                
+                // Mezők törlése
                 document.getElementById('card-number').value = '';
                 document.getElementById('card-name').value = '';
                 document.getElementById('card-expiry').value = '';
                 document.getElementById('card-cvc').value = '';
-                
-                // Kártya visszaforgatása
-                card.classList.remove('flip');
-                
-                // Alert elrejtése
-                const alertBox = document.getElementById('alert-box');
-                alertBox.style.display = 'none';
+                document.getElementById('alert-box').style.display = 'none';
             });
         });
 
         // Fizetés gomb
         document.getElementById('pay').addEventListener('click', () => {
+            const activeMethod = document.querySelector('.pm-btn.active').dataset.method;
+
+            if (activeMethod === 'paypal') {
+                showAlert('Átirányítás PayPal-ra...', 'info');
+                setTimeout(() => {
+                    showAlert('✅ PayPal fizetés sikeres!', 'success');
+                    setTimeout(() => window.location.href = 'index.html', 2000);
+                }, 1500);
+                return;
+            }
+
             const cardNum = document.getElementById('card-number').value.replace(/\s+/g, '');
             const cardName = document.getElementById('card-name').value.trim();
             const cardExpiry = document.getElementById('card-expiry').value.trim();
             const cardCvc = document.getElementById('card-cvc').value.trim();
-            const alertBox = document.getElementById('alert-box');
 
-            // Validáció
             if (!/^\d{16}$/.test(cardNum)) {
                 showAlert('A kártyaszámnak 16 számjegyből kell állnia.', 'danger');
                 return;
@@ -490,14 +605,10 @@
                 return;
             }
 
-            // Sikeres fizetés
             showAlert('Fizetés feldolgozása...', 'warning');
-            
             setTimeout(() => {
                 showAlert('✅ Fizetés sikeres! Köszönjük a rendelést!', 'success');
-                setTimeout(() => {
-                    window.location.href = 'index.html';
-                }, 2000);
+                setTimeout(() => window.location.href = 'index.html', 2000);
             }, 1500);
         });
 
@@ -508,7 +619,7 @@
             alertBox.style.display = 'block';
         }
 
-        // ===== VIRTUÁLIS KÁRTYA BEVITEL ÉS FORGATÁS =====
+        // Kártya bevitel és forgatás
         const card = document.getElementById("credit-card");
         const cardNumber = document.getElementById("card-number");
         const cardName = document.getElementById("card-name");
@@ -516,7 +627,6 @@
         const cardCvc = document.getElementById("card-cvc");
         const flipCardBtn = document.getElementById("flip-card-btn");
 
-        // Flip gomb
         flipCardBtn.addEventListener("click", () => {
             if (card.classList.contains("flip")) {
                 card.classList.remove("flip");
@@ -524,44 +634,34 @@
             } else {
                 card.classList.add("flip");
                 flipCardBtn.innerHTML = '🔄 Vissza az előlapra';
-                // Fókusz a CVC mezőre
                 setTimeout(() => cardCvc.focus(), 400);
             }
         });
 
-        // Kártyaszám formázása
         cardNumber.addEventListener("input", (e) => {
             let value = e.target.value.replace(/\D/g, "").slice(0, 16);
             e.target.value = value.replace(/(.{4})/g, "$1 ").trim();
         });
 
-        // Lejárat formázása
         cardExpiry.addEventListener("input", (e) => {
             let value = e.target.value.replace(/\D/g, "").slice(0, 4);
-            if (value.length > 2) {
-                value = value.slice(0, 2) + "/" + value.slice(2);
-            }
+            if (value.length > 2) value = value.slice(0, 2) + "/" + value.slice(2);
             e.target.value = value;
         });
 
-        // Név nagybetű
         cardName.addEventListener("input", (e) => {
             e.target.value = e.target.value.toUpperCase();
         });
 
-        // CVC csak számok
         cardCvc.addEventListener("input", (e) => {
-            let value = e.target.value.replace(/\D/g, "").slice(0, 3);
-            e.target.value = value;
+            e.target.value = e.target.value.replace(/\D/g, "").slice(0, 3);
         });
 
-        // CVC -> megfordul a kártya
         cardCvc.addEventListener("focus", () => {
             card.classList.add("flip");
             flipCardBtn.innerHTML = '🔄 Vissza az előlapra';
         });
 
-        // Visszafordul ha más mezőre kattintunk
         [cardNumber, cardName, cardExpiry].forEach(input => {
             input.addEventListener("focus", () => {
                 card.classList.remove("flip");

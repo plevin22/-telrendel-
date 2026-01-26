@@ -17,7 +17,6 @@
         .navbar {
             background-color: #1a1a1a !important;
             padding: 1rem 0;
-            border-bottom: 3px solid #4a90e2;
         }
 
         .navbar-brand {
@@ -106,6 +105,21 @@
             color: #cccccc;
             font-size: 1rem;
             padding-left: 1rem;
+        }
+
+        .btn-show-password {
+            background: none;
+            border: none;
+            color: #ffc107;
+            font-size: 0.9rem;
+            cursor: pointer;
+            padding: 0;
+            margin-left: 15px;
+            text-decoration: underline;
+        }
+
+        .btn-show-password:hover {
+            color: #ffb300;
         }
 
         .vertical-divider {
@@ -284,11 +298,20 @@
                 <div class="left-column">
                     <div class="info-item">
                         <div class="info-label">Email cím</div>
-                        <div class="info-value">user@example.com</div>
+                        <div class="info-value"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="c0b5b3a5b280a5b8a1adb0aca5eea3afad">[email&#160;protected]</a></div>
                     </div>
                     <div class="info-item">
                         <div class="info-label">Jelszó</div>
-                        <div class="info-value">••••••••</div>
+                        <div class="info-value">
+                            <span id="password-display">••••••••</span>
+                            <button class="btn-show-password" id="toggle-password" onclick="togglePassword()">
+                                Jelszó megtekintése
+                            </button>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Lakcím</div>
+                        <div class="info-value">1234 Budapest, Példa utca 12.</div>
                     </div>
                     <div class="info-item">
                         <div class="info-label">Telefonszám</div>
@@ -366,6 +389,26 @@
                 this.classList.add('active');
             });
         });
-    </script>
-</body>
+
+        // Password toggle functionality
+        let passwordVisible = false;
+        const actualPassword = 'MySecurePass123'; // Ez a valódi jelszó (normál esetben a backend-ről jönne)
+
+        function togglePassword() {
+            const passwordDisplay = document.getElementById('password-display');
+            const toggleBtn = document.getElementById('toggle-password');
+            
+            if (passwordVisible) {
+                // Elrejtés
+                passwordDisplay.textContent = '••••••••';
+                toggleBtn.textContent = 'Jelszó megtekintése';
+                passwordVisible = false;
+            } else {
+                // Megjelenítés
+                passwordDisplay.textContent = actualPassword;
+                toggleBtn.textContent = 'Jelszó elrejtése';
+                passwordVisible = true;
+            }
+        }
+    </script></body>
 </html>
