@@ -18,6 +18,43 @@ public class UsersController {
     @EJB
     private UsersService usersService;
 
+    /**
+     * Jelszó validálása - minimum 8 karakter, nagybetű, speciális karakter
+     */
+    private String validatePassword(String password) {
+        // Minimum 8 karakter
+        if (password.length() < 8) {
+            return "A jelszónak minimum 8 karakter hosszúnak kell lennie.";
+        }
+        
+        // Nagybetű ellenőrzés
+        boolean hasUppercase = false;
+        for (char c : password.toCharArray()) {
+            if (Character.isUpperCase(c)) {
+                hasUppercase = true;
+                break;
+            }
+        }
+        if (!hasUppercase) {
+            return "A jelszónak tartalmaznia kell legalább egy nagybetűt.";
+        }
+        
+        // Speciális karakter ellenőrzés
+        String specialChars = "!@#$%^&*()_+-=[]{}|;':\",./<>?`~";
+        boolean hasSpecial = false;
+        for (char c : password.toCharArray()) {
+            if (specialChars.indexOf(c) != -1) {
+                hasSpecial = true;
+                break;
+            }
+        }
+        if (!hasSpecial) {
+            return "A jelszónak tartalmaznia kell legalább egy speciális karaktert.";
+        }
+        
+        return null; // Nincs hiba, a jelszó megfelel
+    }
+
     @GET
     @Path("/GetAllUsers")
     public Response getAllUsers() {
@@ -99,6 +136,7 @@ public class UsersController {
         String address = request.optString("address", "");
         String role = request.optString("role", "customer");
 
+        // Név validáció
         if (name == null || name.trim().isEmpty()) {
             response.put("status", "error");
             response.put("message", "A név megadása kötelező.");
@@ -109,6 +147,8 @@ public class UsersController {
             response.put("message", "A név maximum 255 karakter lehet.");
             return Response.status(Response.Status.BAD_REQUEST).entity(response.toString()).build();
         }
+
+        // Email validáció
         if (email == null || email.trim().isEmpty()) {
             response.put("status", "error");
             response.put("message", "Az email megadása kötelező.");
@@ -120,16 +160,23 @@ public class UsersController {
             response.put("message", "Érvénytelen email formátum.");
             return Response.status(Response.Status.BAD_REQUEST).entity(response.toString()).build();
         }
+
+        // Jelszó validáció
         if (password == null || password.trim().isEmpty()) {
             response.put("status", "error");
             response.put("message", "A jelszó megadása kötelező.");
             return Response.status(Response.Status.BAD_REQUEST).entity(response.toString()).build();
         }
-        if (password.length() < 6) {
+        
+        // Erős jelszó ellenőrzés
+        String passwordError = validatePassword(password);
+        if (passwordError != null) {
             response.put("status", "error");
-            response.put("message", "A jelszónak minimum 6 karakter hosszúnak kell lennie.");
+            response.put("message", passwordError);
             return Response.status(Response.Status.BAD_REQUEST).entity(response.toString()).build();
         }
+
+        // Szerepkör validáció
         if (!role.equals("customer") && !role.equals("admin") && !role.equals("restaurant_owner")) {
             response.put("status", "error");
             response.put("message", "Érvénytelen szerepkör. Engedélyezett: customer, admin, restaurant_owner.");
@@ -137,13 +184,17 @@ public class UsersController {
         }
 
         try {
+            // Email egyediség ellenőrzése
             if (usersService.findUserByEmail(email) != null) {
                 response.put("status", "error");
                 response.put("message", "Ez az email cím már foglalt.");
                 return Response.status(Response.Status.CONFLICT).entity(response.toString()).build();
             }
+            
+            // Jelszó hash-elése és felhasználó létrehozása
             String hashedPassword = usersService.hashPassword(password);
             usersService.createUser(name.trim(), email.trim(), hashedPassword, phone, address, role);
+            
             Users createdUser = usersService.findUserByEmail(email);
             response.put("status", "success");
             response.put("message", "Sikeres regisztráció.");
@@ -243,18 +294,35 @@ public class UsersController {
                 response.put("message", "A felhasználó nem található.");
                 return Response.status(Response.Status.NOT_FOUND).entity(response.toString()).build();
             }
+            
             String name = request.optString("name", existing.getName());
             String email = request.optString("email", existing.getEmail());
-            String password = request.has("password") ? usersService.hashPassword(request.getString("password")) : existing.getPassword();
             String phone = request.optString("phone", existing.getPhone());
             String address = request.optString("address", existing.getAddress());
             String role = request.optString("role", existing.getRole().toString());
+            
+            // Jelszó frissítés - csak ha meg van adva új jelszó
+            String password = existing.getPassword();
+            if (request.has("password") && !request.getString("password").isEmpty()) {
+                String newPassword = request.getString("password");
+                
+                // Erős jelszó ellenőrzés az új jelszóra is
+                String passwordError = validatePassword(newPassword);
+                if (passwordError != null) {
+                    response.put("status", "error");
+                    response.put("message", passwordError);
+                    return Response.status(Response.Status.BAD_REQUEST).entity(response.toString()).build();
+                }
+                
+                password = usersService.hashPassword(newPassword);
+            }
 
             if (!role.equals("customer") && !role.equals("admin") && !role.equals("restaurant_owner")) {
                 response.put("status", "error");
                 response.put("message", "Érvénytelen szerepkör.");
                 return Response.status(Response.Status.BAD_REQUEST).entity(response.toString()).build();
             }
+            
             usersService.updateUser(id, name, email, password, phone, address, role);
             response.put("status", "success");
             response.put("message", "A felhasználó sikeresen frissítve.");

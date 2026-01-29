@@ -117,8 +117,8 @@ public class OrderItemsController {
         Integer orderId = request.optInt("order_id", 0);
         Integer dishId = request.optInt("dish_id", 0);
         Integer quantity = request.optInt("quantity", 1);
-        BigDecimal price = request.has("price") ? request.getBigDecimal("price") : null;
 
+        // Validációk
         if (orderId == 0) {
             response.put("status", "error");
             response.put("message", "Az order_id megadása kötelező.");
@@ -134,26 +134,48 @@ public class OrderItemsController {
             response.put("message", "A mennyiségnek pozitív számnak kell lennie.");
             return Response.status(Response.Status.BAD_REQUEST).entity(response.toString()).build();
         }
-        if (price == null || price.compareTo(BigDecimal.ZERO) <= 0) {
-            response.put("status", "error");
-            response.put("message", "Az árnak pozitív számnak kell lennie.");
-            return Response.status(Response.Status.BAD_REQUEST).entity(response.toString()).build();
-        }
 
         try {
+            // Rendelés létezésének ellenőrzése
             if (!orderItemsService.orderExists(orderId)) {
                 response.put("status", "error");
                 response.put("message", "A megadott rendelés nem létezik.");
                 return Response.status(Response.Status.BAD_REQUEST).entity(response.toString()).build();
             }
+            
+            // Étel létezésének ellenőrzése
             if (!orderItemsService.dishExists(dishId)) {
                 response.put("status", "error");
                 response.put("message", "A megadott étel nem létezik.");
                 return Response.status(Response.Status.BAD_REQUEST).entity(response.toString()).build();
             }
-            orderItemsService.addOrderItem(orderId, dishId, quantity, price);
+
+            // Étel elérhetőségének ellenőrzése
+            if (!orderItemsService.isDishAvailable(dishId)) {
+                response.put("status", "error");
+                response.put("message", "A megadott étel jelenleg nem elérhető.");
+                return Response.status(Response.Status.BAD_REQUEST).entity(response.toString()).build();
+            }
+
+            // ár számítása adatbázisból
+            BigDecimal unitPrice = orderItemsService.getDishPrice(dishId);
+            if (unitPrice == null) {
+                response.put("status", "error");
+                response.put("message", "Nem sikerült lekérdezni az étel árát.");
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(response.toString()).build();
+            }
+            
+            // Teljes ár = egységár × mennyiség
+            BigDecimal calculatedPrice = unitPrice.multiply(BigDecimal.valueOf(quantity));
+
+            // Tétel hozzáadása a helyes árral
+            orderItemsService.addOrderItem(orderId, dishId, quantity, calculatedPrice);
+            
             response.put("status", "success");
             response.put("message", "A rendelési tétel sikeresen létrehozva.");
+            response.put("unit_price", unitPrice);
+            response.put("quantity", quantity);
+            response.put("total_price", calculatedPrice);
             return Response.status(Response.Status.CREATED).entity(response.toString()).build();
         } catch (Exception e) {
             e.printStackTrace();
@@ -190,7 +212,6 @@ public class OrderItemsController {
             }
 
             Integer quantity = request.has("quantity") ? request.getInt("quantity") : existing.getQuantity();
-            BigDecimal price = request.has("price") ? request.getBigDecimal("price") : existing.getPrice();
 
             if (quantity <= 0) {
                 response.put("status", "error");
@@ -198,9 +219,23 @@ public class OrderItemsController {
                 return Response.status(Response.Status.BAD_REQUEST).entity(response.toString()).build();
             }
 
-            orderItemsService.updateOrderItem(id, quantity, price);
+            // ár újraszámítása az adatbázisról
+            BigDecimal unitPrice = orderItemsService.getDishPrice(existing.getDishId());
+            if (unitPrice == null) {
+                response.put("status", "error");
+                response.put("message", "Nem sikerült lekérdezni az étel árát.");
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(response.toString()).build();
+            }
+            
+            BigDecimal calculatedPrice = unitPrice.multiply(BigDecimal.valueOf(quantity));
+
+            orderItemsService.updateOrderItem(id, quantity, calculatedPrice);
+            
             response.put("status", "success");
             response.put("message", "A rendelési tétel sikeresen frissítve.");
+            response.put("unit_price", unitPrice);
+            response.put("quantity", quantity);
+            response.put("total_price", calculatedPrice);
             return Response.ok(response.toString()).build();
         } catch (Exception e) {
             e.printStackTrace();

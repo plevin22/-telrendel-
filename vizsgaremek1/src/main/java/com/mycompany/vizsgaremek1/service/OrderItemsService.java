@@ -1,5 +1,6 @@
 package com.mycompany.vizsgaremek1.service;
 
+import com.mycompany.vizsgaremek1.model.Dishes;
 import com.mycompany.vizsgaremek1.model.OrderItems;
 import java.math.BigDecimal;
 import java.util.List;
@@ -38,7 +39,26 @@ public class OrderItemsService {
     }
 
     /**
+     * Étel lekérdezése ID alapján (ár ellenőrzéshez).
+     */
+    public Dishes findDishById(Integer dishId) {
+        return em.find(Dishes.class, dishId);
+    }
+
+    /**
+     * Étel árának lekérdezése.
+     */
+    public BigDecimal getDishPrice(Integer dishId) {
+        Dishes dish = findDishById(dishId);
+        if (dish != null) {
+            return dish.getPrice();
+        }
+        return null;
+    }
+
+    /**
      * Új rendelési tétel létrehozása - AddOrderItem eljárás.
+     * Az ár automatikusan számítódik az étel ára alapján!
      */
     public void addOrderItem(Integer orderId, Integer dishId, Integer quantity, BigDecimal price) {
         StoredProcedureQuery sp = em.createStoredProcedureQuery("AddOrderItem");
@@ -101,5 +121,13 @@ public class OrderItemsService {
             "SELECT COUNT(d) FROM Dishes d WHERE d.dishId = :id", Long.class
         ).setParameter("id", dishId).getSingleResult();
         return count > 0;
+    }
+
+    /**
+     * Étel elérhetőségének ellenőrzése.
+     */
+    public boolean isDishAvailable(Integer dishId) {
+        Dishes dish = findDishById(dishId);
+        return dish != null && dish.getAvailable();
     }
 }
