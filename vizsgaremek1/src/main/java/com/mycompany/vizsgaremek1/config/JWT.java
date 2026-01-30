@@ -10,7 +10,7 @@ import java.util.Date;
 
 public class JWT {
 
-    // Titkos kulcs a token aláírásához (élesben környezeti változóból olvasd!)
+    // Titkos kulcs a token aláírásához
     private static final Key SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
     
     // Token érvényességi ideje (24 óra milliszekundumban)

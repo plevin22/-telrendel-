@@ -157,7 +157,7 @@ public class OrderItemsController {
                 return Response.status(Response.Status.BAD_REQUEST).entity(response.toString()).build();
             }
 
-            // ár számítása adatbázisból
+            // ÁR AUTOMATIKUS SZÁMÍTÁSA AZ ADATBÁZISBÓL!
             BigDecimal unitPrice = orderItemsService.getDishPrice(dishId);
             if (unitPrice == null) {
                 response.put("status", "error");
@@ -168,7 +168,7 @@ public class OrderItemsController {
             // Teljes ár = egységár × mennyiség
             BigDecimal calculatedPrice = unitPrice.multiply(BigDecimal.valueOf(quantity));
 
-            // Tétel hozzáadása a helyes árral
+            // Tétel hozzáadása a HELYES árral
             orderItemsService.addOrderItem(orderId, dishId, quantity, calculatedPrice);
             
             response.put("status", "success");
@@ -219,7 +219,7 @@ public class OrderItemsController {
                 return Response.status(Response.Status.BAD_REQUEST).entity(response.toString()).build();
             }
 
-            // ár újraszámítása az adatbázisról
+            // ÁR ÚJRASZÁMÍTÁSA AZ ADATBÁZISBÓL!
             BigDecimal unitPrice = orderItemsService.getDishPrice(existing.getDishId());
             if (unitPrice == null) {
                 response.put("status", "error");

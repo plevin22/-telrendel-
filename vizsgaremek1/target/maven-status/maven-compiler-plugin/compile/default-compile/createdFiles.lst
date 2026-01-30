@@ -11,6 +11,7 @@ com\mycompany\vizsgaremek1\controller\OrdersController.class
 com\mycompany\vizsgaremek1\service\UsersService.class
 com\mycompany\vizsgaremek1\model\Payments.class
 com\mycompany\vizsgaremek1\model\Users.class
+com\mycompany\vizsgaremek1\controller\CorsFilter.class
 com\mycompany\vizsgaremek1\controller\DishesController.class
 com\mycompany\vizsgaremek1\controller\EmailController.class
 com\mycompany\vizsgaremek1\controller\PaymentsController.class

@@ -1,6 +1,8 @@
 package com.mycompany.vizsgaremek1.controller;
 
+import com.mycompany.vizsgaremek1.model.Orders;
 import com.mycompany.vizsgaremek1.model.Payments;
+import com.mycompany.vizsgaremek1.service.OrdersService;
 import com.mycompany.vizsgaremek1.service.PaymentsService;
 import java.math.BigDecimal;
 import java.util.List;
@@ -18,6 +20,9 @@ public class PaymentsController {
 
     @EJB
     private PaymentsService paymentsService;
+
+    @EJB
+    private OrdersService ordersService;
 
     @GET
     @Path("/GetAllPayments")
@@ -120,18 +125,13 @@ public class PaymentsController {
         }
 
         Integer orderId = request.optInt("order_id", 0);
-        BigDecimal amount = request.has("amount") ? request.getBigDecimal("amount") : null;
         String method = request.optString("method", null);
         String status = request.optString("status", "pending");
 
+        // Validációk
         if (orderId == 0) {
             response.put("status", "error");
             response.put("message", "Az order_id megadása kötelező.");
-            return Response.status(Response.Status.BAD_REQUEST).entity(response.toString()).build();
-        }
-        if (amount == null || amount.compareTo(BigDecimal.ZERO) <= 0) {
-            response.put("status", "error");
-            response.put("message", "Az összegnek pozitív számnak kell lennie.");
             return Response.status(Response.Status.BAD_REQUEST).entity(response.toString()).build();
         }
         if (method == null || (!method.equals("card") && !method.equals("cash") && !method.equals("paypal"))) {
@@ -146,14 +146,39 @@ public class PaymentsController {
         }
 
         try {
+            // Rendelés létezésének ellenőrzése
             if (!paymentsService.orderExists(orderId)) {
                 response.put("status", "error");
                 response.put("message", "A megadott rendelés nem létezik.");
                 return Response.status(Response.Status.BAD_REQUEST).entity(response.toString()).build();
             }
+
+            // Ellenőrzés: van-e már fizetés ehhez a rendeléshez
+            if (paymentsService.getPaymentByOrderId(orderId) != null) {
+                response.put("status", "error");
+                response.put("message", "Ehhez a rendeléshez már tartozik fizetés.");
+                return Response.status(Response.Status.CONFLICT).entity(response.toString()).build();
+            }
+
+            // ÖSSZEG AUTOMATIKUSAN A RENDELÉSBŐL!
+            Orders order = ordersService.findOrderById(orderId);
+            BigDecimal amount = order.getTotalPrice();
+
+            // Ellenőrzés: van-e összeg a rendelésben
+            if (amount == null || amount.compareTo(BigDecimal.ZERO) <= 0) {
+                response.put("status", "error");
+                response.put("message", "A rendelés végösszege 0 vagy üres. Először adj hozzá tételeket a rendeléshez!");
+                return Response.status(Response.Status.BAD_REQUEST).entity(response.toString()).build();
+            }
+
             paymentsService.addPayment(orderId, amount, method, status);
+            
             response.put("status", "success");
             response.put("message", "A fizetés sikeresen létrehozva.");
+            response.put("order_id", orderId);
+            response.put("amount", amount);
+            response.put("method", method);
+            response.put("payment_status", status);
             return Response.status(Response.Status.CREATED).entity(response.toString()).build();
         } catch (Exception e) {
             e.printStackTrace();

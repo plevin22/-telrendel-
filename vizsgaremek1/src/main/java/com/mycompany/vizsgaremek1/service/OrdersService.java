@@ -33,17 +33,8 @@ public class OrdersService {
      */
     public List<Orders> getOrdersByUserId(Integer userId) {
         return em.createQuery(
-            "SELECT o FROM Orders o WHERE o.userId = :userId", Orders.class
+            "SELECT o FROM Orders o WHERE o.userId = :userId ORDER BY o.createdAt DESC", Orders.class
         ).setParameter("userId", userId).getResultList();
-    }
-
-    /**
-     * Rendelések lekérdezése étterem alapján.
-     */
-    public List<Orders> getOrdersByRestaurantId(Integer restaurantId) {
-        return em.createQuery(
-            "SELECT o FROM Orders o WHERE o.restaurantId = :restaurantId", Orders.class
-        ).setParameter("restaurantId", restaurantId).getResultList();
     }
 
     /**
@@ -52,15 +43,15 @@ public class OrdersService {
     public void addOrder(Integer userId, Integer restaurantId, String status, BigDecimal totalPrice) {
         StoredProcedureQuery sp = em.createStoredProcedureQuery("AddOrder");
         
-        sp.registerStoredProcedureParameter("user_id", Integer.class, ParameterMode.IN);
-        sp.registerStoredProcedureParameter("restaurant_id", Integer.class, ParameterMode.IN);
-        sp.registerStoredProcedureParameter("status", String.class, ParameterMode.IN);
-        sp.registerStoredProcedureParameter("total_price", BigDecimal.class, ParameterMode.IN);
+        sp.registerStoredProcedureParameter("p_user_id", Integer.class, ParameterMode.IN);
+        sp.registerStoredProcedureParameter("p_restaurant_id", Integer.class, ParameterMode.IN);
+        sp.registerStoredProcedureParameter("p_status", String.class, ParameterMode.IN);
+        sp.registerStoredProcedureParameter("p_total_price", BigDecimal.class, ParameterMode.IN);
 
-        sp.setParameter("user_id", userId);
-        sp.setParameter("restaurant_id", restaurantId);
-        sp.setParameter("status", status);
-        sp.setParameter("total_price", totalPrice);
+        sp.setParameter("p_user_id", userId);
+        sp.setParameter("p_restaurant_id", restaurantId);
+        sp.setParameter("p_status", status);
+        sp.setParameter("p_total_price", totalPrice);
 
         sp.execute();
     }
@@ -71,13 +62,13 @@ public class OrdersService {
     public void updateOrder(Integer orderId, String status, BigDecimal totalPrice) {
         StoredProcedureQuery sp = em.createStoredProcedureQuery("UpdateOrder");
         
-        sp.registerStoredProcedureParameter("order_id", Integer.class, ParameterMode.IN);
-        sp.registerStoredProcedureParameter("status", String.class, ParameterMode.IN);
-        sp.registerStoredProcedureParameter("total_price", BigDecimal.class, ParameterMode.IN);
+        sp.registerStoredProcedureParameter("p_order_id", Integer.class, ParameterMode.IN);
+        sp.registerStoredProcedureParameter("p_status", String.class, ParameterMode.IN);
+        sp.registerStoredProcedureParameter("p_total_price", BigDecimal.class, ParameterMode.IN);
 
-        sp.setParameter("order_id", orderId);
-        sp.setParameter("status", status);
-        sp.setParameter("total_price", totalPrice);
+        sp.setParameter("p_order_id", orderId);
+        sp.setParameter("p_status", status);
+        sp.setParameter("p_total_price", totalPrice);
 
         sp.execute();
     }
@@ -87,8 +78,8 @@ public class OrdersService {
      */
     public void deleteOrder(Integer orderId) {
         StoredProcedureQuery sp = em.createStoredProcedureQuery("DeleteOrder");
-        sp.registerStoredProcedureParameter("order_id", Integer.class, ParameterMode.IN);
-        sp.setParameter("order_id", orderId);
+        sp.registerStoredProcedureParameter("p_order_id", Integer.class, ParameterMode.IN);
+        sp.setParameter("p_order_id", orderId);
         sp.execute();
     }
 
@@ -113,6 +104,21 @@ public class OrdersService {
     }
 
     /**
+     * Legutolsó rendelés lekérése user alapján.
+     */
+    public Orders getLastOrderByUser(Integer userId) {
+        try {
+            return em.createQuery(
+                "SELECT o FROM Orders o WHERE o.userId = :userId ORDER BY o.createdAt DESC", Orders.class
+            ).setParameter("userId", userId)
+             .setMaxResults(1)
+             .getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+
+    /**
      * Legutolsó rendelés lekérése user és restaurant alapján.
      */
     public Orders getLastOrderByUserAndRestaurant(Integer userId, Integer restaurantId) {
@@ -125,6 +131,42 @@ public class OrdersService {
              .getSingleResult();
         } catch (NoResultException e) {
             return null;
+        }
+    }
+
+    /**
+     * Rendelés végösszegének újraszámítása az order_items alapján.
+     * AUTOMATIKUSAN HÍVÓDIK amikor tétel hozzáadás/módosítás/törlés történik!
+     */
+    public BigDecimal recalculateOrderTotal(Integer orderId) {
+        try {
+            BigDecimal total = em.createQuery(
+                "SELECT COALESCE(SUM(oi.price), 0) FROM OrderItems oi WHERE oi.orderId = :orderId", BigDecimal.class
+            ).setParameter("orderId", orderId).getSingleResult();
+            
+            // Frissítjük a rendelés total_price mezőjét
+            Orders order = findOrderById(orderId);
+            if (order != null) {
+                updateOrder(orderId, order.getStatus().toString(), total);
+            }
+            
+            return total;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return BigDecimal.ZERO;
+        }
+    }
+
+    /**
+     * Rendelés végösszegének lekérdezése (order_items alapján számolva).
+     */
+    public BigDecimal getOrderTotal(Integer orderId) {
+        try {
+            return em.createQuery(
+                "SELECT COALESCE(SUM(oi.price), 0) FROM OrderItems oi WHERE oi.orderId = :orderId", BigDecimal.class
+            ).setParameter("orderId", orderId).getSingleResult();
+        } catch (Exception e) {
+            return BigDecimal.ZERO;
         }
     }
 }

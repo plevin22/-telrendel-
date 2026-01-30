@@ -4,6 +4,7 @@ import com.mycompany.vizsgaremek1.model.Dishes;
 import com.mycompany.vizsgaremek1.model.OrderItems;
 import java.math.BigDecimal;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.*;
 
@@ -12,6 +13,9 @@ public class OrderItemsService {
 
     @PersistenceContext(unitName = "com.mycompany_vizsgaremek1_war_1.0-SNAPSHOTPU")
     private EntityManager em;
+
+    @EJB
+    private OrdersService ordersService;
 
     /**
      * Rendelési tétel keresése ID alapján.
@@ -58,7 +62,7 @@ public class OrderItemsService {
 
     /**
      * Új rendelési tétel létrehozása - AddOrderItem eljárás.
-     * Az ár automatikusan számítódik az étel ára alapján!
+     * AUTOMATIKUSAN FRISSÍTI a rendelés végösszegét!
      */
     public void addOrderItem(Integer orderId, Integer dishId, Integer quantity, BigDecimal price) {
         StoredProcedureQuery sp = em.createStoredProcedureQuery("AddOrderItem");
@@ -74,12 +78,20 @@ public class OrderItemsService {
         sp.setParameter("p_price", price);
 
         sp.execute();
+
+        // AUTOMATIKUS: Rendelés végösszeg frissítése
+        ordersService.recalculateOrderTotal(orderId);
     }
 
     /**
      * Rendelési tétel frissítése - UpdateOrderItem eljárás.
+     * AUTOMATIKUSAN FRISSÍTI a rendelés végösszegét!
      */
     public void updateOrderItem(Integer orderItemId, Integer quantity, BigDecimal price) {
+        // Először lekérjük a tételt, hogy tudjuk melyik rendeléshez tartozik
+        OrderItems item = findOrderItemById(orderItemId);
+        Integer orderId = item != null ? item.getOrderId() : null;
+
         StoredProcedureQuery sp = em.createStoredProcedureQuery("UpdateOrderItem");
         
         sp.registerStoredProcedureParameter("p_order_item_id", Integer.class, ParameterMode.IN);
@@ -91,16 +103,31 @@ public class OrderItemsService {
         sp.setParameter("p_price", price);
 
         sp.execute();
+
+        // AUTOMATIKUS: Rendelés végösszeg frissítése
+        if (orderId != null) {
+            ordersService.recalculateOrderTotal(orderId);
+        }
     }
 
     /**
      * Rendelési tétel törlése - DeleteOrderItem eljárás.
+     * AUTOMATIKUSAN FRISSÍTI a rendelés végösszegét!
      */
     public void deleteOrderItem(Integer orderItemId) {
+        // Először lekérjük a tételt, hogy tudjuk melyik rendeléshez tartozik
+        OrderItems item = findOrderItemById(orderItemId);
+        Integer orderId = item != null ? item.getOrderId() : null;
+
         StoredProcedureQuery sp = em.createStoredProcedureQuery("DeleteOrderItem");
         sp.registerStoredProcedureParameter("p_order_item_id", Integer.class, ParameterMode.IN);
         sp.setParameter("p_order_item_id", orderItemId);
         sp.execute();
+
+        // AUTOMATIKUS: Rendelés végösszeg frissítése
+        if (orderId != null) {
+            ordersService.recalculateOrderTotal(orderId);
+        }
     }
 
     /**
