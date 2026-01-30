@@ -317,6 +317,51 @@
             margin-bottom: 15px;
         }
 
+        /* Cash Payment Section */
+        .cash-section {
+            background: #d4edda;
+            border: 2px solid #27ae60;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 20px 0;
+        }
+
+        .cash-info {
+            text-align: center;
+        }
+
+        .cash-info h3 {
+            color: #155724;
+            font-weight: 700;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+
+        .cash-info p {
+            margin: 0 0 15px;
+            color: #155724;
+            font-weight: 500;
+        }
+
+        .cash-logo {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .cash-warning {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 4px;
+        }
+
+        .cash-warning p {
+            color: #856404;
+            margin: 0;
+            font-size: 0.9rem;
+        }
+
         .features-section {
             background-color: #2a2a2a;
             padding: 50px 0;
@@ -423,6 +468,7 @@
                     <button type="button" class="pm-btn active" data-method="visa">Visa</button>
                     <button type="button" class="pm-btn" data-method="mastercard">Mastercard</button>
                     <button type="button" class="pm-btn" data-method="paypal">PayPal</button>
+                    <button type="button" class="pm-btn" data-method="cash">Készpénz</button>
                 </div>
 
                 <!-- Kártyás fizetés -->
@@ -471,6 +517,20 @@
                     </div>
                 </div>
 
+                <!-- Készpénz szekció -->
+                <div id="cash-section" class="cash-section" style="display:none;">
+                    <div class="cash-info">
+                        <div class="cash-logo">💵</div>
+                        <h3>Készpénzes Fizetés</h3>
+                        <p>💰 Fizetés átvételkor</p>
+                        <p>A futár kiszállításkor fogja beszedni a rendelés árát.</p>
+                        
+                        <div class="cash-warning">
+                            <p><strong>⚠️ Fontos:</strong> Kérjük, készítsd elő a pontos összeget a futár megérkezéséig!</p>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Fizetés gomb -->
                 <button id="pay" class="btn-pay">Fizetés véglegesítése</button>
 
@@ -483,11 +543,11 @@
     <!-- Features Section -->
     <section class="features-section">
         <div class="container">
-            <h2 class="features-title">Miérrt válassz minket?</h2>
+            <h2 class="features-title">Miért válassz minket?</h2>
             <div class="row">
                 <div class="col-md-4">
                     <div class="feature-box">
-                        <h3>Villámgyirs kiszállítás</h3>
+                        <h3>Villámgyors kiszállítás</h3>
                         <p>Pécs legnagyobb Futárpartnerével dolgozunk</p>
                     </div>
                 </div>
@@ -530,18 +590,24 @@
                 const method = btn.dataset.method;
                 const cardSection = document.getElementById('card-section');
                 const paypalSection = document.getElementById('paypal-section');
+                const cashSection = document.getElementById('cash-section');
                 const cardFront = document.getElementById('card-front');
                 const cardBack = document.getElementById('card-back');
                 const visaLogo = document.getElementById('visa-logo');
                 const mastercardLogo = document.getElementById('mastercard-logo');
                 const card = document.getElementById('credit-card');
                 
+                // Hide all sections first
+                cardSection.style.display = 'none';
+                paypalSection.style.display = 'none';
+                cashSection.style.display = 'none';
+                
                 if (method === 'paypal') {
-                    cardSection.style.display = 'none';
                     paypalSection.style.display = 'block';
+                } else if (method === 'cash') {
+                    cashSection.style.display = 'block';
                 } else {
                     cardSection.style.display = 'block';
-                    paypalSection.style.display = 'none';
                     
                     // Kártya visszaforgatása
                     card.classList.remove('flip');
@@ -579,6 +645,15 @@
                 setTimeout(() => {
                     showAlert('✅ PayPal fizetés sikeres!', 'success');
                     setTimeout(() => window.location.href = 'index.html', 2000);
+                }, 1500);
+                return;
+            }
+
+            if (activeMethod === 'cash') {
+                showAlert('Rendelés feldolgozása...', 'warning');
+                setTimeout(() => {
+                    showAlert('✅ Rendelés leadva! A futár hamarosan úton lesz. Kérjük, készítsd elő a pontos összeget!', 'success');
+                    setTimeout(() => window.location.href = 'index.html', 3000);
                 }, 1500);
                 return;
             }

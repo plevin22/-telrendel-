@@ -101,10 +101,17 @@
         .menu-card-image {
             width: 100%;
             height: 250px;
-            background-color: #c0c0c0;
+            background-color: #ffffff;
             display: flex;
             align-items: center;
             justify-content: center;
+            overflow: hidden;
+        }
+
+        .menu-card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
         }
 
         .menu-card-body {
@@ -243,11 +250,11 @@
                 <div class="col-md-4">
                     <div class="menu-card">
                         <div class="menu-card-image">
-                            <span style="color: #888; font-size: 1.2rem;">Kép helye</span>
+                            <img src="reggeli.jpg" alt="Reggeli Étterem">
                         </div>
                         <div class="menu-card-body">
                             <h3 class="menu-card-title">Reggeli Étterem</h3>
-                            <button class="btn btn-secondary-custom" onclick="window.location.href='restaurant-reggeli'">ugrás az oldalra</button>
+                            <button class="btn btn-secondary-custom" onclick="window.location.href='restaurant-reggeli.html'">ugrás az oldalra</button>
                         </div>
                     </div>
                 </div>
@@ -255,7 +262,7 @@
                 <div class="col-md-4">
                     <div class="menu-card">
                         <div class="menu-card-image">
-                            <span style="color: #888; font-size: 1.2rem;">Kép helye</span>
+                            <img src="szunetkavezo.webp" alt="Szünet Kávézó">
                         </div>
                         <div class="menu-card-body">
                             <h3 class="menu-card-title">Szünet Kávézó</h3>
@@ -267,11 +274,11 @@
                 <div class="col-md-4">
                     <div class="menu-card">
                         <div class="menu-card-image">
-                            <span style="color: #888; font-size: 1.2rem;">Kép helye</span>
+                            <img src="csulokbar másolata (2).webp" alt="Csülök Bár">
                         </div>
                         <div class="menu-card-body">
                             <h3 class="menu-card-title">Csülök Bár</h3>
-                            <button class="btn btn-secondary-custom" onclick="window.location.href='restaurant-csulokbar'">ugrás az oldalra</button>
+                            <button class="btn btn-secondary-custom" onclick="window.location.href='restaurant-csulokbar.html'">ugrás az oldalra</button>
                         </div>
                     </div>
                 </div>

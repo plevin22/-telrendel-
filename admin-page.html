@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KLSZ Faloda - Admin Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(to bottom, #1a1a1a 10%, #343333 25%);
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            padding-top: 70px;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 70px;
+            width: 250px;
+            height: calc(100vh - 70px);
+            background: linear-gradient(180deg, #2c2c2c 0%, #1a1a1a 100%);
+            padding: 2rem 0;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
+            overflow-y: auto;
+            z-index: 100;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            color: #cccccc;
+            text-decoration: none;
+            transition: all 0.3s;
+            font-weight: 500;
+            border-left: 3px solid transparent;
+        }
+
+        .sidebar-link:hover {
+            background: rgba(255, 193, 7, 0.1);
+            color: #ffffff;
+            border-left-color: #ffc107;
+        }
+
+        .sidebar-link.active {
+            background: rgba(255, 193, 7, 0.15);
+            color: #ffc107;
+            border-left-color: #ffc107;
+        }
+
+        .sidebar-icon {
+            font-size: 1.3rem;
+            margin-right: 1rem;
+            width: 25px;
+            text-align: center;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            transition: margin-left 0.3s;
+        }
+
+        /* Mobile sidebar toggle */
+        .sidebar-toggle {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background: #ffc107;
+            color: #000;
+            border: none;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255, 193, 7, 0.4);
+            z-index: 1000;
+        }
+
+        .navbar {
+            background-color: rgba(0, 0, 0, 0.9) !important;
+            padding: 1rem 0;
+        }
+
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #ffffff !important;
+        }
+
+        .navbar-nav .nav-link {
+            color: #cccccc !important;
+            margin: 0 1rem;
+            transition: color 0.3s;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #ffffff !important;
+        }
+
+        .dashboard-section {
+            padding: 60px 0;
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #ffc107;
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #2a2a2a, #3a3a3a);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .stat-icon.red { background-color: #e74c3c; }
+        .stat-icon.purple { background-color: #9b59b6; }
+        .stat-icon.green { background-color: #27ae60; }
+        .stat-icon.orange { background-color: #e67e22; }
+
+        .stat-label {
+            color: #cccccc;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        /* Orders, Users, Payments Cards */
+        .orders-card, .users-card, .payments-card {
+            background: #2a2a2a;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .orders-title, .users-title, .payments-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 2rem;
+        }
+
+        /* Scrollable Lists */
+        .users-list, .payments-list {
+            max-height: 500px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        .users-list::-webkit-scrollbar, .payments-list::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .users-list::-webkit-scrollbar-track, .payments-list::-webkit-scrollbar-track {
+            background: #1a1a1a;
+            border-radius: 10px;
+        }
+
+        .users-list::-webkit-scrollbar-thumb, .payments-list::-webkit-scrollbar-thumb {
+            background: #ffc107;
+            border-radius: 10px;
+        }
+
+        .users-list::-webkit-scrollbar-thumb:hover, .payments-list::-webkit-scrollbar-thumb:hover {
+            background: #ffb300;
+        }
+
+        /* Order Items */
+        .order-item {
+            background: #3a3a3a;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.3s;
+        }
+
+        .order-item:hover {
+            background: #4a4a4a;
+        }
+
+        .order-info {
+            flex: 1;
+        }
+
+        .order-id {
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 0.3rem;
+        }
+
+        .order-customer {
+            color: #cccccc;
+            font-size: 0.9rem;
+        }
+
+        .order-status {
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-align: center;
+            min-width: 120px;
+        }
+
+        .status-delivered { background-color: #27ae60; color: white; }
+        .status-preparing { background-color: #f39c12; color: white; }
+        .status-new { background-color: #3498db; color: white; }
+        .status-delayed { background-color: #e74c3c; color: white; }
+
+        .btn-details {
+            background: none;
+            border: 2px solid #ffc107;
+            color: #ffc107;
+            padding: 0.5rem 1.5rem;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-left: 1rem;
+        }
+
+        .btn-details:hover {
+            background: #ffc107;
+            color: #000;
+        }
+
+        .btn-view-all {
+            background: #8e44ad;
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 6px;
+            font-weight: 600;
+            width: 100%;
+            margin-top: 1.5rem;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .btn-view-all:hover {
+            background: #732d91;
+        }
+
+        /* User Items */
+        .user-item, .payment-item {
+            background: #3a3a3a;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            transition: background 0.3s;
+        }
+
+        .user-item:hover, .payment-item:hover {
+            background: #4a4a4a;
+        }
+
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #ffc107, #ff9800);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .payment-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .user-info, .payment-info {
+            flex: 1;
+        }
+
+        .user-name, .payment-customer {
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 0.3rem;
+            font-size: 1rem;
+        }
+
+        .user-email, .payment-date {
+            color: #aaa;
+            font-size: 0.85rem;
+        }
+
+        .user-role {
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-align: center;
+            min-width: 100px;
+        }
+
+        .user-role.user { background-color: #3498db; color: white; }
+        .user-role.admin { background-color: #e74c3c; color: white; }
+        .user-role.moderator { background-color: #f39c12; color: white; }
+
+        .payment-amount {
+            font-weight: 700;
+            color: #27ae60;
+            font-size: 1.1rem;
+            margin-right: 1rem;
+        }
+
+        .payment-method {
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-align: center;
+            min-width: 100px;
+        }
+
+        .payment-method.visa { background-color: #1a1f71; color: white; }
+        .payment-method.mastercard { background-color: #eb001b; color: white; }
+        .payment-method.paypal { background-color: #0070ba; color: white; }
+
+        footer {
+            background-color: #1a1a1a;
+            padding: 30px 0;
+            text-align: center;
+            border-top: 1px solid #333333;
+            margin-top: 4rem;
+        }
+
+        footer p {
+            margin: 0.5rem 0;
+            color: #cccccc;
+        }
+
+        footer a {
+            color: #ffc107;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        footer a:hover {
+            color: #ffb300;
+            text-decoration: underline;
+        }
+
+        @media (max-width: 991px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s;
+            }
+
+            .sidebar.show {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .sidebar-toggle {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .page-title {
+                font-size: 2rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .order-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .btn-details {
+                margin-left: 0;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">KLSZ Faloda</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Főoldal</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="registration.html">Regisztráció</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="cart.html">Kosár</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <ul class="sidebar-menu">
+            <li class="sidebar-item">
+                <a href="admin-dashboard.html" class="sidebar-link active">
+                    <span class="sidebar-icon">📊</span>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a href="#" class="sidebar-link">
+                    <span class="sidebar-icon">📦</span>
+                    <span>Rendelések</span>
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a href="#" class="sidebar-link">
+                    <span class="sidebar-icon">👥</span>
+                    <span>Felhasználók</span>
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a href="#" class="sidebar-link">
+                    <span class="sidebar-icon">💳</span>
+                    <span>Fizetések</span>
+                </a>
+            </li>
+        </ul>
+    </aside>
+
+    <!-- Mobile Sidebar Toggle -->
+    <button class="sidebar-toggle" id="sidebarToggle">☰</button>
+
+    <!-- Main Content -->
+    <div class="main-content">
+    <!-- Dashboard Section -->
+    <section class="dashboard-section">
+        <div class="container">
+            <h1 class="page-title">Admin Dashboard</h1>
+
+            <!-- Statistics Cards -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon red">🍽️</div>
+                    <div class="stat-label">Mai rendelések</div>
+                    <div class="stat-value">58</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon purple">💰</div>
+                    <div class="stat-label">Napi bevétel</div>
+                    <div class="stat-value">152,400 Ft</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon green">🚚</div>
+                    <div class="stat-label">Aktív futárok</div>
+                    <div class="stat-value">7</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon orange">⚠️</div>
+                    <div class="stat-label">Problémás rendelések</div>
+                    <div class="stat-value">3</div>
+                </div>
+            </div>
+
+            <!-- Orders Section -->
+            <div class="row justify-content-center">
+                <div class="col-lg-8 col-xl-7 mb-4">
+                    <div class="orders-card">
+                        <h2 class="orders-title">Aktuális rendelések</h2>
+
+                        <div class="order-item">
+                            <div class="order-info">
+                                <div class="order-id">#1056</div>
+                                <div class="order-customer">Kovács Anna</div>
+                            </div>
+                            <div class="order-status status-delivered">Kiszállítva</div>
+                            <button class="btn-details">Részletek</button>
+                        </div>
+
+                        <div class="order-item">
+                            <div class="order-info">
+                                <div class="order-id">#1057</div>
+                                <div class="order-customer">Tóth Péter</div>
+                            </div>
+                            <div class="order-status status-preparing">Készül</div>
+                            <button class="btn-details">Részletek</button>
+                        </div>
+
+                        <div class="order-item">
+                            <div class="order-info">
+                                <div class="order-id">#1058</div>
+                                <div class="order-customer">Szabó László</div>
+                            </div>
+                            <div class="order-status status-new">Új rendelés</div>
+                            <button class="btn-details">Részletek</button>
+                        </div>
+
+                        <div class="order-item">
+                            <div class="order-info">
+                                <div class="order-id">#1059</div>
+                                <div class="order-customer">Kiss Erika</div>
+                            </div>
+                            <div class="order-status status-delayed">Függőben</div>
+                            <button class="btn-details">Részletek</button>
+                        </div>
+
+                        <button class="btn-view-all">Részletek</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Users Section -->
+            <div class="row justify-content-center">
+                <div class="col-lg-8 col-xl-7 mb-4">
+                    <div class="users-card">
+                        <h2 class="users-title">Felhasználók</h2>
+                        <div class="users-list">
+                            <div class="user-item">
+                                <div class="user-avatar">👤</div>
+                                <div class="user-info">
+                                    <div class="user-name">Kovács Anna</div>
+                                    <div class="user-email">kovacs.anna@email.com</div>
+                                </div>
+                                <div class="user-role user">Felhasználó</div>
+                            </div>
+
+                            <div class="user-item">
+                                <div class="user-avatar">👤</div>
+                                <div class="user-info">
+                                    <div class="user-name">Tóth Péter</div>
+                                    <div class="user-email">toth.peter@email.com</div>
+                                </div>
+                                <div class="user-role admin">Admin</div>
+                            </div>
+
+                            <div class="user-item">
+                                <div class="user-avatar">👤</div>
+                                <div class="user-info">
+                                    <div class="user-name">Szabó László</div>
+                                    <div class="user-email">szabo.laszlo@email.com</div>
+                                </div>
+                                <div class="user-role user">Felhasználó</div>
+                            </div>
+
+                            <div class="user-item">
+                                <div class="user-avatar">👤</div>
+                                <div class="user-info">
+                                    <div class="user-name">Kiss Erika</div>
+                                    <div class="user-email">kiss.erika@email.com</div>
+                                </div>
+                                <div class="user-role user">Felhasználó</div>
+                            </div>
+
+                            <div class="user-item">
+                                <div class="user-avatar">👤</div>
+                                <div class="user-info">
+                                    <div class="user-name">Nagy Tibor</div>
+                                    <div class="user-email">nagy.tibor@email.com</div>
+                                </div>
+                                <div class="user-role user">Felhasználó</div>
+                            </div>
+
+                            <div class="user-item">
+                                <div class="user-avatar">👤</div>
+                                <div class="user-info">
+                                    <div class="user-name">Horváth Zsuzsa</div>
+                                    <div class="user-email">horvath.zsuzsa@email.com</div>
+                                </div>
+                                <div class="user-role moderator">Moderátor</div>
+                            </div>
+
+                            <div class="user-item">
+                                <div class="user-avatar">👤</div>
+                                <div class="user-info">
+                                    <div class="user-name">Molnár Ferenc</div>
+                                    <div class="user-email">molnar.ferenc@email.com</div>
+                                </div>
+                                <div class="user-role user">Felhasználó</div>
+                            </div>
+
+                            <div class="user-item">
+                                <div class="user-avatar">👤</div>
+                                <div class="user-info">
+                                    <div class="user-name">Varga Katalin</div>
+                                    <div class="user-email">varga.katalin@email.com</div>
+                                </div>
+                                <div class="user-role user">Felhasználó</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payments Section -->
+            <div class="row justify-content-center">
+                <div class="col-lg-8 col-xl-7 mb-4">
+                    <div class="payments-card">
+                        <h2 class="payments-title">Fizetések</h2>
+                        <div class="payments-list">
+                            <div class="payment-item">
+                                <div class="payment-icon">💳</div>
+                                <div class="payment-info">
+                                    <div class="payment-customer">Kovács Anna</div>
+                                    <div class="payment-date">2025.01.26 - 14:23</div>
+                                </div>
+                                <div class="payment-amount">12,450 Ft</div>
+                                <div class="payment-method visa">Visa</div>
+                            </div>
+
+                            <div class="payment-item">
+                                <div class="payment-icon">💳</div>
+                                <div class="payment-info">
+                                    <div class="payment-customer">Tóth Péter</div>
+                                    <div class="payment-date">2025.01.26 - 13:45</div>
+                                </div>
+                                <div class="payment-amount">8,900 Ft</div>
+                                <div class="payment-method mastercard">Mastercard</div>
+                            </div>
+
+                            <div class="payment-item">
+                                <div class="payment-icon">💳</div>
+                                <div class="payment-info">
+                                    <div class="payment-customer">Szabó László</div>
+                                    <div class="payment-date">2025.01.26 - 13:12</div>
+                                </div>
+                                <div class="payment-amount">15,600 Ft</div>
+                                <div class="payment-method paypal">PayPal</div>
+                            </div>
+
+                            <div class="payment-item">
+                                <div class="payment-icon">💳</div>
+                                <div class="payment-info">
+                                    <div class="payment-customer">Kiss Erika</div>
+                                    <div class="payment-date">2025.01.26 - 12:58</div>
+                                </div>
+                                <div class="payment-amount">6,300 Ft</div>
+                                <div class="payment-method visa">Visa</div>
+                            </div>
+
+                            <div class="payment-item">
+                                <div class="payment-icon">💳</div>
+                                <div class="payment-info">
+                                    <div class="payment-customer">Nagy Tibor</div>
+                                    <div class="payment-date">2025.01.26 - 12:30</div>
+                                </div>
+                                <div class="payment-amount">18,750 Ft</div>
+                                <div class="payment-method mastercard">Mastercard</div>
+                            </div>
+
+                            <div class="payment-item">
+                                <div class="payment-icon">💳</div>
+                                <div class="payment-info">
+                                    <div class="payment-customer">Horváth Zsuzsa</div>
+                                    <div class="payment-date">2025.01.26 - 11:45</div>
+                                </div>
+                                <div class="payment-amount">9,200 Ft</div>
+                                <div class="payment-method visa">Visa</div>
+                            </div>
+
+                            <div class="payment-item">
+                                <div class="payment-icon">💳</div>
+                                <div class="payment-info">
+                                    <div class="payment-customer">Molnár Ferenc</div>
+                                    <div class="payment-date">2025.01.26 - 11:20</div>
+                                </div>
+                                <div class="payment-amount">22,400 Ft</div>
+                                <div class="payment-method paypal">PayPal</div>
+                            </div>
+
+                            <div class="payment-item">
+                                <div class="payment-icon">💳</div>
+                                <div class="payment-info">
+                                    <div class="payment-customer">Varga Katalin</div>
+                                    <div class="payment-date">2025.01.26 - 10:55</div>
+                                </div>
+                                <div class="payment-amount">7,850 Ft</div>
+                                <div class="payment-method mastercard">Mastercard</div>
+                            </div>
+
+                            <div class="payment-item">
+                                <div class="payment-icon">💳</div>
+                                <div class="payment-info">
+                                    <div class="payment-customer">Balogh Márton</div>
+                                    <div class="payment-date">2025.01.26 - 10:30</div>
+                                </div>
+                                <div class="payment-amount">13,200 Ft</div>
+                                <div class="payment-method visa">Visa</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    </div>
+    <!-- End Main Content -->
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>© 2025 Ételrendelés Pécs</p>
+            <div>
+                <a href="#">ÁSZF</a>
+                <span style="color: #666;">|</span>
+                <a href="#">Kapcsolat</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Részletek gombok
+        document.querySelectorAll('.btn-details').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const orderId = this.closest('.order-item').querySelector('.order-id').textContent;
+                alert(`Rendelés ${orderId} részletei megnyitva`);
+            });
+        });
+
+        // Sidebar toggle for mobile
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const sidebar = document.getElementById('sidebar');
+
+        sidebarToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('show');
+        });
+
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', (e) => {
+            if (window.innerWidth <= 991) {
+                if (!sidebar.contains(e.target) && !sidebarToggle.contains(e.target)) {
+                    sidebar.classList.remove('show');
+                }
+            }
+        });
+    </script>
+</body>
+</html>
