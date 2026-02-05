@@ -22,12 +22,9 @@ public class UsersController {
      * Jelszó validálása - minimum 8 karakter, nagybetű, speciális karakter
      */
     private String validatePassword(String password) {
-        // Minimum 8 karakter
         if (password.length() < 8) {
             return "A jelszónak minimum 8 karakter hosszúnak kell lennie.";
         }
-        
-        // Nagybetű ellenőrzés
         boolean hasUppercase = false;
         for (char c : password.toCharArray()) {
             if (Character.isUpperCase(c)) {
@@ -38,8 +35,6 @@ public class UsersController {
         if (!hasUppercase) {
             return "A jelszónak tartalmaznia kell legalább egy nagybetűt.";
         }
-        
-        // Speciális karakter ellenőrzés
         String specialChars = "!@#$%^&*()_+-=[]{}|;':\",./<>?`~";
         boolean hasSpecial = false;
         for (char c : password.toCharArray()) {
@@ -51,8 +46,26 @@ public class UsersController {
         if (!hasSpecial) {
             return "A jelszónak tartalmaznia kell legalább egy speciális karaktert.";
         }
-        
-        return null; // Nincs hiba, a jelszó megfelel
+        return null;
+    }
+
+    private JSONObject userToJson(Users user) {
+        JSONObject json = new JSONObject();
+        json.put("user_id", user.getUserId());
+        json.put("name", user.getName());
+        json.put("username", user.getUsername());
+        json.put("email", user.getEmail());
+        json.put("phone", user.getPhone());
+        json.put("role", user.getRole().toString());
+        json.put("created_at", user.getCreatedAt() != null ? user.getCreatedAt().toString() : null);
+        return json;
+    }
+
+    private Response errorResponse(String message, Response.Status status) {
+        JSONObject response = new JSONObject();
+        response.put("status", "error");
+        response.put("message", message);
+        return Response.status(status).entity(response.toString()).build();
     }
 
     @GET
@@ -62,23 +75,12 @@ public class UsersController {
             List<Users> users = usersService.getAllUsers();
             JSONArray jsonArray = new JSONArray();
             for (Users user : users) {
-                JSONObject userJson = new JSONObject();
-                userJson.put("user_id", user.getUserId());
-                userJson.put("name", user.getName());
-                userJson.put("email", user.getEmail());
-                userJson.put("phone", user.getPhone());
-                userJson.put("address", user.getAddress());
-                userJson.put("role", user.getRole().toString());
-                userJson.put("created_at", user.getCreatedAt() != null ? user.getCreatedAt().toString() : null);
-                jsonArray.put(userJson);
+                jsonArray.put(userToJson(user));
             }
             return Response.ok(jsonArray.toString()).build();
         } catch (Exception e) {
             e.printStackTrace();
-            JSONObject response = new JSONObject();
-            response.put("status", "error");
-            response.put("message", "Hiba történt a lekérdezés során.");
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(response.toString()).build();
+            return errorResponse("Hiba történt a lekérdezés során.", Response.Status.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -88,273 +90,239 @@ public class UsersController {
         try {
             Users user = usersService.findUserById(id);
             if (user == null) {
-                JSONObject response = new JSONObject();
-                response.put("status", "error");
-                response.put("message", "A felhasználó nem található.");
-                return Response.status(Response.Status.NOT_FOUND).entity(response.toString()).build();
+                return errorResponse("A felhasználó nem található.", Response.Status.NOT_FOUND);
             }
-            JSONObject userJson = new JSONObject();
-            userJson.put("user_id", user.getUserId());
-            userJson.put("name", user.getName());
-            userJson.put("email", user.getEmail());
-            userJson.put("phone", user.getPhone());
-            userJson.put("address", user.getAddress());
-            userJson.put("role", user.getRole().toString());
-            userJson.put("created_at", user.getCreatedAt() != null ? user.getCreatedAt().toString() : null);
-            return Response.ok(userJson.toString()).build();
+            return Response.ok(userToJson(user).toString()).build();
         } catch (Exception e) {
             e.printStackTrace();
-            JSONObject response = new JSONObject();
-            response.put("status", "error");
-            response.put("message", "Hiba történt a lekérdezés során.");
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(response.toString()).build();
+            return errorResponse("Hiba történt a lekérdezés során.", Response.Status.INTERNAL_SERVER_ERROR);
         }
     }
 
     @POST
     @Path("/CreateUser")
     public Response createUser(String requestBody) {
-        JSONObject response = new JSONObject();
         if (requestBody == null || requestBody.trim().isEmpty()) {
-            response.put("status", "error");
-            response.put("message", "A kérés törzse üres.");
-            return Response.status(Response.Status.BAD_REQUEST).entity(response.toString()).build();
+            return errorResponse("A kérés törzse üres.", Response.Status.BAD_REQUEST);
         }
         JSONObject request;
         try {
             request = new JSONObject(requestBody);
         } catch (Exception e) {
-            response.put("status", "error");
-            response.put("message", "Érvénytelen JSON formátum.");
-            return Response.status(Response.Status.BAD_REQUEST).entity(response.toString()).build();
+            return errorResponse("Érvénytelen JSON formátum.", Response.Status.BAD_REQUEST);
         }
 
         String name = request.optString("name", null);
+        String username = request.optString("username", null);
         String email = request.optString("email", null);
         String password = request.optString("password", null);
         String phone = request.optString("phone", "");
-        String address = request.optString("address", "");
         String role = request.optString("role", "customer");
 
         // Név validáció
         if (name == null || name.trim().isEmpty()) {
-            response.put("status", "error");
-            response.put("message", "A név megadása kötelező.");
-            return Response.status(Response.Status.BAD_REQUEST).entity(response.toString()).build();
+            return errorResponse("A név megadása kötelező.", Response.Status.BAD_REQUEST);
         }
         if (name.length() > 255) {
-            response.put("status", "error");
-            response.put("message", "A név maximum 255 karakter lehet.");
-            return Response.status(Response.Status.BAD_REQUEST).entity(response.toString()).build();
+            return errorResponse("A név maximum 255 karakter lehet.", Response.Status.BAD_REQUEST);
+        }
+
+        // Username validáció
+        if (username == null || username.trim().isEmpty()) {
+            return errorResponse("A felhasználónév megadása kötelező.", Response.Status.BAD_REQUEST);
+        }
+        if (username.length() > 255) {
+            return errorResponse("A felhasználónév maximum 255 karakter lehet.", Response.Status.BAD_REQUEST);
         }
 
         // Email validáció
         if (email == null || email.trim().isEmpty()) {
-            response.put("status", "error");
-            response.put("message", "Az email megadása kötelező.");
-            return Response.status(Response.Status.BAD_REQUEST).entity(response.toString()).build();
+            return errorResponse("Az email megadása kötelező.", Response.Status.BAD_REQUEST);
         }
         String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
         if (!email.matches(emailRegex)) {
-            response.put("status", "error");
-            response.put("message", "Érvénytelen email formátum.");
-            return Response.status(Response.Status.BAD_REQUEST).entity(response.toString()).build();
+            return errorResponse("Érvénytelen email formátum.", Response.Status.BAD_REQUEST);
         }
 
         // Jelszó validáció
         if (password == null || password.trim().isEmpty()) {
-            response.put("status", "error");
-            response.put("message", "A jelszó megadása kötelező.");
-            return Response.status(Response.Status.BAD_REQUEST).entity(response.toString()).build();
+            return errorResponse("A jelszó megadása kötelező.", Response.Status.BAD_REQUEST);
         }
-        
-        // Erős jelszó ellenőrzés
         String passwordError = validatePassword(password);
         if (passwordError != null) {
-            response.put("status", "error");
-            response.put("message", passwordError);
-            return Response.status(Response.Status.BAD_REQUEST).entity(response.toString()).build();
+            return errorResponse(passwordError, Response.Status.BAD_REQUEST);
         }
 
-        // Szerepkör validáció
+        // Role validáció
         if (!role.equals("customer") && !role.equals("admin") && !role.equals("restaurant_owner")) {
-            response.put("status", "error");
-            response.put("message", "Érvénytelen szerepkör. Engedélyezett: customer, admin, restaurant_owner.");
-            return Response.status(Response.Status.BAD_REQUEST).entity(response.toString()).build();
+            return errorResponse("Érvénytelen szerepkör.", Response.Status.BAD_REQUEST);
         }
 
         try {
             // Email egyediség ellenőrzése
-            if (usersService.findUserByEmail(email) != null) {
-                response.put("status", "error");
-                response.put("message", "Ez az email cím már foglalt.");
-                return Response.status(Response.Status.CONFLICT).entity(response.toString()).build();
+            if (usersService.emailExists(email)) {
+                return errorResponse("Ez az email cím már foglalt.", Response.Status.CONFLICT);
+            }
+            // Username egyediség ellenőrzése
+            if (usersService.usernameExists(username)) {
+                return errorResponse("Ez a felhasználónév már foglalt.", Response.Status.CONFLICT);
             }
             
-            // Jelszó hash-elése és felhasználó létrehozása
             String hashedPassword = usersService.hashPassword(password);
-            usersService.createUser(name.trim(), email.trim(), hashedPassword, phone, address, role);
+            usersService.createUser(name.trim(), username.trim(), email.trim(), hashedPassword, phone, role);
             
             Users createdUser = usersService.findUserByEmail(email);
+            JSONObject response = new JSONObject();
             response.put("status", "success");
             response.put("message", "Sikeres regisztráció.");
             response.put("user_id", createdUser.getUserId());
             response.put("name", createdUser.getName());
+            response.put("username", createdUser.getUsername());
             response.put("email", createdUser.getEmail());
             response.put("role", createdUser.getRole().toString());
             return Response.status(Response.Status.CREATED).entity(response.toString()).build();
         } catch (Exception e) {
             e.printStackTrace();
-            response.put("status", "error");
-            response.put("message", "Adatbázis hiba történt.");
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(response.toString()).build();
+            return errorResponse("Adatbázis hiba történt.", Response.Status.INTERNAL_SERVER_ERROR);
         }
     }
 
     @POST
     @Path("/Login")
     public Response login(String requestBody) {
-        JSONObject response = new JSONObject();
         if (requestBody == null || requestBody.trim().isEmpty()) {
-            response.put("status", "error");
-            response.put("message", "A kérés törzse üres.");
-            return Response.status(Response.Status.BAD_REQUEST).entity(response.toString()).build();
+            return errorResponse("A kérés törzse üres.", Response.Status.BAD_REQUEST);
         }
         JSONObject request;
         try {
             request = new JSONObject(requestBody);
         } catch (Exception e) {
-            response.put("status", "error");
-            response.put("message", "Érvénytelen JSON formátum.");
-            return Response.status(Response.Status.BAD_REQUEST).entity(response.toString()).build();
+            return errorResponse("Érvénytelen JSON formátum.", Response.Status.BAD_REQUEST);
         }
 
         String email = request.optString("email", null);
         String password = request.optString("password", null);
 
         if (email == null || email.trim().isEmpty()) {
-            response.put("status", "error");
-            response.put("message", "Az email megadása kötelező.");
-            return Response.status(Response.Status.BAD_REQUEST).entity(response.toString()).build();
+            return errorResponse("Az email megadása kötelező.", Response.Status.BAD_REQUEST);
         }
         if (password == null || password.trim().isEmpty()) {
-            response.put("status", "error");
-            response.put("message", "A jelszó megadása kötelező.");
-            return Response.status(Response.Status.BAD_REQUEST).entity(response.toString()).build();
+            return errorResponse("A jelszó megadása kötelező.", Response.Status.BAD_REQUEST);
         }
 
         try {
             Users user = usersService.findUserByEmail(email);
             if (user == null) {
-                response.put("status", "error");
-                response.put("message", "Felhasználó nem található.");
-                return Response.status(Response.Status.NOT_FOUND).entity(response.toString()).build();
+                return errorResponse("Felhasználó nem található.", Response.Status.NOT_FOUND);
             }
-            if (!usersService.checkPassword(password, user.getPassword())) {
-                response.put("status", "error");
-                response.put("message", "Hibás jelszó.");
-                return Response.status(Response.Status.UNAUTHORIZED).entity(response.toString()).build();
+            
+            // BCrypt ellenőrzés, fallback plain text-re (régi jelszavakhoz)
+            boolean passwordMatch = false;
+            try {
+                passwordMatch = usersService.checkPassword(password, user.getPassword());
+            } catch (Exception e) {
+                // Ha nem BCrypt hash, akkor plain text összehasonlítás
+                passwordMatch = password.equals(user.getPassword());
             }
+            
+            if (!passwordMatch) {
+                return errorResponse("Hibás jelszó.", Response.Status.UNAUTHORIZED);
+            }
+            
+            JSONObject response = new JSONObject();
             response.put("status", "success");
             response.put("message", "Sikeres bejelentkezés.");
             response.put("user_id", user.getUserId());
             response.put("name", user.getName());
+            response.put("username", user.getUsername());
             response.put("email", user.getEmail());
             response.put("role", user.getRole().toString());
             return Response.ok(response.toString()).build();
         } catch (Exception e) {
             e.printStackTrace();
-            response.put("status", "error");
-            response.put("message", "Hiba történt a bejelentkezés során.");
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(response.toString()).build();
+            return errorResponse("Hiba történt a bejelentkezés során.", Response.Status.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PUT
     @Path("/UpdateUser/{id}")
     public Response updateUser(@PathParam("id") Integer id, String requestBody) {
-        JSONObject response = new JSONObject();
         if (requestBody == null || requestBody.trim().isEmpty()) {
-            response.put("status", "error");
-            response.put("message", "A kérés törzse üres.");
-            return Response.status(Response.Status.BAD_REQUEST).entity(response.toString()).build();
+            return errorResponse("A kérés törzse üres.", Response.Status.BAD_REQUEST);
         }
         JSONObject request;
         try {
             request = new JSONObject(requestBody);
         } catch (Exception e) {
-            response.put("status", "error");
-            response.put("message", "Érvénytelen JSON formátum.");
-            return Response.status(Response.Status.BAD_REQUEST).entity(response.toString()).build();
+            return errorResponse("Érvénytelen JSON formátum.", Response.Status.BAD_REQUEST);
         }
+        
         try {
             Users existing = usersService.findUserById(id);
             if (existing == null) {
-                response.put("status", "error");
-                response.put("message", "A felhasználó nem található.");
-                return Response.status(Response.Status.NOT_FOUND).entity(response.toString()).build();
+                return errorResponse("A felhasználó nem található.", Response.Status.NOT_FOUND);
             }
             
             String name = request.optString("name", existing.getName());
+            String username = request.optString("username", existing.getUsername());
             String email = request.optString("email", existing.getEmail());
             String phone = request.optString("phone", existing.getPhone());
-            String address = request.optString("address", existing.getAddress());
             String role = request.optString("role", existing.getRole().toString());
+            
+            // Username egyediség ellenőrzése (ha változott)
+            if (!username.equals(existing.getUsername()) && usersService.usernameExists(username)) {
+                return errorResponse("Ez a felhasználónév már foglalt.", Response.Status.CONFLICT);
+            }
+            
+            // Email egyediség ellenőrzése (ha változott)
+            if (!email.equals(existing.getEmail()) && usersService.emailExists(email)) {
+                return errorResponse("Ez az email cím már foglalt.", Response.Status.CONFLICT);
+            }
             
             // Jelszó frissítés - csak ha meg van adva új jelszó
             String password = existing.getPassword();
-            if (request.has("password") && !request.getString("password").isEmpty()) {
+            if (request.has("password") && !request.optString("password", "").isEmpty()) {
                 String newPassword = request.getString("password");
-                
-                // Erős jelszó ellenőrzés az új jelszóra is
                 String passwordError = validatePassword(newPassword);
                 if (passwordError != null) {
-                    response.put("status", "error");
-                    response.put("message", passwordError);
-                    return Response.status(Response.Status.BAD_REQUEST).entity(response.toString()).build();
+                    return errorResponse(passwordError, Response.Status.BAD_REQUEST);
                 }
-                
                 password = usersService.hashPassword(newPassword);
             }
 
             if (!role.equals("customer") && !role.equals("admin") && !role.equals("restaurant_owner")) {
-                response.put("status", "error");
-                response.put("message", "Érvénytelen szerepkör.");
-                return Response.status(Response.Status.BAD_REQUEST).entity(response.toString()).build();
+                return errorResponse("Érvénytelen szerepkör.", Response.Status.BAD_REQUEST);
             }
             
-            usersService.updateUser(id, name, email, password, phone, address, role);
+            usersService.updateUser(id, name, username, email, password, phone, role);
+            
+            JSONObject response = new JSONObject();
             response.put("status", "success");
             response.put("message", "A felhasználó sikeresen frissítve.");
             return Response.ok(response.toString()).build();
         } catch (Exception e) {
             e.printStackTrace();
-            response.put("status", "error");
-            response.put("message", "Adatbázis hiba történt.");
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(response.toString()).build();
+            return errorResponse("Adatbázis hiba történt.", Response.Status.INTERNAL_SERVER_ERROR);
         }
     }
 
     @DELETE
     @Path("/DeleteUser/{id}")
     public Response deleteUser(@PathParam("id") Integer id) {
-        JSONObject response = new JSONObject();
         try {
             Users user = usersService.findUserById(id);
             if (user == null) {
-                response.put("status", "error");
-                response.put("message", "A felhasználó nem található.");
-                return Response.status(Response.Status.NOT_FOUND).entity(response.toString()).build();
+                return errorResponse("A felhasználó nem található.", Response.Status.NOT_FOUND);
             }
             usersService.deleteUser(id);
+            
+            JSONObject response = new JSONObject();
             response.put("status", "success");
             response.put("message", "A felhasználó sikeresen törölve.");
             return Response.ok(response.toString()).build();
         } catch (Exception e) {
             e.printStackTrace();
-            response.put("status", "error");
-            response.put("message", "Adatbázis hiba történt.");
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(response.toString()).build();
+            return errorResponse("Adatbázis hiba történt.", Response.Status.INTERNAL_SERVER_ERROR);
         }
     }
 }

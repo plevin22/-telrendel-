@@ -219,7 +219,7 @@ public class OrderItemsController {
                 return Response.status(Response.Status.BAD_REQUEST).entity(response.toString()).build();
             }
 
-            // ÁR ÚJRASZÁMÍTÁSA AZ ADATBÁZISBÓL!
+            // Ár újraszámítása adatbáziról
             BigDecimal unitPrice = orderItemsService.getDishPrice(existing.getDishId());
             if (unitPrice == null) {
                 response.put("status", "error");

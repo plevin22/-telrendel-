@@ -33,6 +33,19 @@ public class UsersService {
     }
 
     /**
+     * Felhasználó keresése username alapján.
+     */
+    public Users findUserByUsername(String username) {
+        try {
+            return em.createQuery(
+                "SELECT u FROM Users u WHERE u.username = :username", Users.class
+            ).setParameter("username", username).getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+
+    /**
      * Összes felhasználó lekérdezése.
      */
     @SuppressWarnings("unchecked")
@@ -43,22 +56,24 @@ public class UsersService {
 
     /**
      * Új felhasználó létrehozása - CreateUser eljárás.
-     */
-    public void createUser(String name, String email, String password, String phone, String address, String role) {
+    
+          */
+    public void createUser(String name, String username, String email, String password, String phone, String role) {
         StoredProcedureQuery sp = em.createStoredProcedureQuery("CreateUser");
         
         sp.registerStoredProcedureParameter("p_name", String.class, ParameterMode.IN);
+        sp.registerStoredProcedureParameter("p_username", String.class, ParameterMode.IN);
         sp.registerStoredProcedureParameter("p_email", String.class, ParameterMode.IN);
         sp.registerStoredProcedureParameter("p_password", String.class, ParameterMode.IN);
         sp.registerStoredProcedureParameter("p_phone", String.class, ParameterMode.IN);
-        sp.registerStoredProcedureParameter("p_address", String.class, ParameterMode.IN);
+     
         sp.registerStoredProcedureParameter("p_role", String.class, ParameterMode.IN);
 
         sp.setParameter("p_name", name);
+        sp.setParameter("p_username", username);
         sp.setParameter("p_email", email);
         sp.setParameter("p_password", password);
         sp.setParameter("p_phone", phone);
-        sp.setParameter("p_address", address);
         sp.setParameter("p_role", role);
 
         sp.execute();
@@ -67,24 +82,26 @@ public class UsersService {
     /**
      * Felhasználó frissítése - UpdateUser eljárás.
      */
-    public void updateUser(Integer userId, String name, String email, String password, 
-                          String phone, String address, String role) {
+    public void updateUser(Integer userId, String name, String username, String email, 
+                          String password, String phone, String role) {
         StoredProcedureQuery sp = em.createStoredProcedureQuery("UpdateUser");
         
         sp.registerStoredProcedureParameter("p_user_id", Integer.class, ParameterMode.IN);
         sp.registerStoredProcedureParameter("p_name", String.class, ParameterMode.IN);
+        sp.registerStoredProcedureParameter("p_username", String.class, ParameterMode.IN);
         sp.registerStoredProcedureParameter("p_email", String.class, ParameterMode.IN);
         sp.registerStoredProcedureParameter("p_password", String.class, ParameterMode.IN);
         sp.registerStoredProcedureParameter("p_phone", String.class, ParameterMode.IN);
-        sp.registerStoredProcedureParameter("p_address", String.class, ParameterMode.IN);
+       
         sp.registerStoredProcedureParameter("p_role", String.class, ParameterMode.IN);
 
         sp.setParameter("p_user_id", userId);
         sp.setParameter("p_name", name);
+        sp.setParameter("p_username", username);
         sp.setParameter("p_email", email);
         sp.setParameter("p_password", password);
         sp.setParameter("p_phone", phone);
-        sp.setParameter("p_address", address);
+        
         sp.setParameter("p_role", role);
 
         sp.execute();
@@ -98,6 +115,26 @@ public class UsersService {
         sp.registerStoredProcedureParameter("p_user_id", Integer.class, ParameterMode.IN);
         sp.setParameter("p_user_id", userId);
         sp.execute();
+    }
+
+    /**
+     * Email egyediség ellenőrzése.
+     */
+    public boolean emailExists(String email) {
+        Long count = em.createQuery(
+            "SELECT COUNT(u) FROM Users u WHERE u.email = :email", Long.class
+        ).setParameter("email", email).getSingleResult();
+        return count > 0;
+    }
+
+    /**
+     * Username egyediség ellenőrzése.
+     */
+    public boolean usernameExists(String username) {
+        Long count = em.createQuery(
+            "SELECT COUNT(u) FROM Users u WHERE u.username = :username", Long.class
+        ).setParameter("username", username).getSingleResult();
+        return count > 0;
     }
 
     /**

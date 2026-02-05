@@ -18,6 +18,9 @@ public class Users implements Serializable {
     @Column(name = "name", length = 255)
     private String name;
 
+    @Column(name = "username", length = 255, unique = true)
+    private String username;
+
     @Column(name = "email", length = 255, unique = true)
     private String email;
 
@@ -26,9 +29,6 @@ public class Users implements Serializable {
 
     @Column(name = "phone", length = 50)
     private String phone;
-
-    @Column(name = "address", columnDefinition = "TEXT")
-    private String address;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role")
@@ -46,12 +46,12 @@ public class Users implements Serializable {
     public Users() {
     }
 
-    public Users(String name, String email, String password, String phone, String address, UserRole role) {
+    public Users(String name, String username, String email, String password, String phone, UserRole role) {
         this.name = name;
+        this.username = username;
         this.email = email;
         this.password = password;
         this.phone = phone;
-        this.address = address;
         this.role = role;
     }
 
@@ -69,6 +69,14 @@ public class Users implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getEmail() {
@@ -93,14 +101,6 @@ public class Users implements Serializable {
 
     public void setPhone(String phone) {
         this.phone = phone;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
     }
 
     public UserRole getRole() {
