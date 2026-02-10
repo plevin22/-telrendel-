@@ -1,0 +1,425 @@
+body {
+            background: linear-gradient(to bottom, #1a1a1a 10%, #343333 25%);
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            padding-top: 70px;
+        }
+
+        .navbar {
+            background-color: rgba(0, 0, 0, 0.9) !important;
+            padding: 1rem 0;
+        }
+
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #ffffff !important;
+        }
+
+        .navbar-nav .nav-link {
+            color: #cccccc !important;
+            margin: 0 1rem;
+            transition: color 0.3s;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #ffffff !important;
+        }
+
+        .payment-section {
+            padding: 60px 0;
+        }
+
+        .payment-container {
+            max-width: 500px;
+            margin: 0 auto;
+            background-color: #2a2a2a;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .payment-title {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #ffc107;
+            margin-bottom: 30px;
+        }
+
+        .payment-methods {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-bottom: 35px;
+        }
+
+        .pm-btn {
+            flex: 1;
+            padding: 15px;
+            border: 2px solid #555;
+            background: #3a3a3a;
+            color: #cccccc;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1rem;
+        }
+
+        .pm-btn:hover {
+            background: #4a4a4a;
+            border-color: #ffc107;
+            color: #ffffff;
+        }
+
+        .pm-btn.active {
+            background: #ffc107;
+            color: #000000;
+            border-color: #ffc107;
+        }
+
+        /* ===== VIRTUÁLIS BANKKÁRTYA ===== */
+        .card-wrapper {
+            perspective: 1000px;
+            margin-bottom: 35px;
+        }
+
+        .credit-card {
+            width: 100%;
+            height: 240px;
+            border-radius: 15px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.7s;
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 15px;
+            backface-visibility: hidden;
+            padding: 30px;
+            box-sizing: border-box;
+            color: white;
+        }
+
+        /* VISA CARD */
+        .card-front.visa {
+            background: linear-gradient(135deg, #1a1f71 0%, #0f3d91 100%);
+            box-shadow: 0 10px 30px rgba(26, 31, 113, 0.4);
+        }
+
+        .card-back.visa {
+            background: linear-gradient(135deg, #0f3d91 0%, #1a1f71 100%);
+            transform: rotateY(180deg);
+            box-shadow: 0 10px 30px rgba(15, 61, 145, 0.4);
+        }
+
+        /* MASTERCARD */
+        .card-front.mastercard {
+            background: linear-gradient(135deg, #eb001b 0%, #f79e1b 100%);
+            box-shadow: 0 10px 30px rgba(235, 0, 27, 0.4);
+        }
+
+        .card-back.mastercard {
+            background: linear-gradient(135deg, #f79e1b 0%, #eb001b 100%);
+            transform: rotateY(180deg);
+            box-shadow: 0 10px 30px rgba(247, 158, 27, 0.4);
+        }
+
+        /* VISA Logo */
+        .visa-logo {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            font-size: 2rem;
+            font-weight: 700;
+            font-style: italic;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        /* MASTERCARD Circles */
+        .mastercard-logo {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            width: 60px;
+            height: 40px;
+        }
+
+        .mastercard-circle {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            position: absolute;
+            top: 5px;
+        }
+
+        .mastercard-circle.red {
+            background: #eb001b;
+            left: 0;
+        }
+
+        .mastercard-circle.yellow {
+            background: #f79e1b;
+            right: 0;
+            opacity: 0.85;
+        }
+
+        .chip {
+            width: 60px;
+            height: 45px;
+            background: linear-gradient(135deg, #d4af37, #ffd700);
+            border-radius: 8px;
+            margin-bottom: 40px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+
+        .black-strip {
+            background: #000000;
+            height: 55px;
+            width: 100%;
+            margin-top: 15px;
+            margin-left: -30px;
+            width: calc(100% + 60px);
+        }
+
+        .cvc-box {
+            background: white;
+            width: 90%;
+            height: 50px;
+            margin: 60px auto 0;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            padding: 0 15px;
+        }
+
+        .cvc-input {
+            width: 100%;
+            border: none;
+            outline: none;
+            font-size: 22px;
+            color: #000000;
+            letter-spacing: 4px;
+            font-weight: 700;
+            text-align: center;
+            background: transparent;
+        }
+
+        .card-input {
+            position: absolute;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: white;
+            font-weight: 700;
+            font-size: 18px;
+            letter-spacing: 2px;
+        }
+
+        .card-input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .card-input.number {
+            top: 110px;
+            left: 30px;
+            width: 85%;
+            font-size: 24px;
+        }
+
+        .card-input.name {
+            bottom: 35px;
+            left: 30px;
+            width: 55%;
+            text-transform: uppercase;
+            font-size: 17px;
+        }
+
+        .card-input.expiry {
+            bottom: 35px;
+            right: 30px;
+            width: 80px;
+            font-size: 17px;
+        }
+
+        .flip {
+            transform: rotateY(180deg);
+        }
+
+        .btn-pay {
+            background-color: #ffc107;
+            color: #000000;
+            border: none;
+            padding: 15px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            border-radius: 8px;
+            width: 100%;
+            margin-top: 25px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .btn-pay:hover {
+            background-color: #ffb300;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 193, 7, 0.4);
+        }
+
+        .alert-custom {
+            margin-top: 20px;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        /* PayPal Section */
+        .paypal-section {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 20px 0;
+        }
+
+        .paypal-info {
+            text-align: center;
+        }
+
+        .paypal-info h3 {
+            color: #856404;
+            font-weight: 700;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+
+        .paypal-info p {
+            margin: 0 0 20px;
+            color: #856404;
+            font-weight: 500;
+        }
+
+        .paypal-logo {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        /* Cash Payment Section */
+        .cash-section {
+            background: #d4edda;
+            border: 2px solid #27ae60;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 20px 0;
+        }
+
+        .cash-info {
+            text-align: center;
+        }
+
+        .cash-info h3 {
+            color: #155724;
+            font-weight: 700;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+
+        .cash-info p {
+            margin: 0 0 15px;
+            color: #155724;
+            font-weight: 500;
+        }
+
+        .cash-logo {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .cash-warning {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 4px;
+        }
+
+        .cash-warning p {
+            color: #856404;
+            margin: 0;
+            font-size: 0.9rem;
+        }
+
+        .features-section {
+            background-color: #2a2a2a;
+            padding: 50px 0;
+        }
+
+        .features-title {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 2.5rem;
+        }
+
+        .feature-box {
+            text-align: center;
+            padding: 1.5rem 1rem;
+        }
+
+        .feature-box h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+        }
+
+        .feature-box p {
+            color: #cccccc;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        footer {
+            background-color: #1a1a1a;
+            padding: 30px 0;
+            text-align: center;
+            border-top: 1px solid #333333;
+        }
+
+        footer p {
+            margin: 0.5rem 0;
+            color: #cccccc;
+        }
+
+        footer a {
+            color: #ffc107;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        footer a:hover {
+            color: #ffb300;
+            text-decoration: underline;
+        }
+
+        @media (max-width: 576px) {
+            .payment-container {
+                padding: 25px;
+            }
+
+            .payment-methods {
+                flex-direction: column;
+            }
+
+            .credit-card {
+                height: 210px;
+            }
+
+            .card-input.number {
+                font-size: 20px;
+            }
+        }

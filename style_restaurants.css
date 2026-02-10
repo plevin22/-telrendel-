@@ -1,0 +1,293 @@
+body {
+            background: linear-gradient(to bottom, #1a1a1a 10%, #343333 25%);
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            padding-top: 70px;
+            scroll-behavior: smooth;
+        }
+
+        .navbar {
+            background-color: rgba(0, 0, 0, 0.9) !important;
+            padding: 1rem 0;
+        }
+
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #ffffff !important;
+        }
+
+        .navbar-nav .nav-link {
+            color: #cccccc !important;
+            margin: 0 1rem;
+            transition: color 0.3s;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #ffffff !important;
+        }
+
+        .breadcrumb {
+            background-color: transparent;
+            padding: 0;
+            margin-bottom: 1.5rem;
+        }
+
+        .breadcrumb-item {
+            color: #cccccc;
+        }
+
+        .breadcrumb-item.active {
+            color: #ffc107;
+        }
+
+        .breadcrumb-item a {
+            color: #cccccc;
+            text-decoration: none;
+        }
+
+        .breadcrumb-item a:hover {
+            color: #ffffff;
+        }
+
+        .restaurant-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #555;
+        }
+
+        .restaurant-logo {
+            
+            width: 80px;
+            height: 80px;
+            background-color: #d9d9d9;
+            border-radius: 50%;
+            margin-right: 1.5rem;
+        }
+
+        .restaurant-info h1 {
+            color: #ffc107;
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+
+        .restaurant-info p {
+            color: #cccccc;
+            margin: 0;
+        }
+
+        .menu-tabs {
+            margin-bottom: 2rem;
+        }
+
+        .nav-tabs {
+            border-bottom: 2px solid #555;
+        }
+
+        .nav-tabs .nav-link {
+            background-color: transparent;
+            border: none;
+            color: #cccccc;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            border-bottom: 3px solid transparent;
+        }
+
+        .nav-tabs .nav-link:hover {
+            color: #ffffff;
+            border-color: transparent;
+        }
+
+        .nav-tabs .nav-link.active {
+            color: #ffffff;
+            background-color: transparent;
+            border-color: transparent transparent #ffc107 transparent;
+        }
+
+        .menu-section {
+            margin-bottom: 3rem;
+        }
+
+        .menu-section-title {
+            color: #ffc107;
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        .menu-item {
+            background-color: #4a4a4a;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .item-image {
+            width: 120px;
+            height: 90px;
+            background-color: #d9d9d9;
+            border-radius: 5px;
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+
+        .item-details {
+            flex-grow: 1;
+        }
+
+        .item-name {
+            color: #ffffff;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+
+        .item-description {
+            color: #cccccc;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .item-price {
+            color: #ffc107;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .btn-add-to-cart {
+            background-color: #ffc107;
+            color: #000000;
+            border: none;
+            padding: 8px 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border-radius: 5px;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .btn-add-to-cart:hover {
+            background-color: #ffb300;
+            transform: translateY(-2px);
+        }
+
+        /* Sticky Cart Sidebar */
+        .cart-sidebar {
+            position: sticky;
+            top: 90px;
+            background-color: #1a1a1a;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            height: fit-content;
+        }
+
+        .cart-title {
+            color: #cccccc;
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .cart-total {
+            color: #ffffff;
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        .btn-checkout {
+            background-color: #ffc107;
+            color: #000000;
+            border: none;
+            padding: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 5px;
+            width: 100%;
+            transition: all 0.3s;
+        }
+
+        .btn-checkout:hover {
+            background-color: #ffb300;
+            transform: translateY(-2px);
+        }
+
+        .features-section {
+            background-color: #2a2a2a;
+            padding: 50px 0;
+        }
+
+        .features-title {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 2.5rem;
+        }
+
+        .feature-box {
+            text-align: center;
+            padding: 1.5rem 1rem;
+        }
+
+        .feature-box h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+        }
+
+        .feature-box p {
+            color: #cccccc;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        footer {
+            background-color: #1a1a1a;
+            padding: 30px 0;
+            text-align: center;
+            border-top: 1px solid #333333;
+        }
+
+        footer p {
+            margin: 0.5rem 0;
+            color: #cccccc;
+        }
+
+        footer a {
+            color: #ffc107;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        footer a:hover {
+            color: #ffb300;
+            text-decoration: underline;
+        }
+
+        @media (max-width: 991px) {
+            .cart-sidebar {
+                position: relative;
+                top: 0;
+                margin-top: 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .menu-item {
+                flex-direction: column;
+            }
+
+            .item-image {
+                width: 100%;
+                height: 150px;
+                margin-right: 0;
+                margin-bottom: 1rem;
+            }
+        }

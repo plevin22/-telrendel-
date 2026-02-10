@@ -5,252 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KLSZ Faloda - Profil</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            background-color: #2c2c2c;
-            color: #ffffff;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            min-height: 100vh;
-            padding-top: 70px;
-        }
-
-        .navbar {
-            background-color: #1a1a1a !important;
-            padding: 1rem 0;
-        }
-
-        .navbar-brand {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: #ffffff !important;
-        }
-
-        .navbar-nav .nav-link {
-            color: #cccccc !important;
-            margin: 0 1rem;
-            transition: color 0.3s;
-        }
-
-        .navbar-nav .nav-link:hover {
-            color: #ffffff !important;
-        }
-
-        .navbar-nav .nav-link.active {
-            color: #ffffff !important;
-            text-decoration: underline;
-            text-underline-offset: 5px;
-        }
-
-        .profile-section {
-            padding: 60px 0;
-        }
-
-        .profile-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 3rem;
-        }
-
-        .profile-avatar {
-            width: 120px;
-            height: 120px;
-            background-color: #aaa;
-            border-radius: 50%;
-            margin-right: 2rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
-
-        .profile-avatar svg {
-            width: 60px;
-            height: 60px;
-            fill: #555;
-        }
-
-        .profile-name {
-            font-size: 2rem;
-            font-weight: 600;
-            color: #ffffff;
-        }
-
-        .divider {
-            height: 3px;
-            background-color: #ffc107;
-            margin-bottom: 3rem;
-        }
-
-        .content-wrapper {
-            display: flex;
-            gap: 2rem;
-        }
-
-        .left-column {
-            flex: 0 0 300px;
-        }
-
-        .info-item {
-            margin-bottom: 1.5rem;
-        }
-
-        .info-label {
-            color: #ffffff;
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-
-        .info-value {
-            color: #cccccc;
-            font-size: 1rem;
-            padding-left: 1rem;
-        }
-
-        .btn-show-password {
-            background: none;
-            border: none;
-            color: #ffc107;
-            font-size: 0.9rem;
-            cursor: pointer;
-            padding: 0;
-            margin-left: 15px;
-            text-decoration: underline;
-        }
-
-        .btn-show-password:hover {
-            color: #ffb300;
-        }
-
-        .vertical-divider {
-            width: 2px;
-            background-color: #ffc107;
-            flex-shrink: 0;
-        }
-
-        .right-column {
-            flex: 1;
-        }
-
-        .orders-header {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: #ffffff;
-            margin-bottom: 2rem;
-        }
-
-        .order-tabs {
-            display: flex;
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
-
-        .order-tab {
-            background: none;
-            border: none;
-            color: #aaa;
-            font-size: 1rem;
-            font-weight: 500;
-            cursor: pointer;
-            padding: 0.5rem 0;
-            transition: color 0.3s;
-        }
-
-        .order-tab:hover {
-            color: #ffffff;
-        }
-
-        .order-tab.active {
-            color: #ffffff;
-            border-bottom: 2px solid #ffc107;
-        }
-
-        .empty-orders {
-            color: #aaa;
-            font-size: 1rem;
-            padding: 2rem 0;
-        }
-
-        .features-section {
-            background-color: #1a1a1a;
-            padding: 50px 0;
-        }
-
-        .features-title {
-            text-align: center;
-            font-size: 2rem;
-            font-weight: 600;
-            margin-bottom: 2.5rem;
-        }
-
-        .feature-box {
-            text-align: center;
-            padding: 1.5rem 1rem;
-        }
-
-        .feature-box h3 {
-            font-size: 1.3rem;
-            font-weight: 600;
-            margin-bottom: 0.8rem;
-        }
-
-        .feature-box p {
-            color: #cccccc;
-            font-size: 0.9rem;
-            margin: 0;
-        }
-
-        footer {
-            background-color: #0d0d0d;
-            padding: 30px 0;
-            text-align: center;
-            border-top: 1px solid #333333;
-        }
-
-        footer p {
-            margin: 0.5rem 0;
-            color: #cccccc;
-        }
-
-        footer a {
-            color: #ffc107;
-            text-decoration: none;
-            margin: 0 10px;
-        }
-
-        footer a:hover {
-            color: #ffb300;
-            text-decoration: underline;
-        }
-
-        @media (max-width: 991px) {
-            .content-wrapper {
-                flex-direction: column;
-            }
-
-            .left-column {
-                flex: 1;
-            }
-
-            .vertical-divider {
-                width: 100%;
-                height: 2px;
-                margin: 2rem 0;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .profile-header {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .profile-avatar {
-                margin-right: 0;
-                margin-bottom: 1rem;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="profile.css">
 </head>
 <body>
     <!-- Navigation -->
@@ -286,7 +41,8 @@
                         <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
                     </svg>
                 </div>
-                <h1 class="profile-name">Felhasználónév</h1>
+                <h1 class="profile-name" id="userName">Felhasználó</h1>
+                <button class="btn btn-outline-warning btn-sm mt-2" onclick="editProfile()">Profil szerkesztése</button>
             </div>
 
             <!-- Divider -->
@@ -298,24 +54,23 @@
                 <div class="left-column">
                     <div class="info-item">
                         <div class="info-label">Email cím</div>
-                        <div class="info-value"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="c0b5b3a5b280a5b8a1adb0aca5eea3afad">[email&#160;protected]</a></div>
-                    </div>
-                    <div class="info-item">
-                        <div class="info-label">Jelszó</div>
-                        <div class="info-value">
-                            <span id="password-display">••••••••</span>
-                            <button class="btn-show-password" id="toggle-password" onclick="togglePassword()">
-                                Jelszó megtekintése
-                            </button>
-                        </div>
-                    </div>
-                    <div class="info-item">
-                        <div class="info-label">Lakcím</div>
-                        <div class="info-value">1234 Budapest, Példa utca 12.</div>
+                        <div class="info-value" id="userEmail">Nincs megadva</div>
                     </div>
                     <div class="info-item">
                         <div class="info-label">Telefonszám</div>
-                        <div class="info-value">+36 30 123 4567</div>
+                        <div class="info-value" id="userPhone">Nincs megadva</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Lakcím</div>
+                        <div class="info-value" id="userAddress">Nincs megadva</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Szerepkör</div>
+                        <div class="info-value" id="userRole">Vásárló</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Regisztráció dátuma</div>
+                        <div class="info-value" id="userCreatedAt">N/A</div>
                     </div>
                 </div>
 
@@ -326,15 +81,8 @@
                 <div class="right-column">
                     <h2 class="orders-header">Korábbi rendelések</h2>
                     
-                    <div class="order-tabs">
-                        <button class="order-tab active">Termék</button>
-                        <button class="order-tab">Ár</button>
-                        <button class="order-tab">Mennyiség</button>
-                        <button class="order-tab">Összesen</button>
-                    </div>
-
-                    <div class="empty-orders">
-                        Nincs korábbi rendelés
+                    <div id="ordersContainer" class="orders-list">
+                        <p>Rendelések betöltése...</p>
                     </div>
                 </div>
             </div>
@@ -361,7 +109,7 @@
                 <div class="col-md-4">
                     <div class="feature-box">
                         <h3>Nagy választék</h3>
-                        <p>Több mint 60 pácsi étterem kínálata egy helyen.</p>
+                        <p>Több mint 60 pécsi étterem kínálata egy helyen.</p>
                     </div>
                 </div>
             </div>
@@ -381,34 +129,7 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // Order tabs functionality
-        document.querySelectorAll('.order-tab').forEach(tab => {
-            tab.addEventListener('click', function() {
-                document.querySelectorAll('.order-tab').forEach(t => t.classList.remove('active'));
-                this.classList.add('active');
-            });
-        });
-
-        // Password toggle functionality
-        let passwordVisible = false;
-        const actualPassword = 'MySecurePass123'; // Ez a valódi jelszó (normál esetben a backend-ről jönne)
-
-        function togglePassword() {
-            const passwordDisplay = document.getElementById('password-display');
-            const toggleBtn = document.getElementById('toggle-password');
-            
-            if (passwordVisible) {
-                // Elrejtés
-                passwordDisplay.textContent = '••••••••';
-                toggleBtn.textContent = 'Jelszó megtekintése';
-                passwordVisible = false;
-            } else {
-                // Megjelenítés
-                passwordDisplay.textContent = actualPassword;
-                toggleBtn.textContent = 'Jelszó elrejtése';
-                passwordVisible = true;
-            }
-        }
-    </script></body>
+    <script src="api.js"></script>
+    <script src="profile.js"></script>
+</body>
 </html>

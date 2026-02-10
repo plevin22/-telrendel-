@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KLSZ Faloda - Rendelések</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background: linear-gradient(to bottom, #1a1a1a 10%, #343333 25%); color: #ffffff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; min-height: 100vh; padding-top: 70px; }
+        .sidebar { position: fixed; left: 0; top: 70px; width: 250px; height: calc(100vh - 70px); background: linear-gradient(180deg, #2c2c2c 0%, #1a1a1a 100%); padding: 2rem 0; box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5); overflow-y: auto; z-index: 100; }
+        .sidebar-menu { list-style: none; padding: 0; margin: 0; }
+        .sidebar-item { margin-bottom: 0.5rem; }
+        .sidebar-link { display: flex; align-items: center; padding: 1rem 1.5rem; color: #cccccc; text-decoration: none; transition: all 0.3s; font-weight: 500; border-left: 3px solid transparent; }
+        .sidebar-link:hover { background: rgba(255, 193, 7, 0.1); color: #ffffff; border-left-color: #ffc107; }
+        .sidebar-link.active { background: rgba(255, 193, 7, 0.15); color: #ffc107; border-left-color: #ffc107; }
+        .sidebar-icon { font-size: 1.3rem; margin-right: 1rem; width: 25px; text-align: center; }
+        .main-content { margin-left: 250px; transition: margin-left 0.3s; }
+        .sidebar-toggle { display: none; position: fixed; bottom: 20px; right: 20px; width: 60px; height: 60px; background: #ffc107; color: #000; border: none; border-radius: 50%; font-size: 1.5rem; cursor: pointer; box-shadow: 0 4px 15px rgba(255, 193, 7, 0.4); z-index: 1000; }
+        .navbar { background-color: rgba(0, 0, 0, 0.9) !important; padding: 1rem 0; }
+        .navbar-brand { font-size: 1.5rem; font-weight: 600; color: #ffffff !important; }
+        .navbar-nav .nav-link { color: #cccccc !important; margin: 0 1rem; transition: color 0.3s; }
+        .navbar-nav .nav-link:hover { color: #ffffff !important; }
+        .dashboard-section { padding: 60px 0; }
+        .page-title { font-size: 2.5rem; font-weight: 700; color: #ffc107; margin-bottom: 3rem; text-align: center; }
+        .orders-card { background: #2a2a2a; border-radius: 12px; padding: 2rem; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); }
+        .orders-title { font-size: 1.5rem; font-weight: 600; color: #ffffff; margin-bottom: 2rem; }
+        .filter-section { display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap; }
+        .filter-btn { padding: 0.6rem 1.2rem; border-radius: 6px; border: 2px solid #444; background: transparent; color: #cccccc; cursor: pointer; transition: all 0.3s; font-weight: 500; }
+        .filter-btn:hover { border-color: #ffc107; color: #ffc107; }
+        .filter-btn.active { background: #ffc107; border-color: #ffc107; color: #000; }
+        .orders-list { max-height: 500px; overflow-y: auto; padding-right: 10px; }
+        .orders-list::-webkit-scrollbar { width: 8px; }
+        .orders-list::-webkit-scrollbar-track { background: #1a1a1a; border-radius: 10px; }
+        .orders-list::-webkit-scrollbar-thumb { background: #ffc107; border-radius: 10px; }
+        .order-item { background: #3a3a3a; border-radius: 8px; padding: 1.5rem; margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center; gap: 1rem; transition: background 0.3s; flex-wrap: wrap; }
+        .order-item:hover { background: #4a4a4a; }
+        .order-info { flex: 1; min-width: 150px; }
+        .order-id { font-weight: 600; color: #ffc107; margin-bottom: 0.3rem; font-size: 1.1rem; }
+        .order-customer { color: #ffffff; font-size: 0.95rem; margin-bottom: 0.2rem; }
+        .order-date { color: #aaa; font-size: 0.85rem; }
+        .order-amount { font-weight: 700; color: #27ae60; font-size: 1.1rem; min-width: 100px; text-align: right; }
+        .order-status { padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.85rem; font-weight: 600; text-align: center; min-width: 120px; }
+        .status-pending { background-color: #3498db; color: white; }
+        .status-preparing { background-color: #f39c12; color: white; }
+        .status-delivering { background-color: #9b59b6; color: white; }
+        .status-completed { background-color: #27ae60; color: white; }
+        .status-cancelled { background-color: #e74c3c; color: white; }
+        .btn-action { padding: 0.4rem 0.8rem; border-radius: 6px; font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: all 0.3s; border: none; }
+        .btn-details { background: none; border: 2px solid #ffc107; color: #ffc107; }
+        .btn-details:hover { background: #ffc107; color: #000; }
+        .empty-state { text-align: center; padding: 3rem; color: #aaa; }
+        .empty-state-icon { font-size: 4rem; margin-bottom: 1rem; }
+        footer { background-color: #1a1a1a; padding: 30px 0; text-align: center; border-top: 1px solid #333333; margin-top: 4rem; }
+        footer p { margin: 0.5rem 0; color: #cccccc; }
+        footer a { color: #ffc107; text-decoration: none; margin: 0 10px; }
+        footer a:hover { color: #ffb300; text-decoration: underline; }
+        .modal-content { background: #2a2a2a; color: #ffffff; border: 1px solid #444; }
+        .modal-header { border-bottom: 1px solid #444; }
+        .modal-footer { border-top: 1px solid #444; }
+        .btn-close { filter: invert(1); }
+        .form-select { background-color: #3a3a3a; border: 1px solid #444; color: #ffffff; }
+        .form-select:focus { background-color: #3a3a3a; border-color: #ffc107; color: #ffffff; box-shadow: 0 0 0 0.25rem rgba(255, 193, 7, 0.25); }
+        @media (max-width: 991px) { .sidebar { transform: translateX(-100%); transition: transform 0.3s; } .sidebar.show { transform: translateX(0); } .main-content { margin-left: 0; } .sidebar-toggle { display: flex; align-items: center; justify-content: center; } }
+        @media (max-width: 768px) { .page-title { font-size: 2rem; } .order-item { flex-direction: column; align-items: flex-start; } .order-amount { text-align: left; } }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">KLSZ Faloda</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Főoldal</a></li>
+                    <li class="nav-item"><a class="nav-link" href="registration.html">Regisztráció</a></li>
+                    <li class="nav-item"><a class="nav-link" href="cart.html">Kosár</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <aside class="sidebar" id="sidebar">
+        <ul class="sidebar-menu">
+            <li class="sidebar-item"><a href="admin-dashboard.html" class="sidebar-link"><span class="sidebar-icon">📊</span><span>Dashboard</span></a></li>
+            <li class="sidebar-item"><a href="admin-orders.html" class="sidebar-link active"><span class="sidebar-icon">📦</span><span>Rendelések</span></a></li>
+            <li class="sidebar-item"><a href="admin-users.html" class="sidebar-link"><span class="sidebar-icon">👥</span><span>Felhasználók</span></a></li>
+            <li class="sidebar-item"><a href="admin-payments.html" class="sidebar-link"><span class="sidebar-icon">💳</span><span>Fizetések</span></a></li>
+        </ul>
+    </aside>
+    <button class="sidebar-toggle" id="sidebarToggle">☰</button>
+    <div class="main-content">
+        <section class="dashboard-section">
+            <div class="container">
+                <h1 class="page-title">Rendelések</h1>
+                <div class="row justify-content-center">
+                    <div class="col-lg-10 col-xl-9">
+                        <div class="orders-card">
+                            <h2 class="orders-title">Összes rendelés</h2>
+                            <div class="filter-section">
+                                <button class="filter-btn active" data-filter="all">Összes</button>
+                                <button class="filter-btn" data-filter="pending">Függőben</button>
+                                <button class="filter-btn" data-filter="preparing">Készül</button>
+                                <button class="filter-btn" data-filter="delivering">Kiszállítás</button>
+                                <button class="filter-btn" data-filter="completed">Teljesítve</button>
+                                <button class="filter-btn" data-filter="cancelled">Törölve</button>
+                            </div>
+                            <div class="orders-list" id="ordersList"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <div class="modal fade" id="statusModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header"><h5 class="modal-title">Státusz módosítása</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+                <div class="modal-body">
+                    <label for="statusSelect" class="form-label">Új státusz:</label>
+                    <select class="form-select" id="statusSelect">
+                        <option value="pending">Függőben</option>
+                        <option value="preparing">Készül</option>
+                        <option value="delivering">Kiszállítás alatt</option>
+                        <option value="completed">Teljesítve</option>
+                        <option value="cancelled">Törölve</option>
+                    </select>
+                </div>
+                <div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Mégse</button><button type="button" class="btn btn-primary" id="confirmStatus">Mentés</button></div>
+            </div>
+        </div>
+    </div>
+    <footer><div class="container"><p>© 2025 KLSZ Faloda</p><div><a href="#">ÁSZF</a><span style="color: #666;">|</span><a href="#">Kapcsolat</a></div></div></footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('sidebarToggle').addEventListener('click', () => document.getElementById('sidebar').classList.toggle('show'));
+        
+        // JAVÍTOTT API URL - a backend-hez igazítva
+        const API_BASE = 'http://localhost:8080/vizsgaremek1/webresources';
+        
+        let orders = [], users = [], currentFilter = 'all', selectedOrderId = null;
+
+        async function loadData() {
+            try {
+                // JAVÍTOTT VÉGPONTOK
+                const [ordersRes, usersRes] = await Promise.all([
+                    fetch(`${API_BASE}/orders/GetAllOrders`), 
+                    fetch(`${API_BASE}/users/GetAllUsers`)
+                ]);
+                if (ordersRes.ok) orders = await ordersRes.json();
+                if (usersRes.ok) users = await usersRes.json();
+                renderOrders();
+            } catch (e) { 
+                console.error('Hiba az adatok betöltésekor:', e); 
+            }
+        }
+
+        function renderOrders() {
+            const list = document.getElementById('ordersList');
+            let filtered = currentFilter === 'all' ? orders : orders.filter(o => o.status === currentFilter);
+            if (!filtered.length) { 
+                list.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📦</div><p>Nincsenek rendelések.</p></div>'; 
+                return; 
+            }
+            filtered.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+            list.innerHTML = filtered.map(o => {
+                const user = users.find(u => u.user_id === o.user_id);
+                return `<div class="order-item">
+                    <div class="order-info">
+                        <div class="order-id">#${o.order_id}</div>
+                        <div class="order-customer">${user ? user.name : 'Ismeretlen'}</div>
+                        <div class="order-date">${formatDate(o.created_at)}</div>
+                    </div>
+                    <div class="order-amount">${formatPrice(o.total_price)}</div>
+                    <div class="order-status status-${o.status}">${getStatusName(o.status)}</div>
+                    <button class="btn-action btn-details" onclick="showStatusModal(${o.order_id}, '${o.status}')">Státusz</button>
+                </div>`;
+            }).join('');
+        }
+
+        document.querySelectorAll('.filter-btn').forEach(btn => btn.addEventListener('click', () => {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentFilter = btn.dataset.filter;
+            renderOrders();
+        }));
+
+        function showStatusModal(id, status) { 
+            selectedOrderId = id; 
+            document.getElementById('statusSelect').value = status; 
+            new bootstrap.Modal(document.getElementById('statusModal')).show(); 
+        }
+
+        document.getElementById('confirmStatus').addEventListener('click', async () => {
+            if (!selectedOrderId) return;
+            const newStatus = document.getElementById('statusSelect').value;
+            const order = orders.find(o => o.order_id === selectedOrderId);
+            if (order) {
+                try {
+                    // JAVÍTOTT VÉGPONT: /orders/UpdateOrder/{id}
+                    const res = await fetch(`${API_BASE}/orders/UpdateOrder/${selectedOrderId}`, { 
+                        method: 'PUT', 
+                        headers: { 'Content-Type': 'application/json' }, 
+                        body: JSON.stringify({ 
+                            status: newStatus,
+                            total_price: order.total_price
+                        }) 
+                    });
+                    if (res.ok) { 
+                        bootstrap.Modal.getInstance(document.getElementById('statusModal')).hide(); 
+                        loadData(); 
+                    } else {
+                        const error = await res.json();
+                        alert('Hiba: ' + (error.message || 'Ismeretlen hiba'));
+                    }
+                } catch (e) { 
+                    alert('Hiba történt a művelet során!'); 
+                    console.error(e);
+                }
+            }
+        });
+
+        function getStatusName(s) { 
+            return { 
+                pending: 'Függőben', 
+                preparing: 'Készül', 
+                delivering: 'Kiszállítás', 
+                completed: 'Teljesítve', 
+                cancelled: 'Törölve' 
+            }[s] || s; 
+        }
+        
+        function formatPrice(p) { 
+            return new Intl.NumberFormat('hu-HU').format(Math.round(p)) + ' Ft'; 
+        }
+        
+        function formatDate(d) { 
+            return d ? new Date(d).toLocaleString('hu-HU') : 'N/A'; 
+        }
+        
+        document.addEventListener('DOMContentLoaded', loadData);
+    </script>
+</body>
+</html>

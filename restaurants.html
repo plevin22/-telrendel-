@@ -5,186 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KLSZ Faloda - Éttermeink Listája</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            background: linear-gradient(to bottom, #1a1a1a 10%, #343333 25%);
-            color: #ffffff;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            min-height: 100vh;
-            padding-top: 70px;
-        }
-
-        .navbar {
-            background-color: rgba(0, 0, 0, 0.8) !important;
-            padding: 1rem 0;
-        }
-
-        .navbar-brand {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: #ffffff !important;
-        }
-
-        .navbar-nav .nav-link {
-            color: #cccccc !important;
-            margin: 0 1rem;
-            transition: color 0.3s;
-        }
-
-        .navbar-nav .nav-link:hover {
-            color: #ffffff !important;
-        }
-
-        .restaurants-section {
-            padding: 60px 0 80px;
-        }
-
-        .section-title {
-            font-size: 2.5rem;
-            font-weight: 600;
-            color: #ffc107;
-            margin-bottom: 1rem;
-        }
-
-        .section-subtitle {
-            color: #cccccc;
-            font-size: 1rem;
-            margin-bottom: 3rem;
-        }
-
-        .restaurant-card {
-            background-color: #d9d9d9;
-            border-radius: 10px;
-            overflow: hidden;
-            transition: transform 0.3s, box-shadow 0.3s;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            margin-bottom: 3rem;
-        }
-
-        .restaurant-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-        }
-
-        .row {
-            row-gap: 1rem;
-        }
-
-        .restaurant-image {
-            width: 100%;
-            height: 200px;
-            background-color: #ffffff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
-
-        .restaurant-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
-
-        .restaurant-body {
-            padding: 1.25rem;
-            text-align: center;
-            background-color: #d9d9d9;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .restaurant-name {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: #000000;
-            margin-bottom: 1rem;
-        }
-
-        .btn-view-restaurant {
-            background-color: #333333;
-            color: #ffffff;
-            border: none;
-            padding: 10px 25px;
-            font-size: 0.9rem;
-            border-radius: 5px;
-            transition: all 0.3s;
-            text-decoration: none;
-            display: inline-block;
-            cursor: pointer;
-        }
-
-        .btn-view-restaurant:hover {
-            background-color: #555555;
-            color: #ffffff;
-        }
-
-        .features-section {
-            background-color: #2a2a2a;
-            padding: 50px 0;
-        }
-
-        .features-title {
-            text-align: center;
-            font-size: 2rem;
-            font-weight: 600;
-            margin-bottom: 2.5rem;
-        }
-
-        .feature-box {
-            text-align: center;
-            padding: 1.5rem 1rem;
-        }
-
-        .feature-box h3 {
-            font-size: 1.3rem;
-            font-weight: 600;
-            margin-bottom: 0.8rem;
-        }
-
-        .feature-box p {
-            color: #cccccc;
-            font-size: 0.9rem;
-            margin: 0;
-        }
-
-        footer {
-            background-color: #1a1a1a;
-            padding: 30px 0;
-            text-align: center;
-            border-top: 1px solid #333333;
-        }
-
-        footer p {
-            margin: 0.5rem 0;
-            color: #cccccc;
-        }
-
-        footer a {
-            color: #ffc107;
-            text-decoration: none;
-            margin: 0 10px;
-        }
-
-        footer a:hover {
-            color: #ffb300;
-            text-decoration: underline;
-        }
-
-        @media (max-width: 768px) {
-            .section-title {
-                font-size: 2rem;
-            }
-            
-            .restaurant-image {
-                height: 180px;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="restaurants.css">
 </head>
 <body>
     <!-- Navigation -->
@@ -214,7 +35,7 @@
     <section class="restaurants-section">
         <div class="container">
             <h1 class="section-title">Éttermeink Listája</h1>
-            <p class="section-subtitle">Pécs legjobb éttermel egy helyen - rendelj könyelemsen!</p>
+            <p class="section-subtitle">Pécs legjobb éttermei egy helyen - rendelj kényelmesen!</p>
             
             <div class="row">
                 <!-- Restaurant Card 1 -->
@@ -238,7 +59,7 @@
                         </div>
                         <div class="restaurant-body">
                             <h3 class="restaurant-name">Szünet Kávézó</h3>
-                            <a href="restaurant-sablon.html" class="btn-view-restaurant">ugrás az oldalra</a>
+                            <a href="restaurant-szunetkave.html" class="btn-view-restaurant">ugrás az oldalra</a>
                         </div>
                     </div>
                 </div>
@@ -264,7 +85,7 @@
                         </div>
                         <div class="restaurant-body">
                             <h3 class="restaurant-name">JuiceBoo Pécs Smoothie Bar</h3>
-                            <a href="restaurant-JuiceBoo_Pécs_Smoothie_Bar.html" class="btn-view-restaurant">ugrás az oldalra</a>
+                            <a href="restaurant-JuiceBoo_Pecs_Smoothie_Bar.html" class="btn-view-restaurant">ugrás az oldalra</a>
                         </div>
                     </div>
                 </div>
@@ -277,7 +98,7 @@
                         </div>
                         <div class="restaurant-body">
                             <h3 class="restaurant-name">Élémiédia Bistro</h3>
-                            <a href="restaurant-Élemozsia Bistro.html" class="btn-view-restaurant">ugrás az oldalra</a>
+                            <a href="restaurant-elemozsia-Bistro.html" class="btn-view-restaurant">ugrás az oldalra</a>
                         </div>
                     </div>
                 </div>
@@ -290,7 +111,7 @@
                         </div>
                         <div class="restaurant-body">
                             <h3 class="restaurant-name">Mátyás Király Vendéglő</h3>
-                            <a href="restaurant-Mátyás_Király_Vendéglő.html" class="btn-view-restaurant">ugrás az oldalra</a>
+                            <a href="restaurant-Matyas-kiraly-vendeglo.html" class="btn-view-restaurant">ugrás az oldalra</a>
                         </div>
                     </div>
                 </div>
@@ -303,7 +124,7 @@
                         </div>
                         <div class="restaurant-body">
                             <h3 class="restaurant-name">Teca Mama Kávézóitaló</h3>
-                            <a href="restaurant-Teca_Mama_Vendéglője.html" class="btn-view-restaurant">ugrás az oldalra</a>
+                            <a href="restaurant-Teca_Mama_Vendeglo.html" class="btn-view-restaurant">ugrás az oldalra</a>
                         </div>
                     </div>
                 </div>
@@ -357,7 +178,7 @@
                 <div class="col-md-4">
                     <div class="feature-box">
                         <h3>Nagy választék</h3>
-                        <p>Több mint 60 pácsi étterem kínálata egy helyen.</p>
+                        <p>Több mint 60 pécsi étterem kínálata egy helyen.</p>
                     </div>
                 </div>
             </div>
@@ -377,5 +198,6 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="api.js"></script>
 </body>
 </html>
