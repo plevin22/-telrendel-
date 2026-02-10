@@ -141,6 +141,7 @@ public class OrdersController {
 
         Integer userId = request.has("user_id") ? request.getInt("user_id") : null;
         Integer restaurantId = request.has("restaurant_id") ? request.getInt("restaurant_id") : null;
+        String deliveryAddress = request.optString("delivery_address", "Nincs megadva");
         String status = request.optString("status", "pending");
         BigDecimal totalPrice = request.has("total_price") ? request.getBigDecimal("total_price") : null;
 
@@ -195,7 +196,8 @@ public class OrdersController {
                         .entity(response.toString()).build();
             }
 
-            ordersService.addOrder(userId, restaurantId, status, totalPrice);
+            // JAVÍTVA: delivery_address paraméter hozzáadva!
+            ordersService.addOrder(userId, restaurantId, deliveryAddress, status, totalPrice);
 
             Orders createdOrder = ordersService.getLastOrderByUserAndRestaurant(userId, restaurantId);
 

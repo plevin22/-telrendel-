@@ -56,8 +56,7 @@ public class UsersService {
 
     /**
      * Új felhasználó létrehozása - CreateUser eljárás.
-    
-          */
+     */
     public void createUser(String name, String username, String email, String password, String phone, String role) {
         StoredProcedureQuery sp = em.createStoredProcedureQuery("CreateUser");
         
@@ -66,7 +65,6 @@ public class UsersService {
         sp.registerStoredProcedureParameter("p_email", String.class, ParameterMode.IN);
         sp.registerStoredProcedureParameter("p_password", String.class, ParameterMode.IN);
         sp.registerStoredProcedureParameter("p_phone", String.class, ParameterMode.IN);
-     
         sp.registerStoredProcedureParameter("p_role", String.class, ParameterMode.IN);
 
         sp.setParameter("p_name", name);
@@ -83,7 +81,7 @@ public class UsersService {
      * Felhasználó frissítése - UpdateUser eljárás.
      */
     public void updateUser(Integer userId, String name, String username, String email, 
-                          String password, String phone, String role) {
+                          String password, String phone, String role, Integer banned) {
         StoredProcedureQuery sp = em.createStoredProcedureQuery("UpdateUser");
         
         sp.registerStoredProcedureParameter("p_user_id", Integer.class, ParameterMode.IN);
@@ -92,8 +90,8 @@ public class UsersService {
         sp.registerStoredProcedureParameter("p_email", String.class, ParameterMode.IN);
         sp.registerStoredProcedureParameter("p_password", String.class, ParameterMode.IN);
         sp.registerStoredProcedureParameter("p_phone", String.class, ParameterMode.IN);
-       
         sp.registerStoredProcedureParameter("p_role", String.class, ParameterMode.IN);
+        sp.registerStoredProcedureParameter("p_banned", Integer.class, ParameterMode.IN);
 
         sp.setParameter("p_user_id", userId);
         sp.setParameter("p_name", name);
@@ -101,8 +99,8 @@ public class UsersService {
         sp.setParameter("p_email", email);
         sp.setParameter("p_password", password);
         sp.setParameter("p_phone", phone);
-        
         sp.setParameter("p_role", role);
+        sp.setParameter("p_banned", banned);
 
         sp.execute();
     }

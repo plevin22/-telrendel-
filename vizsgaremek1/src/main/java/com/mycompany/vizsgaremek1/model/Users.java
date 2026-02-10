@@ -34,6 +34,9 @@ public class Users implements Serializable {
     @Column(name = "role")
     private UserRole role = UserRole.customer;
 
+    @Column(name = "banned")
+    private Integer banned = 0;
+
     @Column(name = "created_at", insertable = false, updatable = false)
     private Timestamp createdAt;
 
@@ -53,6 +56,7 @@ public class Users implements Serializable {
         this.password = password;
         this.phone = phone;
         this.role = role;
+        this.banned = 0;
     }
 
     public Integer getUserId() {
@@ -109,6 +113,14 @@ public class Users implements Serializable {
 
     public void setRole(UserRole role) {
         this.role = role;
+    }
+
+    public Integer getBanned() {
+        return banned;
+    }
+
+    public void setBanned(Integer banned) {
+        this.banned = banned;
     }
 
     public Timestamp getCreatedAt() {

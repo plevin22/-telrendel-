@@ -39,17 +39,20 @@ public class OrdersService {
 
     /**
      * Új rendelés létrehozása - AddOrder eljárás.
+     * JAVÍTVA: delivery_address paraméter hozzáadva!
      */
-    public void addOrder(Integer userId, Integer restaurantId, String status, BigDecimal totalPrice) {
+    public void addOrder(Integer userId, Integer restaurantId, String deliveryAddress, String status, BigDecimal totalPrice) {
         StoredProcedureQuery sp = em.createStoredProcedureQuery("AddOrder");
         
         sp.registerStoredProcedureParameter("p_user_id", Integer.class, ParameterMode.IN);
         sp.registerStoredProcedureParameter("p_restaurant_id", Integer.class, ParameterMode.IN);
+        sp.registerStoredProcedureParameter("p_delivery_address", String.class, ParameterMode.IN);
         sp.registerStoredProcedureParameter("p_status", String.class, ParameterMode.IN);
         sp.registerStoredProcedureParameter("p_total_price", BigDecimal.class, ParameterMode.IN);
 
         sp.setParameter("p_user_id", userId);
         sp.setParameter("p_restaurant_id", restaurantId);
+        sp.setParameter("p_delivery_address", deliveryAddress != null ? deliveryAddress : "Nincs megadva");
         sp.setParameter("p_status", status);
         sp.setParameter("p_total_price", totalPrice);
 
@@ -136,7 +139,6 @@ public class OrdersService {
 
     /**
      * Rendelés végösszegének újraszámítása az order_items alapján.
-     * AUTOMATIKUSAN HÍVÓDIK amikor tétel hozzáadás/módosítás/törlés történik!
      */
     public BigDecimal recalculateOrderTotal(Integer orderId) {
         try {
@@ -144,7 +146,6 @@ public class OrdersService {
                 "SELECT COALESCE(SUM(oi.price), 0) FROM OrderItems oi WHERE oi.orderId = :orderId", BigDecimal.class
             ).setParameter("orderId", orderId).getSingleResult();
             
-            // Frissítjük a rendelés total_price mezőjét
             Orders order = findOrderById(orderId);
             if (order != null) {
                 updateOrder(orderId, order.getStatus().toString(), total);

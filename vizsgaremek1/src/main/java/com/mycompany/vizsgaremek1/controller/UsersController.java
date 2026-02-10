@@ -1,5 +1,6 @@
 package com.mycompany.vizsgaremek1.controller;
 
+import com.mycompany.vizsgaremek1.config.JWT;
 import com.mycompany.vizsgaremek1.model.Users;
 import com.mycompany.vizsgaremek1.service.UsersService;
 import java.util.List;
@@ -57,6 +58,7 @@ public class UsersController {
         json.put("email", user.getEmail());
         json.put("phone", user.getPhone());
         json.put("role", user.getRole().toString());
+        json.put("banned", user.getBanned());
         json.put("created_at", user.getCreatedAt() != null ? user.getCreatedAt().toString() : null);
         return json;
     }
@@ -216,6 +218,11 @@ public class UsersController {
                 return errorResponse("Felhasználó nem található.", Response.Status.NOT_FOUND);
             }
             
+            // Ellenőrizzük, hogy a felhasználó tiltva van-e
+            if (user.getBanned() != null && user.getBanned() == 1) {
+                return errorResponse("A fiókod tiltva van. Kérjük, vedd fel a kapcsolatot az adminisztrátorral.", Response.Status.FORBIDDEN);
+            }
+            
             // BCrypt ellenőrzés, fallback plain text-re (régi jelszavakhoz)
             boolean passwordMatch = false;
             try {
@@ -229,14 +236,20 @@ public class UsersController {
                 return errorResponse("Hibás jelszó.", Response.Status.UNAUTHORIZED);
             }
             
+            // JWT token generálása
+            String token = JWT.createToken(user);
+            
             JSONObject response = new JSONObject();
             response.put("status", "success");
             response.put("message", "Sikeres bejelentkezés.");
+            response.put("token", token);
+            // Felhasználói adatok is mennek (a frontend a tokenből VAGY innen olvassa)
             response.put("user_id", user.getUserId());
             response.put("name", user.getName());
             response.put("username", user.getUsername());
             response.put("email", user.getEmail());
             response.put("role", user.getRole().toString());
+            response.put("banned", user.getBanned());
             return Response.ok(response.toString()).build();
         } catch (Exception e) {
             e.printStackTrace();
@@ -268,6 +281,7 @@ public class UsersController {
             String email = request.optString("email", existing.getEmail());
             String phone = request.optString("phone", existing.getPhone());
             String role = request.optString("role", existing.getRole().toString());
+            Integer banned = request.optInt("banned", existing.getBanned() != null ? existing.getBanned() : 0);
             
             // Username egyediség ellenőrzése (ha változott)
             if (!username.equals(existing.getUsername()) && usersService.usernameExists(username)) {
@@ -294,7 +308,7 @@ public class UsersController {
                 return errorResponse("Érvénytelen szerepkör.", Response.Status.BAD_REQUEST);
             }
             
-            usersService.updateUser(id, name, username, email, password, phone, role);
+            usersService.updateUser(id, name, username, email, password, phone, role, banned);
             
             JSONObject response = new JSONObject();
             response.put("status", "success");
