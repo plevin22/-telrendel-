@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jboss-deployment-structure>
+    <deployment>
+        <exclude-subsystems>
+            <subsystem name="mail"/>
+        </exclude-subsystems>
+        <exclusions>
+            <module name="javax.mail.api"/>
+            <module name="com.sun.mail.javax.mail"/>
+            <module name="javax.activation.api"/>
+        </exclusions>
+    </deployment>
+</jboss-deployment-structure>

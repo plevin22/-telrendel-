@@ -2,6 +2,7 @@ package com.mycompany.vizsgaremek1.controller;
 
 import com.mycompany.vizsgaremek1.config.JWT;
 import com.mycompany.vizsgaremek1.model.Users;
+import com.mycompany.vizsgaremek1.service.EmailService;
 import com.mycompany.vizsgaremek1.service.UsersService;
 import java.util.List;
 import javax.ejb.EJB;
@@ -19,9 +20,9 @@ public class UsersController {
     @EJB
     private UsersService usersService;
 
-    /**
-     * Jelszó validálása - minimum 8 karakter, nagybetű, speciális karakter
-     */
+    @EJB
+    private EmailService emailService;
+
     private String validatePassword(String password) {
         if (password.length() < 8) {
             return "A jelszónak minimum 8 karakter hosszúnak kell lennie.";
@@ -121,23 +122,18 @@ public class UsersController {
         String phone = request.optString("phone", "");
         String role = request.optString("role", "customer");
 
-        // Név validáció
         if (name == null || name.trim().isEmpty()) {
             return errorResponse("A név megadása kötelező.", Response.Status.BAD_REQUEST);
         }
         if (name.length() > 255) {
             return errorResponse("A név maximum 255 karakter lehet.", Response.Status.BAD_REQUEST);
         }
-
-        // Username validáció
         if (username == null || username.trim().isEmpty()) {
             return errorResponse("A felhasználónév megadása kötelező.", Response.Status.BAD_REQUEST);
         }
         if (username.length() > 255) {
             return errorResponse("A felhasználónév maximum 255 karakter lehet.", Response.Status.BAD_REQUEST);
         }
-
-        // Email validáció
         if (email == null || email.trim().isEmpty()) {
             return errorResponse("Az email megadása kötelező.", Response.Status.BAD_REQUEST);
         }
@@ -145,8 +141,6 @@ public class UsersController {
         if (!email.matches(emailRegex)) {
             return errorResponse("Érvénytelen email formátum.", Response.Status.BAD_REQUEST);
         }
-
-        // Jelszó validáció
         if (password == null || password.trim().isEmpty()) {
             return errorResponse("A jelszó megadása kötelező.", Response.Status.BAD_REQUEST);
         }
@@ -154,18 +148,14 @@ public class UsersController {
         if (passwordError != null) {
             return errorResponse(passwordError, Response.Status.BAD_REQUEST);
         }
-
-        // Role validáció
         if (!role.equals("customer") && !role.equals("admin") && !role.equals("restaurant_owner")) {
             return errorResponse("Érvénytelen szerepkör.", Response.Status.BAD_REQUEST);
         }
 
         try {
-            // Email egyediség ellenőrzése
             if (usersService.emailExists(email)) {
                 return errorResponse("Ez az email cím már foglalt.", Response.Status.CONFLICT);
             }
-            // Username egyediség ellenőrzése
             if (usersService.usernameExists(username)) {
                 return errorResponse("Ez a felhasználónév már foglalt.", Response.Status.CONFLICT);
             }
@@ -174,6 +164,14 @@ public class UsersController {
             usersService.createUser(name.trim(), username.trim(), email.trim(), hashedPassword, phone, role);
             
             Users createdUser = usersService.findUserByEmail(email);
+
+            // REGISZTRÁCIÓS EMAIL KÜLDÉSE
+            try {
+                emailService.sendRegistrationEmail(email.trim(), name.trim());
+            } catch (Exception emailEx) {
+                System.err.println("Regisztrációs email küldési hiba: " + emailEx.getMessage());
+            }
+
             JSONObject response = new JSONObject();
             response.put("status", "success");
             response.put("message", "Sikeres regisztráció.");
@@ -218,17 +216,14 @@ public class UsersController {
                 return errorResponse("Felhasználó nem található.", Response.Status.NOT_FOUND);
             }
             
-            // Ellenőrizzük, hogy a felhasználó tiltva van-e
             if (user.getBanned() != null && user.getBanned() == 1) {
                 return errorResponse("A fiókod tiltva van. Kérjük, vedd fel a kapcsolatot az adminisztrátorral.", Response.Status.FORBIDDEN);
             }
             
-            // BCrypt ellenőrzés, fallback plain text-re (régi jelszavakhoz)
             boolean passwordMatch = false;
             try {
                 passwordMatch = usersService.checkPassword(password, user.getPassword());
             } catch (Exception e) {
-                // Ha nem BCrypt hash, akkor plain text összehasonlítás
                 passwordMatch = password.equals(user.getPassword());
             }
             
@@ -236,14 +231,12 @@ public class UsersController {
                 return errorResponse("Hibás jelszó.", Response.Status.UNAUTHORIZED);
             }
             
-            // JWT token generálása
             String token = JWT.createToken(user);
             
             JSONObject response = new JSONObject();
             response.put("status", "success");
             response.put("message", "Sikeres bejelentkezés.");
             response.put("token", token);
-            // Felhasználói adatok is mennek (a frontend a tokenből VAGY innen olvassa)
             response.put("user_id", user.getUserId());
             response.put("name", user.getName());
             response.put("username", user.getUsername());
@@ -275,6 +268,13 @@ public class UsersController {
             if (existing == null) {
                 return errorResponse("A felhasználó nem található.", Response.Status.NOT_FOUND);
             }
+
+            // RÉGI ADATOK MENTÉSE (email összehasonlításhoz)
+            String oldName = existing.getName();
+            String oldUsername = existing.getUsername();
+            String oldEmail = existing.getEmail();
+            String oldPhone = existing.getPhone();
+            String oldRole = existing.getRole().toString();
             
             String name = request.optString("name", existing.getName());
             String username = request.optString("username", existing.getUsername());
@@ -283,17 +283,13 @@ public class UsersController {
             String role = request.optString("role", existing.getRole().toString());
             Integer banned = request.optInt("banned", existing.getBanned() != null ? existing.getBanned() : 0);
             
-            // Username egyediség ellenőrzése (ha változott)
             if (!username.equals(existing.getUsername()) && usersService.usernameExists(username)) {
                 return errorResponse("Ez a felhasználónév már foglalt.", Response.Status.CONFLICT);
             }
-            
-            // Email egyediség ellenőrzése (ha változott)
             if (!email.equals(existing.getEmail()) && usersService.emailExists(email)) {
                 return errorResponse("Ez az email cím már foglalt.", Response.Status.CONFLICT);
             }
             
-            // Jelszó frissítés - csak ha meg van adva új jelszó
             String password = existing.getPassword();
             if (request.has("password") && !request.optString("password", "").isEmpty()) {
                 String newPassword = request.getString("password");
@@ -309,6 +305,20 @@ public class UsersController {
             }
             
             usersService.updateUser(id, name, username, email, password, phone, role, banned);
+
+            // PROFIL MÓDOSÍTÁS EMAIL KÜLDÉSE
+            try {
+                emailService.sendProfileUpdateEmail(
+                    email, name,
+                    oldName, name,
+                    oldUsername, username,
+                    oldEmail, email,
+                    oldPhone, phone,
+                    oldRole, role
+                );
+            } catch (Exception emailEx) {
+                System.err.println("Profil módosítás email küldési hiba: " + emailEx.getMessage());
+            }
             
             JSONObject response = new JSONObject();
             response.put("status", "success");
