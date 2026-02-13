@@ -9,6 +9,7 @@ C:\Suli\vizsgaremek\vizsgaremek1\src\main\java\com\mycompany\vizsgaremek1\contro
 C:\Suli\vizsgaremek\vizsgaremek1\src\main\java\com\mycompany\vizsgaremek1\controller\OrdersController.java
 C:\Suli\vizsgaremek\vizsgaremek1\src\main\java\com\mycompany\vizsgaremek1\controller\PaymentsController.java
 C:\Suli\vizsgaremek\vizsgaremek1\src\main\java\com\mycompany\vizsgaremek1\controller\RestaurantsController.java
+C:\Suli\vizsgaremek\vizsgaremek1\src\main\java\com\mycompany\vizsgaremek1\controller\ReviewsController.java
 C:\Suli\vizsgaremek\vizsgaremek1\src\main\java\com\mycompany\vizsgaremek1\controller\UsersController.java
 C:\Suli\vizsgaremek\vizsgaremek1\src\main\java\com\mycompany\vizsgaremek1\model\Delivery.java
 C:\Suli\vizsgaremek\vizsgaremek1\src\main\java\com\mycompany\vizsgaremek1\model\Dishes.java
@@ -16,6 +17,7 @@ C:\Suli\vizsgaremek\vizsgaremek1\src\main\java\com\mycompany\vizsgaremek1\model\
 C:\Suli\vizsgaremek\vizsgaremek1\src\main\java\com\mycompany\vizsgaremek1\model\Orders.java
 C:\Suli\vizsgaremek\vizsgaremek1\src\main\java\com\mycompany\vizsgaremek1\model\Payments.java
 C:\Suli\vizsgaremek\vizsgaremek1\src\main\java\com\mycompany\vizsgaremek1\model\Restaurants.java
+C:\Suli\vizsgaremek\vizsgaremek1\src\main\java\com\mycompany\vizsgaremek1\model\Reviews.java
 C:\Suli\vizsgaremek\vizsgaremek1\src\main\java\com\mycompany\vizsgaremek1\model\Users.java
 C:\Suli\vizsgaremek\vizsgaremek1\src\main\java\com\mycompany\vizsgaremek1\service\DeliveryService.java
 C:\Suli\vizsgaremek\vizsgaremek1\src\main\java\com\mycompany\vizsgaremek1\service\DishesService.java
@@ -24,4 +26,5 @@ C:\Suli\vizsgaremek\vizsgaremek1\src\main\java\com\mycompany\vizsgaremek1\servic
 C:\Suli\vizsgaremek\vizsgaremek1\src\main\java\com\mycompany\vizsgaremek1\service\OrdersService.java
 C:\Suli\vizsgaremek\vizsgaremek1\src\main\java\com\mycompany\vizsgaremek1\service\PaymentsService.java
 C:\Suli\vizsgaremek\vizsgaremek1\src\main\java\com\mycompany\vizsgaremek1\service\RestaurantsService.java
+C:\Suli\vizsgaremek\vizsgaremek1\src\main\java\com\mycompany\vizsgaremek1\service\ReviewsService.java
 C:\Suli\vizsgaremek\vizsgaremek1\src\main\java\com\mycompany\vizsgaremek1\service\UsersService.java

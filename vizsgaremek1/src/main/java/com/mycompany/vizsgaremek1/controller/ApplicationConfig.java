@@ -35,6 +35,7 @@ private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(com.mycompany.vizsgaremek1.controller.OrdersController.class);
         resources.add(com.mycompany.vizsgaremek1.controller.PaymentsController.class);
         resources.add(com.mycompany.vizsgaremek1.controller.RestaurantsController.class);
+        resources.add(com.mycompany.vizsgaremek1.controller.ReviewsController.class);
         resources.add(com.mycompany.vizsgaremek1.controller.UsersController.class);
 }
 
