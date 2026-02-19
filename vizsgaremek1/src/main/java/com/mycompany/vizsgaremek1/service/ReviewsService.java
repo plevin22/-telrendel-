@@ -104,16 +104,50 @@ public class ReviewsService {
 
     /**
      * Új értékelés hozzáadása - natív query mert order_id-t is mentünk.
+     * A rendeléshez tartozó ételeket a review_items táblába is menti.
      */
-    public void addReview(Integer userId, Integer restaurantId, Integer orderId, Integer rating, String comment) {
+    public Integer addReview(Integer userId, Integer restaurantId, Integer orderId, Integer rating, String comment) {
+        // Review beszúrása
         em.createNativeQuery(
-            "INSERT INTO reviews (user_id, restaurant_id, dish_id, order_id, rating, comment) VALUES (?, ?, NULL, ?, ?, ?)"
+            "INSERT INTO reviews (user_id, restaurant_id, order_id, rating, comment) VALUES (?, ?, ?, ?, ?)"
         ).setParameter(1, userId)
          .setParameter(2, restaurantId)
          .setParameter(3, orderId)
          .setParameter(4, rating)
          .setParameter(5, comment)
          .executeUpdate();
+
+        // Utolsó beszúrt review_id lekérése
+        Integer reviewId = ((Number) em.createNativeQuery("SELECT LAST_INSERT_ID()").getSingleResult()).intValue();
+
+        // Rendeléshez tartozó ételek mentése a review_items táblába
+        em.createNativeQuery(
+            "INSERT INTO review_items (review_id, dish_id) SELECT ?, oi.dish_id FROM order_items oi WHERE oi.order_id = ?"
+        ).setParameter(1, reviewId)
+         .setParameter(2, orderId)
+         .executeUpdate();
+
+        return reviewId;
+    }
+
+    /**
+     * Review-hoz tartozó ételnevek lekérése a review_items táblából.
+     */
+    @SuppressWarnings("unchecked")
+    public List<Object[]> getDishNamesByReviewId(Integer reviewId) {
+        return em.createNativeQuery(
+            "SELECT d.dish_id, d.name FROM review_items ri JOIN dishes d ON ri.dish_id = d.dish_id WHERE ri.review_id = ?"
+        ).setParameter(1, reviewId).getResultList();
+    }
+
+    /**
+     * Order-hez tartozó ételnevek lekérése az order_items táblából.
+     */
+    @SuppressWarnings("unchecked")
+    public List<Object[]> getDishNamesByOrderId(Integer orderId) {
+        return em.createNativeQuery(
+            "SELECT d.dish_id, d.name, oi.quantity FROM order_items oi JOIN dishes d ON oi.dish_id = d.dish_id WHERE oi.order_id = ?"
+        ).setParameter(1, orderId).getResultList();
     }
 
     /**
@@ -160,6 +194,19 @@ public class ReviewsService {
         try {
             return em.createQuery(
                 "SELECT u.name FROM Users u WHERE u.userId = :userId", String.class
+            ).setParameter("userId", userId).getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+
+    /**
+     * Felhasználó email lekérdezése ID alapján.
+     */
+    public String getUserEmailById(Integer userId) {
+        try {
+            return em.createQuery(
+                "SELECT u.email FROM Users u WHERE u.userId = :userId", String.class
             ).setParameter("userId", userId).getSingleResult();
         } catch (NoResultException e) {
             return null;

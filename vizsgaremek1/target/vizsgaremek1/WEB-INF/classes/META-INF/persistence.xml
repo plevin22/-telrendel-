@@ -10,6 +10,7 @@
     <class>com.mycompany.vizsgaremek1.model.Users</class>
     <class>com.mycompany.vizsgaremek1.model.Delivery</class>
     <class>com.mycompany.vizsgaremek1.model.Reviews</class>
+    <class>com.mycompany.vizsgaremek1.model.ReviewItems</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties/>
   </persistence-unit>

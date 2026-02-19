@@ -150,11 +150,11 @@ public void sendEmail(String to, String subject, String htmlBody) {
         String subject = "Profil adatok módosítva";
 
         StringBuilder changesHtml = new StringBuilder();
-        changesHtml.append("<table style='width:100%; border-collapse:collapse; margin:15px 0;'>");
+        changesHtml.append("<table style='width:100%; border-collapse:collapse; margin:15px 0; table-layout:fixed;'>");
         changesHtml.append("<tr style='background-color:#f0c040; color:#1a1a2e;'>");
-        changesHtml.append("<th style='padding:10px; text-align:left; border:1px solid #333;'>Mező</th>");
-        changesHtml.append("<th style='padding:10px; text-align:left; border:1px solid #333;'>Régi érték</th>");
-        changesHtml.append("<th style='padding:10px; text-align:left; border:1px solid #333;'>Új érték</th>");
+        changesHtml.append("<th style='padding:8px; text-align:left; border:1px solid #333; width:25%;'>Mező</th>");
+        changesHtml.append("<th style='padding:8px; text-align:left; border:1px solid #333; width:37%; word-break:break-all;'>Régi érték</th>");
+        changesHtml.append("<th style='padding:8px; text-align:left; border:1px solid #333; width:37%; word-break:break-all;'>Új érték</th>");
         changesHtml.append("</tr>");
 
         addChangeRow(changesHtml, "Név", oldName, newName);
@@ -165,7 +165,6 @@ public void sendEmail(String to, String subject, String htmlBody) {
 
         changesHtml.append("</table>");
 
-        // Ha az email cím változott, mindkét címre küldünk
         String html = buildEmailTemplate(
                 "Profil adatok módosítva",
                 "<p>Kedves " + userName + "!</p>"
@@ -177,7 +176,6 @@ public void sendEmail(String to, String subject, String htmlBody) {
 
         sendEmail(toEmail, subject, html);
 
-        // Ha az email változott, a régi címre is küldünk értesítést
         if (oldEmail != null && !oldEmail.equals(newEmail)) {
             sendEmail(oldEmail, "Figyelmeztetés: Email cím megváltoztatva",
                     buildEmailTemplate(
@@ -193,6 +191,65 @@ public void sendEmail(String to, String subject, String htmlBody) {
         }
     }
 
+    // Értékelés visszaigazoló email
+    public void sendReviewConfirmationEmail(String toEmail, String userName,
+            int orderId, int rating, String comment,
+            String restaurantName, List<String> dishNames) {
+        String subject = "Értékelés rögzítve - " + restaurantName;
+
+        // Csillagok megjelenítése
+        StringBuilder stars = new StringBuilder();
+        for (int i = 0; i < 5; i++) {
+            stars.append(i < rating ? "★" : "☆");
+        }
+
+        // Értékelés címke
+        String ratingLabel;
+        switch (rating) {
+            case 1: ratingLabel = "Borzalmas"; break;
+            case 2: ratingLabel = "Rossz"; break;
+            case 3: ratingLabel = "Elmegy"; break;
+            case 4: ratingLabel = "Jó"; break;
+            case 5: ratingLabel = "Tökéletes"; break;
+            default: ratingLabel = "Ismeretlen"; break;
+        }
+
+        // Rendelt ételek listája
+        StringBuilder dishesHtml = new StringBuilder();
+        if (dishNames != null && !dishNames.isEmpty()) {
+            dishesHtml.append("<div style='background-color:#2a2a3e; padding:10px 15px; border-radius:8px; margin:10px 0;'>");
+            dishesHtml.append("<p style='color:#f0c040; margin:0 0 5px 0; font-weight:bold;'>Rendelt ételek:</p>");
+            for (String dish : dishNames) {
+                dishesHtml.append("<p style='color:#e0e0e0; margin:2px 0; padding-left:10px;'>🍽️ ").append(dish).append("</p>");
+            }
+            dishesHtml.append("</div>");
+        }
+
+        String commentHtml = "";
+        if (comment != null && !comment.isEmpty()) {
+            commentHtml = "<div style='background-color:#2a2a3e; padding:10px 15px; border-radius:8px; margin:10px 0; border-left:3px solid #f0c040;'>"
+                    + "<p style='color:#888; margin:0 0 5px 0; font-size:12px;'>Üzeneted:</p>"
+                    + "<p style='color:#e0e0e0; margin:0; font-style:italic;'>\"" + comment + "\"</p>"
+                    + "</div>";
+        }
+
+        String html = buildEmailTemplate(
+                "Értékelés rögzítve",
+                "<p>Kedves " + userName + "!</p>"
+                + "<p>Köszönjük az értékelésed! Az alábbi értékelést rögzítettük:</p>"
+                + "<div style='background-color:#16213e; padding:15px; border-radius:8px; margin:15px 0; text-align:center;'>"
+                + "<p style='color:#e0e0e0; margin:5px 0;'><strong>Étterem:</strong> " + restaurantName + "</p>"
+                + "<p style='color:#e0e0e0; margin:5px 0;'><strong>Rendelés:</strong> #" + orderId + "</p>"
+                + "<p style='font-size:32px; margin:10px 0; color:#f0c040;'>" + stars.toString() + "</p>"
+                + "<p style='color:#f0c040; font-size:18px; font-weight:bold; margin:5px 0;'>" + ratingLabel + " (" + rating + "/5)</p>"
+                + "</div>"
+                + dishesHtml.toString()
+                + commentHtml
+                + "<p style='color:#888; font-size:12px; margin-top:20px;'>Az értékelésed segít másoknak a választásban. Köszönjük!</p>"
+        );
+        sendEmail(toEmail, subject, html);
+    }
+
     //segéd eljárások
     private void addChangeRow(StringBuilder sb, String field, String oldVal, String newVal) {
         if (oldVal == null) {
@@ -205,8 +262,8 @@ public void sendEmail(String to, String subject, String htmlBody) {
 
         sb.append("<tr style='background-color:").append(changed ? "#2a3a2e" : "#2a2a3e").append(";'>");
         sb.append("<td style='padding:8px; border:1px solid #333; color:#e0e0e0; font-weight:bold;'>").append(field).append("</td>");
-        sb.append("<td style='padding:8px; border:1px solid #333; color:").append(changed ? "#ff6b6b" : "#888").append(";'>").append(oldVal).append("</td>");
-        sb.append("<td style='padding:8px; border:1px solid #333; color:").append(changed ? "#4ecca3" : "#888").append("; font-weight:").append(changed ? "bold" : "normal").append(";'>").append(newVal).append("</td>");
+        sb.append("<td style='padding:8px; border:1px solid #333; color:").append(changed ? "#ff6b6b" : "#888").append("; word-break:break-all;'>").append(oldVal).append("</td>");
+        sb.append("<td style='padding:8px; border:1px solid #333; color:").append(changed ? "#4ecca3" : "#888").append("; font-weight:").append(changed ? "bold" : "normal").append("; word-break:break-all;'>").append(newVal).append("</td>");
         sb.append("</tr>");
     }
 
@@ -274,4 +331,3 @@ public void sendEmail(String to, String subject, String htmlBody) {
                 + "</div></body></html>";
     }
 }
-

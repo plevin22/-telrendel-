@@ -2,6 +2,8 @@ package com.mycompany.vizsgaremek1.controller;
 
 import com.mycompany.vizsgaremek1.model.Reviews;
 import com.mycompany.vizsgaremek1.service.ReviewsService;
+import com.mycompany.vizsgaremek1.service.EmailService;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ws.rs.*;
@@ -17,6 +19,9 @@ public class ReviewsController {
 
     @EJB
     private ReviewsService reviewsService;
+
+    @EJB
+    private EmailService emailService;
 
     // Csillag értékelés szöveges címkéje
     private String getRatingLabel(int rating) {
@@ -62,6 +67,21 @@ public class ReviewsController {
         String restaurantName = reviewsService.getRestaurantNameById(review.getRestaurantId());
         json.put("user_name", userName != null ? userName : "Ismeretlen felhasználó");
         json.put("restaurant_name", restaurantName != null ? restaurantName : "Ismeretlen étterem");
+
+        // Rendelt ételek nevei a review_items táblából
+        try {
+            List<Object[]> dishes = reviewsService.getDishNamesByReviewId(review.getReviewId());
+            JSONArray dishArray = new JSONArray();
+            for (Object[] dish : dishes) {
+                JSONObject dishJson = new JSONObject();
+                dishJson.put("dish_id", dish[0]);
+                dishJson.put("name", dish[1] != null ? dish[1].toString() : "Ismeretlen étel");
+                dishArray.put(dishJson);
+            }
+            json.put("dishes", dishArray);
+        } catch (Exception e) {
+            json.put("dishes", new JSONArray());
+        }
 
         return json;
     }
@@ -264,20 +284,51 @@ public class ReviewsController {
                 return errorResponse("A rendeléshez tartozó étterem nem található.", Response.Status.NOT_FOUND);
             }
 
-            reviewsService.addReview(userId, restaurantId, orderId, rating, comment);
+            Integer reviewId = reviewsService.addReview(userId, restaurantId, orderId, rating, comment);
 
             String userName = reviewsService.getUserNameById(userId);
             String restaurantName = reviewsService.getRestaurantNameById(restaurantId);
 
+            // Rendelt ételek nevei
+            List<Object[]> dishes = reviewsService.getDishNamesByReviewId(reviewId);
+            JSONArray dishArray = new JSONArray();
+            List<String> dishNamesList = new ArrayList<>();
+            for (Object[] dish : dishes) {
+                JSONObject dishJson = new JSONObject();
+                dishJson.put("dish_id", dish[0]);
+                String dishName = dish[1] != null ? dish[1].toString() : "Ismeretlen étel";
+                dishJson.put("name", dishName);
+                dishArray.put(dishJson);
+                dishNamesList.add(dishName);
+            }
+
+            // Email küldés az értékelésről
+            try {
+                String userEmail = reviewsService.getUserEmailById(userId);
+                if (userEmail != null) {
+                    emailService.sendReviewConfirmationEmail(
+                        userEmail,
+                        userName != null ? userName : "Felhasználó",
+                        orderId, rating, comment,
+                        restaurantName != null ? restaurantName : "Étterem",
+                        dishNamesList
+                    );
+                }
+            } catch (Exception emailEx) {
+                System.err.println("Értékelés email küldési hiba: " + emailEx.getMessage());
+            }
+
             JSONObject response = new JSONObject();
             response.put("status", "success");
             response.put("message", "Értékelés sikeresen hozzáadva.");
+            response.put("review_id", reviewId);
             response.put("order_id", orderId);
             response.put("rating", rating);
             response.put("rating_label", getRatingLabel(rating));
             response.put("stars", getStarsDisplay(rating));
             response.put("user_name", userName != null ? userName : "Ismeretlen");
             response.put("restaurant_name", restaurantName != null ? restaurantName : "Ismeretlen");
+            response.put("dishes", dishArray);
             if (comment != null && !comment.isEmpty()) {
                 response.put("comment", comment);
             }

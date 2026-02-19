@@ -26,6 +26,7 @@ com\mycompany\vizsgaremek1\model\Dishes.class
 com\mycompany\vizsgaremek1\service\RestaurantsService.class
 com\mycompany\vizsgaremek1\model\Orders$OrderStatus.class
 com\mycompany\vizsgaremek1\service\EmailService.class
+com\mycompany\vizsgaremek1\model\ReviewItems.class
 com\mycompany\vizsgaremek1\controller\OrderItemsController.class
 com\mycompany\vizsgaremek1\controller\ReviewsController.class
 com\mycompany\vizsgaremek1\service\DeliveryService.class
