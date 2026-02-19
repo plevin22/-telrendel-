@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 setTimeout(() => {
                     // Admin átirányítás az admin oldalra
                     if (result.data.role === 'admin') {
-                        window.location.href = 'admin-dashboard.html';
+                        window.location.href = 'index.html';
                     } else {
                         window.location.href = 'index.html';
                     }

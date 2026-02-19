@@ -1,96 +1,64 @@
 <!DOCTYPE html>
 <html lang="hu">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KLSZ Faloda - Felhasználók</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body { background: linear-gradient(to bottom, #1a1a1a 10%, #343333 25%); color: #ffffff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; min-height: 100vh; padding-top: 70px; }
-        .sidebar { position: fixed; left: 0; top: 70px; width: 250px; height: calc(100vh - 70px); background: linear-gradient(180deg, #2c2c2c 0%, #1a1a1a 100%); padding: 2rem 0; box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5); overflow-y: auto; z-index: 100; }
-        .sidebar-menu { list-style: none; padding: 0; margin: 0; }
-        .sidebar-item { margin-bottom: 0.5rem; }
-        .sidebar-link { display: flex; align-items: center; padding: 1rem 1.5rem; color: #cccccc; text-decoration: none; transition: all 0.3s; font-weight: 500; border-left: 3px solid transparent; }
-        .sidebar-link:hover { background: rgba(255, 193, 7, 0.1); color: #ffffff; border-left-color: #ffc107; }
-        .sidebar-link.active { background: rgba(255, 193, 7, 0.15); color: #ffc107; border-left-color: #ffc107; }
-        .sidebar-icon { font-size: 1.3rem; margin-right: 1rem; width: 25px; text-align: center; }
-        .main-content { margin-left: 250px; transition: margin-left 0.3s; }
-        .sidebar-toggle { display: none; position: fixed; bottom: 20px; right: 20px; width: 60px; height: 60px; background: #ffc107; color: #000; border: none; border-radius: 50%; font-size: 1.5rem; cursor: pointer; box-shadow: 0 4px 15px rgba(255, 193, 7, 0.4); z-index: 1000; }
-        .navbar { background-color: rgba(0, 0, 0, 0.9) !important; padding: 1rem 0; }
-        .navbar-brand { font-size: 1.5rem; font-weight: 600; color: #ffffff !important; }
-        .navbar-nav .nav-link { color: #cccccc !important; margin: 0 1rem; transition: color 0.3s; }
-        .navbar-nav .nav-link:hover { color: #ffffff !important; }
-        .dashboard-section { padding: 60px 0; }
-        .page-title { font-size: 2.5rem; font-weight: 700; color: #ffc107; margin-bottom: 3rem; text-align: center; }
-        .users-card { background: #2a2a2a; border-radius: 12px; padding: 2rem; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); }
-        .users-title { font-size: 1.5rem; font-weight: 600; color: #ffffff; margin-bottom: 2rem; }
-        .filter-section { display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap; align-items: center; }
-        .filter-btn { padding: 0.6rem 1.2rem; border-radius: 6px; border: 2px solid #444; background: transparent; color: #cccccc; cursor: pointer; transition: all 0.3s; font-weight: 500; }
-        .filter-btn:hover { border-color: #ffc107; color: #ffc107; }
-        .filter-btn.active { background: #ffc107; border-color: #ffc107; color: #000; }
-        .search-box { margin-left: auto; }
-        .search-box input { background: #3a3a3a; border: 1px solid #444; color: #fff; padding: 0.5rem 1rem; border-radius: 6px; width: 250px; }
-        .search-box input:focus { outline: none; border-color: #ffc107; }
-        .search-box input::placeholder { color: #888; }
-        .users-list { max-height: 500px; overflow-y: auto; padding-right: 10px; }
-        .users-list::-webkit-scrollbar { width: 8px; }
-        .users-list::-webkit-scrollbar-track { background: #1a1a1a; border-radius: 10px; }
-        .users-list::-webkit-scrollbar-thumb { background: #ffc107; border-radius: 10px; }
-        .user-item { background: #3a3a3a; border-radius: 8px; padding: 1.5rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 1rem; transition: background 0.3s; flex-wrap: wrap; }
-        .user-item:hover { background: #4a4a4a; }
-        .user-avatar { width: 50px; height: 50px; background: linear-gradient(135deg, #ffc107, #ff9800); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; flex-shrink: 0; }
-        .user-info { flex: 1; min-width: 150px; }
-        .user-name { font-weight: 600; color: #ffffff; margin-bottom: 0.3rem; font-size: 1rem; }
-        .user-email { color: #aaa; font-size: 0.85rem; }
-        .user-phone { color: #888; font-size: 0.8rem; }
-        .user-role { padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.85rem; font-weight: 600; text-align: center; min-width: 120px; }
-        .user-role.customer { background-color: #3498db; color: white; }
-        .user-role.admin { background-color: #e74c3c; color: white; }
-        .user-role.restaurant_owner { background-color: #9b59b6; color: white; }
-        .user-date { color: #888; font-size: 0.8rem; min-width: 100px; text-align: center; }
-        .user-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; }
-        .btn-action { padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.3s; border: none; }
-        .btn-edit { background: #3498db; color: white; }
-        .btn-edit:hover { background: #2980b9; }
-        .btn-delete { background: #e74c3c; color: white; }
-        .btn-delete:hover { background: #c0392b; }
-        .empty-state { text-align: center; padding: 3rem; color: #aaa; }
-        .empty-state-icon { font-size: 4rem; margin-bottom: 1rem; }
-        footer { background-color: #1a1a1a; padding: 30px 0; text-align: center; border-top: 1px solid #333333; margin-top: 4rem; }
-        footer p { margin: 0.5rem 0; color: #cccccc; }
-        footer a { color: #ffc107; text-decoration: none; margin: 0 10px; }
-        footer a:hover { color: #ffb300; text-decoration: underline; }
-        .modal-content { background: #2a2a2a; color: #ffffff; border: 1px solid #444; }
-        .modal-header { border-bottom: 1px solid #444; }
-        .modal-footer { border-top: 1px solid #444; }
-        .btn-close { filter: invert(1); }
-        .form-control, .form-select { background-color: #3a3a3a; border: 1px solid #444; color: #ffffff; }
-        .form-control:focus, .form-select:focus { background-color: #3a3a3a; border-color: #ffc107; color: #ffffff; box-shadow: 0 0 0 0.25rem rgba(255, 193, 7, 0.25); }
-        .form-label { color: #cccccc; }
-        @media (max-width: 991px) { .sidebar { transform: translateX(-100%); transition: transform 0.3s; } .sidebar.show { transform: translateX(0); } .main-content { margin-left: 0; } .sidebar-toggle { display: flex; align-items: center; justify-content: center; } .search-box { margin-left: 0; width: 100%; } .search-box input { width: 100%; } }
-        @media (max-width: 768px) { .page-title { font-size: 2rem; } .user-item { flex-direction: column; align-items: flex-start; } .user-actions { width: 100%; } }
-    </style>
+    <link rel="stylesheet" href="admin-users.css">
 </head>
+
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNavbar">
         <div class="container">
-            <a class="navbar-brand" href="index.html">KLSZ Faloda</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"><span class="navbar-toggler-icon"></span></button>
+            <a class="navbar-brand d-flex align-items-center" href="index.html">
+                <span class="brand-icon me-2">🍽️</span>
+                <span class="brand-text">KLSZ <span class="brand-highlight">Faloda</span></span>
+            </a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Navigáció">
+                <span class="navbar-toggler-icon"></span>
+            </button>
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item"><a class="nav-link" href="index.html">Főoldal</a></li>
-                    <li class="nav-item"><a class="nav-link" href="registration.html">Regisztráció</a></li>
-                    <li class="nav-item"><a class="nav-link" href="cart.html">Kosár</a></li>
+                <ul class="navbar-nav align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="me-1" viewBox="0 0 16 16"><path d="M8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4.5a.5.5 0 0 0 .5-.5v-4h2v4a.5.5 0 0 0 .5.5H14a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293zM2.5 14V7.707l5.5-5.5 5.5 5.5V14H10v-4a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v4z"/></svg>
+                            Főoldal
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="restaurants.html">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="me-1" viewBox="0 0 16 16"><path d="M7 4.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-6 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-3 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zM4 4.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zM2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2zm2-1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H4z"/></svg>
+                            Éttermek
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="profile.html">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="me-1" viewBox="0 0 16 16"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/></svg>
+                            Fiók
+                        </a>
+                    </li>
+                    <li class="nav-item ms-lg-2">
+                        <a class="nav-link nav-cart-btn" href="cart.html">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="me-1" viewBox="0 0 16 16"><path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/></svg>
+                            Kosár
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>
     </nav>
     <aside class="sidebar" id="sidebar">
         <ul class="sidebar-menu">
-            <li class="sidebar-item"><a href="admin-dashboard.html" class="sidebar-link"><span class="sidebar-icon">📊</span><span>Dashboard</span></a></li>
-            <li class="sidebar-item"><a href="admin-orders.html" class="sidebar-link"><span class="sidebar-icon">📦</span><span>Rendelések</span></a></li>
-            <li class="sidebar-item"><a href="admin-users.html" class="sidebar-link active"><span class="sidebar-icon">👥</span><span>Felhasználók</span></a></li>
-            <li class="sidebar-item"><a href="admin-payments.html" class="sidebar-link"><span class="sidebar-icon">💳</span><span>Fizetések</span></a></li>
+            <li class="sidebar-item"><a href="admin-dashboard.html" class="sidebar-link"><span
+                        class="sidebar-icon">📊</span><span>Dashboard</span></a></li>
+            <li class="sidebar-item"><a href="admin-orders.html" class="sidebar-link"><span
+                        class="sidebar-icon">📦</span><span>Rendelések</span></a></li>
+            <li class="sidebar-item"><a href="admin-users.html" class="sidebar-link active"><span
+                        class="sidebar-icon">👥</span><span>Felhasználók</span></a></li>
+            <li class="sidebar-item"><a href="admin-payments.html" class="sidebar-link"><span
+                        class="sidebar-icon">💳</span><span>Fizetések</span></a></li>
         </ul>
     </aside>
     <button class="sidebar-toggle" id="sidebarToggle">☰</button>
@@ -118,23 +86,34 @@
             </div>
         </section>
     </div>
-    
+
     <!-- Törlés Modal -->
     <div class="modal fade" id="deleteModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header"><h5 class="modal-title">Felhasználó törlése</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
-                <div class="modal-body"><p>Biztosan törölni szeretnéd: <strong id="deleteUserName"></strong>?</p><p class="text-danger">Ez a művelet nem visszavonható!</p></div>
-                <div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Mégse</button><button type="button" class="btn btn-danger" id="confirmDelete">Törlés</button></div>
+                <div class="modal-header">
+                    <h5 class="modal-title">Felhasználó törlése</h5><button type="button" class="btn-close"
+                        data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Biztosan törölni szeretnéd: <strong id="deleteUserName"></strong>?</p>
+                    <p class="text-danger">Ez a művelet nem visszavonható!</p>
+                </div>
+                <div class="modal-footer"><button type="button" class="btn btn-secondary"
+                        data-bs-dismiss="modal">Mégse</button><button type="button" class="btn btn-danger"
+                        id="confirmDelete">Törlés</button></div>
             </div>
         </div>
     </div>
-    
+
     <!-- Szerkesztés Modal -->
     <div class="modal fade" id="editModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header"><h5 class="modal-title">Felhasználó szerkesztése</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+                <div class="modal-header">
+                    <h5 class="modal-title">Felhasználó szerkesztése</h5><button type="button" class="btn-close"
+                        data-bs-dismiss="modal"></button>
+                </div>
                 <div class="modal-body">
                     <input type="hidden" id="editUserId">
                     <div class="mb-3">
@@ -162,176 +141,27 @@
                         </select>
                     </div>
                 </div>
-                <div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Mégse</button><button type="button" class="btn btn-primary" id="confirmEdit">Mentés</button></div>
+                <div class="modal-footer"><button type="button" class="btn btn-secondary"
+                        data-bs-dismiss="modal">Mégse</button><button type="button" class="btn btn-primary"
+                        id="confirmEdit">Mentés</button></div>
             </div>
         </div>
     </div>
-    
-    <footer><div class="container"><p>© 2025 KLSZ Faloda</p><div><a href="#">ÁSZF</a><span style="color: #666;">|</span><a href="#">Kapcsolat</a></div></div></footer>
+
+<footer>
+        <div class="container">
+            <p>© 2025 Ételrendelés Pécs</p>
+            <div>
+                <a href="#">ÁSZF</a>
+                <span style="color: #666;">|</span>
+                <a href="connections.html">Kapcsolat</a>
+            </div>
+        </div>
+    </footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        document.getElementById('sidebarToggle').addEventListener('click', () => document.getElementById('sidebar').classList.toggle('show'));
-        
-        // JAVÍTOTT API URL - a backend-hez igazítva
-        const API_BASE = 'http://localhost:8080/vizsgaremek1/webresources';
-        
-        let users = [], currentFilter = 'all', searchQuery = '', deleteUserId = null, editUserId = null;
-
-        async function loadUsers() {
-            try {
-                // JAVÍTOTT VÉGPONT: /users/GetAllUsers
-                const res = await fetch(`${API_BASE}/users/GetAllUsers`);
-                if (res.ok) { 
-                    users = await res.json(); 
-                    renderUsers(); 
-                }
-            } catch (e) { 
-                console.error('Hiba az adatok betöltésekor:', e); 
-            }
-        }
-
-        function renderUsers() {
-            const list = document.getElementById('usersList');
-            let filtered = users;
-            
-            // Szűrés szerepkör alapján
-            if (currentFilter !== 'all') {
-                filtered = filtered.filter(u => u.role === currentFilter);
-            }
-            
-            // Keresés
-            if (searchQuery) {
-                const q = searchQuery.toLowerCase();
-                filtered = filtered.filter(u => 
-                    (u.name && u.name.toLowerCase().includes(q)) || 
-                    (u.email && u.email.toLowerCase().includes(q))
-                );
-            }
-            
-            if (!filtered.length) { 
-                list.innerHTML = '<div class="empty-state"><div class="empty-state-icon">👥</div><p>Nincsenek felhasználók.</p></div>'; 
-                return; 
-            }
-            
-            list.innerHTML = filtered.map(u => {
-                return `<div class="user-item">
-                    <div class="user-avatar">👤</div>
-                    <div class="user-info">
-                        <div class="user-name">${escapeHtml(u.name || '')}</div>
-                        <div class="user-email">${escapeHtml(u.email || '')}</div>
-                        <div class="user-phone">${escapeHtml(u.phone || '')}</div>
-                    </div>
-                    <div class="user-role ${u.role}">${getRoleName(u.role)}</div>
-                    <div class="user-date">${formatDate(u.created_at)}</div>
-                    <div class="user-actions">
-                        <button class="btn-action btn-edit" onclick="showEditModal(${u.user_id})">Szerkesztés</button>
-                        <button class="btn-action btn-delete" onclick="showDeleteModal(${u.user_id}, '${escapeHtml(u.name || '')}')">Törlés</button>
-                    </div>
-                </div>`;
-            }).join('');
-        }
-
-        document.querySelectorAll('.filter-btn').forEach(btn => btn.addEventListener('click', () => {
-            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            currentFilter = btn.dataset.filter;
-            renderUsers();
-        }));
-
-        document.getElementById('searchInput').addEventListener('input', e => { 
-            searchQuery = e.target.value; 
-            renderUsers(); 
-        });
-
-        function showDeleteModal(id, name) { 
-            deleteUserId = id; 
-            document.getElementById('deleteUserName').textContent = name; 
-            new bootstrap.Modal(document.getElementById('deleteModal')).show(); 
-        }
-        
-        function showEditModal(id) {
-            const user = users.find(u => u.user_id === id);
-            if (!user) return;
-            
-            editUserId = id;
-            document.getElementById('editUserId').value = id;
-            document.getElementById('editName').value = user.name || '';
-            document.getElementById('editUsername').value = user.username || '';
-            document.getElementById('editEmail').value = user.email || '';
-            document.getElementById('editPhone').value = user.phone || '';
-            document.getElementById('editRole').value = user.role || 'customer';
-            
-            new bootstrap.Modal(document.getElementById('editModal')).show();
-        }
-
-        document.getElementById('confirmDelete').addEventListener('click', async () => {
-            if (!deleteUserId) return;
-            try {
-                // JAVÍTOTT VÉGPONT: /users/DeleteUser/{id}
-                const res = await fetch(`${API_BASE}/users/DeleteUser/${deleteUserId}`, { method: 'DELETE' });
-                if (res.ok) { 
-                    bootstrap.Modal.getInstance(document.getElementById('deleteModal')).hide(); 
-                    loadUsers(); 
-                } else {
-                    const error = await res.json();
-                    alert('Hiba: ' + (error.message || 'Ismeretlen hiba'));
-                }
-            } catch (e) { 
-                alert('Hiba történt a törlés során!'); 
-                console.error(e);
-            }
-        });
-
-        document.getElementById('confirmEdit').addEventListener('click', async () => {
-            if (!editUserId) return;
-            
-            const updateData = {
-                name: document.getElementById('editName').value,
-                username: document.getElementById('editUsername').value,
-                email: document.getElementById('editEmail').value,
-                phone: document.getElementById('editPhone').value,
-                role: document.getElementById('editRole').value
-            };
-            
-            try {
-                // JAVÍTOTT VÉGPONT: /users/UpdateUser/{id}
-                const res = await fetch(`${API_BASE}/users/UpdateUser/${editUserId}`, { 
-                    method: 'PUT', 
-                    headers: { 'Content-Type': 'application/json' }, 
-                    body: JSON.stringify(updateData) 
-                });
-                if (res.ok) { 
-                    bootstrap.Modal.getInstance(document.getElementById('editModal')).hide(); 
-                    loadUsers(); 
-                } else {
-                    const error = await res.json();
-                    alert('Hiba: ' + (error.message || 'Ismeretlen hiba'));
-                }
-            } catch (e) { 
-                alert('Hiba történt a mentés során!'); 
-                console.error(e);
-            }
-        });
-
-        function getRoleName(r) { 
-            return { 
-                customer: 'Vásárló', 
-                admin: 'Admin', 
-                restaurant_owner: 'Tulajdonos' 
-            }[r] || 'Vásárló'; 
-        }
-        
-        function formatDate(d) { 
-            return d ? new Date(d).toLocaleDateString('hu-HU') : 'N/A'; 
-        }
-        
-        function escapeHtml(t) { 
-            const d = document.createElement('div'); 
-            d.textContent = t; 
-            return d.innerHTML; 
-        }
-        
-        document.addEventListener('DOMContentLoaded', loadUsers);
-    </script>
+    <script src="api.js"></script>
+    <script src="admin-auth.js"></script>
+    <script src="admin-users.js"></script>
 </body>
+
 </html>

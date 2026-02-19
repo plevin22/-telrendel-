@@ -46,7 +46,6 @@ function loadCart() {
                         </div>
                     </td>
                     <td>${formatPrice(item.price)}</td>
-                    <td>${formatPrice(itemTotal)}</td>
                     <td>
                         <button class="btn btn-sm btn-danger" onclick="removeFromCart(${item.dish_id})">Törlés</button>
                     </td>

@@ -6,311 +6,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KLSZ Faloda - Admin Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            background: linear-gradient(to bottom, #1a1a1a 10%, #343333 25%);
-            color: #ffffff;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            min-height: 100vh;
-            padding-top: 70px;
-        }
-
-        .sidebar {
-            position: fixed;
-            left: 0;
-            top: 70px;
-            width: 250px;
-            height: calc(100vh - 70px);
-            background: linear-gradient(180deg, #2c2c2c 0%, #1a1a1a 100%);
-            padding: 2rem 0;
-            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
-            overflow-y: auto;
-            z-index: 100;
-        }
-
-        .sidebar-menu {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .sidebar-item {
-            margin-bottom: 0.5rem;
-        }
-
-        .sidebar-link {
-            display: flex;
-            align-items: center;
-            padding: 1rem 1.5rem;
-            color: #cccccc;
-            text-decoration: none;
-            transition: all 0.3s;
-            font-weight: 500;
-            border-left: 3px solid transparent;
-        }
-
-        .sidebar-link:hover {
-            background: rgba(255, 193, 7, 0.1);
-            color: #ffffff;
-            border-left-color: #ffc107;
-        }
-
-        .sidebar-link.active {
-            background: rgba(255, 193, 7, 0.15);
-            color: #ffc107;
-            border-left-color: #ffc107;
-        }
-
-        .sidebar-icon {
-            font-size: 1.3rem;
-            margin-right: 1rem;
-            width: 25px;
-            text-align: center;
-        }
-
-        .main-content {
-            margin-left: 250px;
-            transition: margin-left 0.3s;
-        }
-
-        .sidebar-toggle {
-            display: none;
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 60px;
-            height: 60px;
-            background: #ffc107;
-            color: #000;
-            border: none;
-            border-radius: 50%;
-            font-size: 1.5rem;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(255, 193, 7, 0.4);
-            z-index: 1000;
-        }
-
-        .navbar {
-            background-color: rgba(0, 0, 0, 0.9) !important;
-            padding: 1rem 0;
-        }
-
-        .navbar-brand {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: #ffffff !important;
-        }
-
-        .navbar-nav .nav-link {
-            color: #cccccc !important;
-            margin: 0 1rem;
-            transition: color 0.3s;
-        }
-
-        .navbar-nav .nav-link:hover {
-            color: #ffffff !important;
-        }
-
-        .dashboard-section {
-            padding: 60px 0;
-        }
-
-        .page-title {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: #ffc107;
-            margin-bottom: 3rem;
-            text-align: center;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 3rem;
-        }
-
-        .stat-card {
-            background: linear-gradient(135deg, #2a2a2a, #3a3a3a);
-            border-radius: 12px;
-            padding: 2rem;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-            transition: transform 0.3s;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .stat-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .stat-icon.red {
-            background-color: #e74c3c;
-        }
-
-        .stat-icon.purple {
-            background-color: #9b59b6;
-        }
-
-        .stat-icon.green {
-            background-color: #27ae60;
-        }
-
-        .stat-icon.blue {
-            background-color: #3498db;
-        }
-
-        .stat-label {
-            color: #cccccc;
-            font-size: 0.9rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .stat-value {
-            font-size: 2rem;
-            font-weight: 700;
-            color: #ffffff;
-        }
-
-        .quick-links {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }
-
-        .quick-link-card {
-            background: linear-gradient(135deg, #2a2a2a, #3a3a3a);
-            border-radius: 12px;
-            padding: 2rem;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-            transition: all 0.3s;
-            text-decoration: none;
-            color: #ffffff;
-            display: flex;
-            align-items: center;
-            gap: 1.5rem;
-        }
-
-        .quick-link-card:hover {
-            transform: translateY(-5px);
-            background: linear-gradient(135deg, #3a3a3a, #4a4a4a);
-            color: #ffc107;
-        }
-
-        .quick-link-icon {
-            width: 60px;
-            height: 60px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            flex-shrink: 0;
-        }
-
-        .quick-link-icon.orders {
-            background: linear-gradient(135deg, #e74c3c, #c0392b);
-        }
-
-        .quick-link-icon.users {
-            background: linear-gradient(135deg, #3498db, #2980b9);
-        }
-
-        .quick-link-icon.payments {
-            background: linear-gradient(135deg, #27ae60, #1e8449);
-        }
-
-        .quick-link-info h3 {
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin-bottom: 0.3rem;
-        }
-
-        .quick-link-info p {
-            font-size: 0.9rem;
-            color: #aaa;
-            margin: 0;
-        }
-
-        footer {
-            background-color: #1a1a1a;
-            padding: 30px 0;
-            text-align: center;
-            border-top: 1px solid #333333;
-            margin-top: 4rem;
-        }
-
-        footer p {
-            margin: 0.5rem 0;
-            color: #cccccc;
-        }
-
-        footer a {
-            color: #ffc107;
-            text-decoration: none;
-            margin: 0 10px;
-        }
-
-        footer a:hover {
-            color: #ffb300;
-            text-decoration: underline;
-        }
-
-        @media (max-width: 991px) {
-            .sidebar {
-                transform: translateX(-100%);
-                transition: transform 0.3s;
-            }
-
-            .sidebar.show {
-                transform: translateX(0);
-            }
-
-            .main-content {
-                margin-left: 0;
-            }
-
-            .sidebar-toggle {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .page-title {
-                font-size: 2rem;
-            }
-
-            .stats-grid,
-            .quick-links {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="admin-dashboard.css">
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNavbar">
         <div class="container">
-            <a class="navbar-brand" href="index.html">KLSZ Faloda</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"><span
-                    class="navbar-toggler-icon"></span></button>
+            <a class="navbar-brand d-flex align-items-center" href="index.html">
+                <span class="brand-icon me-2">🍽️</span>
+                <span class="brand-text">KLSZ <span class="brand-highlight">Faloda</span></span>
+            </a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Navigáció">
+                <span class="navbar-toggler-icon"></span>
+            </button>
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item"><a class="nav-link" href="index.html">Főoldal</a></li>
-                    <li class="nav-item"><a class="nav-link" href="registration.html">Regisztráció</a></li>
-                    <li class="nav-item"><a class="nav-link" href="cart.html">Kosár</a></li>
+                <ul class="navbar-nav align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="me-1" viewBox="0 0 16 16"><path d="M8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4.5a.5.5 0 0 0 .5-.5v-4h2v4a.5.5 0 0 0 .5.5H14a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293zM2.5 14V7.707l5.5-5.5 5.5 5.5V14H10v-4a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v4z"/></svg>
+                            Főoldal
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="restaurants.html">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="me-1" viewBox="0 0 16 16"><path d="M7 4.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-6 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-3 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zM4 4.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zM2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2zm2-1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H4z"/></svg>
+                            Éttermek
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="profile.html">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="me-1" viewBox="0 0 16 16"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/></svg>
+                            Fiók
+                        </a>
+                    </li>
+                    <li class="nav-item ms-lg-2">
+                        <a class="nav-link nav-cart-btn" href="cart.html">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="me-1" viewBox="0 0 16 16"><path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/></svg>
+                            Kosár
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -382,53 +116,18 @@
     </div>
     <footer>
         <div class="container">
-            <p>© 2025 KLSZ Faloda</p>
-            <div><a href="#">ÁSZF</a><span style="color: #666;">|</span><a href="#">Kapcsolat</a></div>
+            <p>© 2025 Ételrendelés Pécs</p>
+            <div>
+                <a href="#">ÁSZF</a>
+                <span style="color: #666;">|</span>
+                <a href="connections.html">Kapcsolat</a>
+            </div>
         </div>
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        document.getElementById('sidebarToggle').addEventListener('click', () => document.getElementById('sidebar').classList.toggle('show'));
-
-        // JAVÍTOTT API URL - a backend-hez igazítva
-        const API_BASE = 'http://localhost:8080/vizsgaremek1/webresources';
-
-        async function loadStatistics() {
-            try {
-                // JAVÍTOTT VÉGPONT: /orders/GetAllOrders
-                const ordersRes = await fetch(`${API_BASE}/orders/GetAllOrders`);
-                if (ordersRes.ok) {
-                    const orders = await ordersRes.json();
-                    const today = new Date().toISOString().split('T')[0];
-                    let todayOrders = 0, dailyRevenue = 0, totalRevenue = 0;
-                    orders.forEach(o => {
-                        totalRevenue += parseFloat(o.total_price) || 0;
-                        if ((o.created_at || '').split('T')[0] === today) {
-                            todayOrders++;
-                            dailyRevenue += parseFloat(o.total_price) || 0;
-                        }
-                    });
-                    document.getElementById('todayOrders').textContent = todayOrders;
-                    document.getElementById('dailyRevenue').textContent = formatPrice(dailyRevenue);
-                    document.getElementById('totalRevenue').textContent = formatPrice(totalRevenue);
-                }
-
-                // JAVÍTOTT VÉGPONT: /users/GetAllUsers
-                const usersRes = await fetch(`${API_BASE}/users/GetAllUsers`);
-                if (usersRes.ok) {
-                    document.getElementById('totalUsers').textContent = (await usersRes.json()).length;
-                }
-            } catch (e) {
-                console.error('Hiba az adatok betöltésekor:', e);
-            }
-        }
-
-        function formatPrice(p) {
-            return new Intl.NumberFormat('hu-HU').format(Math.round(p)) + ' Ft';
-        }
-
-        document.addEventListener('DOMContentLoaded', loadStatistics);
-    </script>
+    <script src="api.js"></script>
+    <script src="admin-auth.js"></script>
+    <script src="admin-dashboard.js"></script>
 </body>
 
 </html>

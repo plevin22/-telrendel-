@@ -6,12 +6,12 @@
 // Étterem ID mapping (HTML fájlnév -> adatbázis ID)
 const RESTAURANT_MAP = {
     'restaurant-reggeli.html': { id: 1, name: 'Reggeli Étterem' },
-    'restaurant-sablon.html': { id: 2, name: 'Szünet Kávézó' },
+    'restaurant-szunetkave.html': { id: 2, name: 'Szünet Kávézó' },
     'restaurant-csulokbar.html': { id: 3, name: 'Csülök Bár' },
-    'restaurant-JuiceBoo_Pécs_Smoothie_Bar.html': { id: 4, name: 'Juice&Co. Pécs Smoothie Bar' },
-    'restaurant-Élemozsia Bistro.html': { id: 5, name: 'Elemózsia Bisztró' },
-    'restaurant-Mátyás_Király_Vendéglő.html': { id: 6, name: 'Mátyás Király Vendéglő' },
-    'restaurant-Teca_Mama_Vendéglője.html': { id: 7, name: 'Teca Mama Kisvendéglő' },
+    'restaurant-JuiceBoo_Pecs_Smoothie_Bar.html': { id: 4, name: 'Juice&Co. Pécs Smoothie Bar' },
+    'restaurant-elemozsia-Bistro.html': { id: 5, name: 'Elemózsia Bisztró' },
+    'restaurant-Matyas-kiraly-vendeglo.html': { id: 6, name: 'Mátyás Király Vendéglő' },
+    'restaurant-Teca_Mama_Vendeglo.html': { id: 7, name: 'Teca Mama Kisvendéglő' },
     'restaurant-Pizza_Hut.html': { id: 8, name: 'Pizza Hut Pécs' },
     'restaurant-Best_Food_Grill.html': { id: 9, name: 'Best Food Grill Pécs' }
 };
@@ -32,6 +32,7 @@ document.addEventListener('DOMContentLoaded', function() {
         currentRestaurantId = restaurantInfo.id;
         currentRestaurantName = restaurantInfo.name;
         loadDishes();
+        loadRestaurantLogo();
     } else {
         console.error('Ismeretlen étterem oldal:', currentPage);
         // Próbáljuk meg kiolvasni az URL-ből
@@ -151,9 +152,13 @@ function updateMenuSection(section, dishes, title) {
     let html = `<h2 class="menu-section-title">${title}</h2>`;
     
     dishes.forEach(dish => {
+        const imageHtml = dish.image_url 
+            ? `<img src="${dish.image_url}" alt="${escapeHtml(dish.name)}" loading="lazy" onerror="this.style.display='none'; this.parentElement.classList.add('no-image');">`
+            : '';
+        
         html += `
             <div class="menu-item" data-dish-id="${dish.dish_id}">
-                <div class="item-image"></div>
+                <div class="item-image${!dish.image_url ? ' no-image' : ''}">${imageHtml}</div>
                 <div class="item-details">
                     <div class="item-name">${dish.name}</div>
                     <div class="item-description">${dish.description || 'Nincs leírás'}</div>
@@ -263,3 +268,23 @@ style.textContent = `
 document.head.appendChild(style);
 
 console.log('Restaurant.js betöltve');
+
+/**
+ * Étterem logó/kép betöltése az adatbázisból a fejléc körébe
+ */
+async function loadRestaurantLogo() {
+    if (!currentRestaurantId) return;
+
+    try {
+        const result = await RestaurantsAPI.getById(currentRestaurantId);
+        if (result.success && result.data && result.data.image_path) {
+            const logoDiv = document.querySelector('.restaurant-logo');
+            if (logoDiv) {
+                logoDiv.innerHTML = `<img src="${result.data.image_path}" alt="${currentRestaurantName}" style="width:100%; height:100%; object-fit:cover; border-radius:50%;">`;
+                logoDiv.style.overflow = 'hidden';
+            }
+        }
+    } catch (error) {
+        console.error('Étterem logó betöltési hiba:', error);
+    }
+}

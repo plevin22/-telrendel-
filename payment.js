@@ -146,12 +146,21 @@ async function processPayment() {
         }
         
         // 1. LÉPÉS: Rendelés létrehozása (szállítási címmel!)
+        // Az items tömböt is elküldjük az email visszaigazoláshoz
+        const orderItems = cartItems.map(item => ({
+            name: item.name,
+            quantity: item.quantity,
+            price: item.price
+        }));
+
         const orderResult = await OrdersAPI.create({
             user_id: userId,
             restaurant_id: parseInt(restaurantId),
             delivery_address: deliveryAddress,
             status: 'pending',
-            total_price: totalPrice
+            total_price: totalPrice,
+            items: orderItems,
+            payment_method: currentPaymentMethod
         });
         
         if (!orderResult.success) {

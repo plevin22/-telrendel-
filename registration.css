@@ -9,30 +9,114 @@ body {
         }
 
         .navbar {
-            background-color: rgba(0, 0, 0, 0.8) !important;
+            background-color: #1a1a1a !important;
             padding: 1rem 0;
+            transition: all 0.3s ease;
         }
-
+        
+        .navbar.scrolled {
+            background-color: rgba(26, 26, 26, 0.95) !important;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+        }
+        
         .navbar-brand {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: #ffffff !important;
+            display: flex;
+            align-items: center;
+            font-weight: 700;
+            font-size: 1.4rem;
         }
-
-        .navbar-nav .nav-link {
-            color: #cccccc !important;
-            margin: 0 1rem;
-            transition: color 0.3s;
+        
+        .brand-icon {
+            font-size: 1.8rem;
+            margin-right: 0.5rem;
         }
-
-        .navbar-nav .nav-link:hover {
-            color: #ffffff !important;
+        
+        .brand-text {
+            color: #ffffff;
         }
-
-        .navbar-nav .nav-link.active {
+        
+        .brand-highlight {
+            color: #d4a528;
+        }
+        
+        .navbar-nav {
+            align-items: center;
+        }
+        
+        .nav-link {
             color: #ffffff !important;
-            text-decoration: underline;
-            text-underline-offset: 5px;
+            font-weight: 500;
+            padding: 0.5rem 1rem !important;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            color: #d4a528 !important;
+        }
+        
+        .nav-link svg {
+            width: 18px;
+            height: 18px;
+        }
+        
+        /* Kosár gomb speciális stílus */
+        .nav-cart-btn {
+            border: 2px solid #d4a528 !important;
+            border-radius: 25px !important;
+            padding: 0.4rem 1rem !important;
+            margin-left: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        
+        .nav-cart-btn:hover {
+            background-color: rgba(212, 165, 40, 0.1);
+        }
+        
+        .cart-badge {
+            background-color: #d4a528;
+            color: #1a1a1a;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 0.15rem 0.5rem;
+            border-radius: 50%;
+            min-width: 20px;
+            text-align: center;
+        }
+        
+        /* Navbar toggler */
+        .navbar-toggler {
+            border: none;
+            padding: 0.5rem;
+        }
+        
+        .navbar-toggler:focus {
+            box-shadow: none;
+        }
+        
+        .navbar-toggler-icon {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+        }
+        
+        /* Mobile responsiveness */
+        @media (max-width: 991.98px) {
+            .navbar-collapse {
+                background-color: #1a1a1a;
+                padding: 1rem;
+                margin-top: 0.5rem;
+                border-radius: 10px;
+            }
+            
+            .nav-cart-btn {
+                margin-left: 0;
+                margin-top: 0.5rem;
+                justify-content: center;
+            }
         }
 
         .registration-section {
