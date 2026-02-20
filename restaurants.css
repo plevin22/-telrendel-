@@ -1,0 +1,268 @@
+body {
+            background: linear-gradient(to bottom, #1a1a1a 10%, #343333 25%);
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            padding-top: 70px;
+        }
+
+        .navbar {
+            background-color: #1a1a1a !important;
+            padding: 1rem 0;
+            transition: all 0.3s ease;
+        }
+        
+        .navbar.scrolled {
+            background-color: rgba(26, 26, 26, 0.95) !important;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            font-weight: 700;
+            font-size: 1.4rem;
+        }
+        
+        .brand-icon {
+            font-size: 1.8rem;
+            margin-right: 0.5rem;
+        }
+        
+        .brand-text {
+            color: #ffffff;
+        }
+        
+        .brand-highlight {
+            color: #d4a528;
+        }
+        
+        .navbar-nav {
+            align-items: center;
+        }
+        
+        .nav-link {
+            color: #ffffff !important;
+            font-weight: 500;
+            padding: 0.5rem 1rem !important;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            color: #d4a528 !important;
+        }
+        
+        .nav-link svg {
+            width: 18px;
+            height: 18px;
+        }
+        
+        /* Kosár gomb speciális stílus */
+        .nav-cart-btn {
+            border: 2px solid #d4a528 !important;
+            border-radius: 25px !important;
+            padding: 0.4rem 1rem !important;
+            margin-left: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        
+        .nav-cart-btn:hover {
+            background-color: rgba(212, 165, 40, 0.1);
+        }
+        
+        .cart-badge {
+            background-color: #d4a528;
+            color: #1a1a1a;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 0.15rem 0.5rem;
+            border-radius: 50%;
+            min-width: 20px;
+            text-align: center;
+        }
+        
+        /* Navbar toggler */
+        .navbar-toggler {
+            border: none;
+            padding: 0.5rem;
+        }
+        
+        .navbar-toggler:focus {
+            box-shadow: none;
+        }
+        
+        .navbar-toggler-icon {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+        }
+        
+        /* Mobile responsiveness */
+        @media (max-width: 991.98px) {
+            .navbar-collapse {
+                background-color: #1a1a1a;
+                padding: 1rem;
+                margin-top: 0.5rem;
+                border-radius: 10px;
+            }
+            
+            .nav-cart-btn {
+                margin-left: 0;
+                margin-top: 0.5rem;
+                justify-content: center;
+            }
+        }
+
+        .restaurants-section {
+            padding: 60px 0 80px;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: #ffc107;
+            margin-bottom: 1rem;
+        }
+
+        .section-subtitle {
+            color: #cccccc;
+            font-size: 1rem;
+            margin-bottom: 3rem;
+        }
+
+        .restaurant-card {
+            background-color: #d9d9d9;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 3rem;
+        }
+
+        .restaurant-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .row {
+            row-gap: 1rem;
+        }
+
+        .restaurant-image {
+            width: 100%;
+            height: 200px;
+            background-color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .restaurant-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .restaurant-body {
+            padding: 1.25rem;
+            text-align: center;
+            background-color: #d9d9d9;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .restaurant-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #000000;
+            margin-bottom: 1rem;
+        }
+
+        .btn-view-restaurant {
+            background-color: #333333;
+            color: #ffffff;
+            border: none;
+            padding: 10px 25px;
+            font-size: 0.9rem;
+            border-radius: 5px;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        .btn-view-restaurant:hover {
+            background-color: #555555;
+            color: #ffffff;
+        }
+
+        .features-section {
+            background-color: #2a2a2a;
+            padding: 50px 0;
+        }
+
+        .features-title {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 2.5rem;
+        }
+
+        .feature-box {
+            text-align: center;
+            padding: 1.5rem 1rem;
+        }
+
+        .feature-box h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+        }
+
+        .feature-box p {
+            color: #cccccc;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        footer {
+            background-color: #1a1a1a;
+            padding: 30px 0;
+            text-align: center;
+            border-top: 1px solid #333333;
+        }
+
+        footer p {
+            margin: 0.5rem 0;
+            color: #cccccc;
+        }
+
+        footer a {
+            color: #ffc107;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        footer a:hover {
+            color: #ffb300;
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .restaurant-image {
+                height: 180px;
+            }
+        }

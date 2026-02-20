@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KLSZ Faloda - Szünet Kávézó</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style_restaurants.css">
+    
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNavbar">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="index.html">
+                <span class="brand-icon me-2">🍽️</span>
+                <span class="brand-text">KLSZ <span class="brand-highlight">Faloda</span></span>
+            </a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Navigáció">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="me-1" viewBox="0 0 16 16"><path d="M8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4.5a.5.5 0 0 0 .5-.5v-4h2v4a.5.5 0 0 0 .5.5H14a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293zM2.5 14V7.707l5.5-5.5 5.5 5.5V14H10v-4a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v4z"/></svg>
+                            Főoldal
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="restaurants.html">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="me-1" viewBox="0 0 16 16"><path d="M7 4.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-6 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-3 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zM4 4.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zM2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2zm2-1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H4z"/></svg>
+                            Éttermek
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="profile.html">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="me-1" viewBox="0 0 16 16"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/></svg>
+                            Fiók
+                        </a>
+                    </li>
+                    <li class="nav-item ms-lg-2">
+                        <a class="nav-link nav-cart-btn" href="cart.html">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="me-1" viewBox="0 0 16 16"><path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/></svg>
+                            Kosár
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <section class="py-4">
+        <div class="container">
+            <!-- Breadcrumb -->
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html">Főoldal</a></li>
+                    <li class="breadcrumb-item"><a href="restaurants.html">ÉTTEREM LISTA</a></li>
+                    <li class="breadcrumb-item active">Best Food Grill</li>
+                </ol>
+            </nav>
+
+            <!-- Restaurant Header -->
+            <div class="restaurant-header">
+                <div class="restaurant-logo"></div>
+                <div class="restaurant-info">
+                    <h1>Best Food Grill</h1>
+                    <p>7621 Pécs, Széchenyi tér 8</p>
+                    <p>Gyors Étterem • Reggeli • Desszertek</p>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- Menu Content -->
+                <div class="col-lg-8">
+                    <!-- Menu Navigation -->
+                    <div class="menu-tabs">
+                        <ul class="nav nav-tabs" role="navigation">
+                            <li class="nav-item">
+                                <a class="nav-link active" href="#nepszeru">Népszerű</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#etelek-section">Ételek</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#italok-section">Italok</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#desszertek-section">Desszertek</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Népszerű Section -->
+                    <div id="nepszeru" class="menu-section">
+                        <h2 class="menu-section-title">Népszerű</h2>
+                        
+                        <div class="menu-item">
+                            <div class="item-image"></div>
+                            <div class="item-details">
+                                <div class="item-name">Kaja név</div>
+                                <div class="item-description">Hozzávalók</div>
+                                <div class="item-price">Kaja Ára</div>
+                            </div>
+                            <button class="btn-add-to-cart">Kosárba</button>
+                        </div>
+
+                        <div class="menu-item">
+                            <div class="item-image"></div>
+                            <div class="item-details">
+                                <div class="item-name">Kaja név</div>
+                                <div class="item-description">Hozzávalók</div>
+                                <div class="item-price">Kaja Ára</div>
+                            </div>
+                            <button class="btn-add-to-cart">Kosárba</button>
+                        </div>
+
+                        <div class="menu-item">
+                            <div class="item-image"></div>
+                            <div class="item-details">
+                                <div class="item-name">Kaja név</div>
+                                <div class="item-description">Hozzávalók</div>
+                                <div class="item-price">Kaja Ára</div>
+                            </div>
+                            <button class="btn-add-to-cart">Kosárba</button>
+                        </div>
+
+                        <div class="menu-item">
+                            <div class="item-image"></div>
+                            <div class="item-details">
+                                <div class="item-name">Kaja név</div>
+                                <div class="item-description">Hozzávalók</div>
+                                <div class="item-price">Kaja Ára</div>
+                            </div>
+                            <button class="btn-add-to-cart">Kosárba</button>
+                        </div>
+                    </div>
+
+                    <!-- Ételek Section -->
+                    <div id="etelek-section" class="menu-section">
+                        <h2 class="menu-section-title">Ételek</h2>
+                        
+                        <div class="menu-item">
+                            <div class="item-image"></div>
+                            <div class="item-details">
+                                <div class="item-name">Kaja név</div>
+                                <div class="item-description">Hozzávalók</div>
+                                <div class="item-price">Kaja Ára</div>
+                            </div>
+                            <button class="btn-add-to-cart">Kosárba</button>
+                        </div>
+
+                        <div class="menu-item">
+                            <div class="item-image"></div>
+                            <div class="item-details">
+                                <div class="item-name">Kaja név</div>
+                                <div class="item-description">Hozzávalók</div>
+                                <div class="item-price">Kaja Ára</div>
+                            </div>
+                            <button class="btn-add-to-cart">Kosárba</button>
+                        </div>
+
+                        <div class="menu-item">
+                            <div class="item-image"></div>
+                            <div class="item-details">
+                                <div class="item-name">Kaja név</div>
+                                <div class="item-description">Hozzávalók</div>
+                                <div class="item-price">Kaja Ára</div>
+                            </div>
+                            <button class="btn-add-to-cart">Kosárba</button>
+                        </div>
+
+                        <div class="menu-item">
+                            <div class="item-image"></div>
+                            <div class="item-details">
+                                <div class="item-name">Kaja név</div>
+                                <div class="item-description">Hozzávalók</div>
+                                <div class="item-price">Kaja Ára</div>
+                            </div>
+                            <button class="btn-add-to-cart">Kosárba</button>
+                        </div>
+
+                        <div class="menu-item">
+                            <div class="item-image"></div>
+                            <div class="item-details">
+                                <div class="item-name">Kaja név</div>
+                                <div class="item-description">Hozzávalók</div>
+                                <div class="item-price">Kaja Ára</div>
+                            </div>
+                            <button class="btn-add-to-cart">Kosárba</button>
+                        </div>
+
+                        <div class="menu-item">
+                            <div class="item-image"></div>
+                            <div class="item-details">
+                                <div class="item-name">Kaja név</div>
+                                <div class="item-description">Hozzávalók</div>
+                                <div class="item-price">Kaja Ára</div>
+                            </div>
+                            <button class="btn-add-to-cart">Kosárba</button>
+                        </div>
+                    </div>
+
+                    <!-- Italok Section -->
+                    <div id="italok-section" class="menu-section">
+                        <h2 class="menu-section-title">Italok</h2>
+                        
+                        <div class="menu-item">
+                            <div class="item-image"></div>
+                            <div class="item-details">
+                                <div class="item-name">Kaja név</div>
+                                <div class="item-description">Hozzávalók</div>
+                                <div class="item-price">Kaja Ára</div>
+                            </div>
+                            <button class="btn-add-to-cart">Kosárba</button>
+                        </div>
+
+                        <div class="menu-item">
+                            <div class="item-image"></div>
+                            <div class="item-details">
+                                <div class="item-name">Kaja név</div>
+                                <div class="item-description">Hozzávalók</div>
+                                <div class="item-price">Kaja Ára</div>
+                            </div>
+                            <button class="btn-add-to-cart">Kosárba</button>
+                        </div>
+                    </div>
+
+                    <!-- Desszertek Section -->
+                    <div id="desszertek-section" class="menu-section">
+                        <h2 class="menu-section-title">Desszertek</h2>
+                        
+                        <div class="menu-item">
+                            <div class="item-image"></div>
+                            <div class="item-details">
+                                <div class="item-name">Kaja név</div>
+                                <div class="item-description">Hozzávalók</div>
+                                <div class="item-price">Kaja Ára</div>
+                            </div>
+                            <button class="btn-add-to-cart">Kosárba</button>
+                        </div>
+
+                        <div class="menu-item">
+                            <div class="item-image"></div>
+                            <div class="item-details">
+                                <div class="item-name">Kaja név</div>
+                                <div class="item-description">Hozzávalók</div>
+                                <div class="item-price">Kaja Ára</div>
+                            </div>
+                            <button class="btn-add-to-cart">Kosárba</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- END col-lg-8 -->
+
+                <!-- Sticky Cart Sidebar -->
+                <div class="col-lg-4">
+                    <div class="cart-sidebar">
+                        <div class="cart-title">Teljes Összeg</div>
+                        <div class="cart-total">0 Ft</div>
+                        <button class="btn-checkout" onclick="window.location.href='cart.html'">Kosár megtekintése</button>
+                    </div>
+                </div>
+                <!-- END col-lg-4 -->
+            </div>
+            <!-- END row -->
+        </div>
+        <!-- END container -->
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section">
+        <div class="container">
+            <h2 class="features-title">Miért válassz minket?</h2>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="feature-box">
+                        <h3>Villámgyors kiszállítás</h3>
+                        <p>Pécs legnagyobb Futárpartnerével dolgozunk</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-box">
+                        <h3>Elégedett vásárlók</h3>
+                        <p>Átlagosan 4.8/5 értékelés a felhasználóinktól</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-box">
+                        <h3>Nagy választék</h3>
+                        <p>Több mint 9 pácsi étterem kínálata egy helyen.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>© 2025 Ételrendelés Pécs</p>
+            <div>
+                <a href="#">ÁSZF</a>
+                <span style="color: #666;">|</span>
+                <a href="connections.html">Kapcsolat</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="restaurant-scroll-cart.js"></script>
+    <script src="api.js"></script>
+    <script src="restaurant.js"></script>
+    <script src="navbar-scroll.js"></script>
+</body>
+</html>

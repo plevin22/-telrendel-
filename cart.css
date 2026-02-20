@@ -1,0 +1,330 @@
+body {
+            background: linear-gradient(to bottom, #1a1a1a 10%, #343333 25%);
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            padding-top: 70px;
+            flex-direction: column;
+        }
+
+        .navbar {
+            background-color: #1a1a1a !important;
+            padding: 1rem 0;
+            transition: all 0.3s ease;
+        }
+        
+        .navbar.scrolled {
+            background-color: rgba(26, 26, 26, 0.95) !important;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            font-weight: 700;
+            font-size: 1.4rem;
+        }
+        
+        .brand-icon {
+            font-size: 1.8rem;
+            margin-right: 0.5rem;
+        }
+        
+        .brand-text {
+            color: #ffffff;
+        }
+        
+        .brand-highlight {
+            color: #d4a528;
+        }
+        
+        .navbar-nav {
+            align-items: center;
+        }
+        
+        .nav-link {
+            color: #ffffff !important;
+            font-weight: 500;
+            padding: 0.5rem 1rem !important;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            color: #d4a528 !important;
+        }
+        
+        .nav-link svg {
+            width: 18px;
+            height: 18px;
+        }
+        
+        /* Kosár gomb speciális stílus */
+        .nav-cart-btn {
+            border: 2px solid #d4a528 !important;
+            border-radius: 25px !important;
+            padding: 0.4rem 1rem !important;
+            margin-left: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        
+        .nav-cart-btn:hover {
+            background-color: rgba(212, 165, 40, 0.1);
+        }
+        
+        .cart-badge {
+            background-color: #d4a528;
+            color: #1a1a1a;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 0.15rem 0.5rem;
+            border-radius: 50%;
+            min-width: 20px;
+            text-align: center;
+        }
+        
+        /* Navbar toggler */
+        .navbar-toggler {
+            border: none;
+            padding: 0.5rem;
+        }
+        
+        .navbar-toggler:focus {
+            box-shadow: none;
+        }
+        
+        .navbar-toggler-icon {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+        }
+        
+        /* Mobile responsiveness */
+        @media (max-width: 991.98px) {
+            .navbar-collapse {
+                background-color: #1a1a1a;
+                padding: 1rem;
+                margin-top: 0.5rem;
+                border-radius: 10px;
+            }
+            
+            .nav-cart-btn {
+                margin-left: 0;
+                margin-top: 0.5rem;
+                justify-content: center;
+            }
+        }
+        /* Quantity controls */
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .quantity-controls .btn {
+            width: 32px;
+            height: 32px;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border: 2px solid #3a3a3a;
+            color: #d4a528;
+            background-color: #3a3a3a;
+            transition: all 0.3s ease;
+        }
+
+        .quantity-controls .btn:hover {
+            background-color: #d4a528;
+            color: #1a1a1a;
+            border-color: #1a1a1a;
+            transform: scale(1.05);
+        }
+
+        .quantity-controls .btn:active {
+            transform: scale(0.95);
+        }
+
+        .quantity-controls .btn:focus {
+            box-shadow: 0 0 0 3px rgba(212, 165, 40, 0.3);
+        }
+
+        .quantity-controls span {
+            min-width: 30px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+        .cart-section {
+            flex: 1;
+            padding: 60px 0 80px;
+        }
+        /* Törlés gomb */
+        .btn-danger {
+            background-color: #3a3a3a;
+            border-color: #3a3a3a;
+            color: #d4a528;
+            font-weight: 500;
+            padding: 0.4rem 1rem;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-danger:hover {
+            background-color: #dc3545;
+            border-color: #dc3545;
+            color: #ffffff;
+            transform: scale(1.05);
+            
+        }
+
+        .cart-title {
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: #ffc107;
+            margin-bottom: 2rem;
+        }
+
+        .cart-table-container {
+            background-color: transparent;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .cart-table {
+            width: 100%;
+            background-color: #ada6a6;
+            border-collapse: collapse;
+        }
+
+        .cart-table thead {
+            background-color: #3a3a3a;
+        }
+
+        .cart-table thead th {
+            padding: 1rem;
+            text-align: center;
+            font-weight: 600;
+            color: #ffffff;
+            border: none;
+        }
+
+        .cart-table tbody {
+            background-color: #b0b0b0;
+            min-height: 200px;
+        }
+
+        .cart-table tbody td {
+            padding: 3rem 1rem;
+            text-align: center;
+            color: #000000;
+            border: none;
+        }
+
+        .empty-cart-message {
+            text-align: center;
+            color: #666666;
+            font-size: 1.1rem;
+            padding: 4rem 0;
+        }
+
+        .btn-continue {
+            background-color: #4caf50;
+            color: #ffffff;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        .btn-continue:hover {
+            background-color: #4caf50;
+            transform: translateY(-2px);
+        }
+
+        .features-section {
+            background-color: #2a2a2a;
+            padding: 50px 0;
+            margin-top: auto;
+        }
+
+        .features-title {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 2.5rem;
+        }
+
+        .feature-box {
+            text-align: center;
+            padding: 1.5rem 1rem;
+        }
+
+        .feature-box h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+        }
+
+        .feature-box p {
+            color: #cccccc;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        footer {
+            background-color: #1a1a1a;
+            padding: 30px 0;
+            text-align: center;
+            border-top: 1px solid #333333;
+        }
+
+        footer p {
+            margin: 0.5rem 0;
+            color: #cccccc;
+        }
+
+        footer a {
+            color: #ffc107;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        footer a:hover {
+            color: #ffb300;
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .cart-title {
+                font-size: 2rem;
+            }
+
+            .cart-table thead th {
+                padding: 0.75rem 0.5rem;
+                font-size: 0.9rem;
+            }
+        }
+        @media (max-width: 991px) {
+            .navbar-nav {
+                padding: 1rem 0;
+                gap: 0.3rem;
+            }
+
+            .navbar-nav .nav-link {
+                padding: 0.6rem 1rem !important;
+            }
+
+            .nav-item.ms-lg-2 {
+                margin-top: 0.3rem;
+            }
+        }
