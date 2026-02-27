@@ -100,49 +100,36 @@ function displayDishes(dishes) {
         updateMenuSection(nepszeruSection, popularDishes, 'Népszerű');
     }
 
-    // Ételek section (összes étel)
+    // Ételek section - type === 'étel'
     const etelekSection = document.querySelector('#etelek-section');
     if (etelekSection) {
-        updateMenuSection(etelekSection, dishes, 'Ételek');
-    }
-
-    // Italok section (ha van olyan kategória)
-    const italokSection = document.querySelector('#italok-section');
-    if (italokSection) {
-        // Itt szűrhetnénk kategória alapján, de nincs kategória mező
-        // Egyelőre üresen hagyjuk vagy az utolsó néhány ételt mutatjuk
-        const drinks = dishes.filter(d => 
-            d.name.toLowerCase().includes('tea') || 
-            d.name.toLowerCase().includes('kávé') ||
-            d.name.toLowerCase().includes('latte') ||
-            d.name.toLowerCase().includes('juice') ||
-            d.name.toLowerCase().includes('smoothie') ||
-            d.name.toLowerCase().includes('limonádé') ||
-            d.name.toLowerCase().includes('cola') ||
-            d.name.toLowerCase().includes('fanta') ||
-            d.name.toLowerCase().includes('sprite') ||
-            d.name.toLowerCase().includes('ital')
-        );
-        if (drinks.length > 0) {
-            updateMenuSection(italokSection, drinks, 'Italok');
+        const foods = dishes.filter(d => d.type === 'étel');
+        if (foods.length > 0) {
+            updateMenuSection(etelekSection, foods, 'Ételek');
+        } else {
+            etelekSection.innerHTML = '';
         }
     }
 
-    // Desszertek section
+    // Italok section - type === 'ital'
+    const italokSection = document.querySelector('#italok-section');
+    if (italokSection) {
+        const drinks = dishes.filter(d => d.type === 'ital');
+        if (drinks.length > 0) {
+            updateMenuSection(italokSection, drinks, 'Italok');
+        } else {
+            italokSection.innerHTML = '';
+        }
+    }
+
+    // Desszertek section - type === 'desszert'
     const desszertekSection = document.querySelector('#desszertek-section');
     if (desszertekSection) {
-        const desserts = dishes.filter(d => 
-            d.name.toLowerCase().includes('palacsinta') || 
-            d.name.toLowerCase().includes('brownie') ||
-            d.name.toLowerCase().includes('torta') ||
-            d.name.toLowerCase().includes('fagyi') ||
-            d.name.toLowerCase().includes('desszert') ||
-            d.name.toLowerCase().includes('mousse') ||
-            d.name.toLowerCase().includes('csoki') ||
-            d.name.toLowerCase().includes('gesztenye')
-        );
+        const desserts = dishes.filter(d => d.type === 'desszert');
         if (desserts.length > 0) {
             updateMenuSection(desszertekSection, desserts, 'Desszertek');
+        } else {
+            desszertekSection.innerHTML = '';
         }
     }
 }

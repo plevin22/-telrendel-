@@ -5,7 +5,10 @@ const API_ENDPOINTS = {
     // Restaurants
     restaurants: {
         getAll: `${API_BASE_URL}/restaurants/GetAllRestaurants`,
-        getById: (id) => `${API_BASE_URL}/restaurants/GetRestaurantById/${id}`
+        getById: (id) => `${API_BASE_URL}/restaurants/GetRestaurantById/${id}`,
+        add: `${API_BASE_URL}/restaurants/AddRestaurant`,
+        update: (id) => `${API_BASE_URL}/restaurants/UpdateRestaurant/${id}`,
+        delete: (id) => `${API_BASE_URL}/restaurants/DeleteRestaurant/${id}`
     },
     // Users
     users: {
@@ -108,6 +111,21 @@ const RestaurantsAPI = {
     // Étterem lekérése ID alapján
     async getById(id) {
         return await apiCall(API_ENDPOINTS.restaurants.getById(id));
+    },
+
+    // Étterem hozzáadása
+    async add(restaurantData) {
+        return await apiCall(API_ENDPOINTS.restaurants.add, 'POST', restaurantData);
+    },
+
+    // Étterem frissítése
+    async update(id, restaurantData) {
+        return await apiCall(API_ENDPOINTS.restaurants.update(id), 'PUT', restaurantData);
+    },
+
+    // Étterem törlése
+    async delete(id) {
+        return await apiCall(API_ENDPOINTS.restaurants.delete(id), 'DELETE');
     }
 };
 
@@ -575,21 +593,49 @@ function updateNavigation() {
     } else {
         // Kijelentkezett állapot
         navbarNav.innerHTML = `
-            <li class="nav-item">
-                <a class="nav-link" href="index.html">Főoldal</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="restaurants.html">Éttermek</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="login.html">Bejelentkezés</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="registration.html">Regisztráció</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="cart.html">Kosár</a>
-            </li>
+<li class="nav-item">
+    <a class="nav-link" href="index.html">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4.5a.5.5 0 0 0 .5-.5v-4h2v4a.5.5 0 0 0 .5.5H14a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293zM2.5 14V7.707l5.5-5.5 5.5 5.5V14H10v-4a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v4z"/>
+        </svg>
+        Főoldal
+    </a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" href="restaurants.html">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M7 4.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-6 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zm-3 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zM4 4.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zM2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2zm2-1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H4z"/>
+        </svg>
+        Éttermek
+    </a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" href="login.html">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0z"/>
+            <path fill-rule="evenodd" d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"/>
+        </svg>
+        Bejelentkezés
+    </a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" href="registration.html">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7m.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0m-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0M8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4"/>
+            <path d="M8.256 14a4.5 4.5 0 0 1-.229-1.004H3c.001-.246.154-.986.832-1.664C4.484 10.68 5.711 10 8 10q.39 0 .74.025c.226-.341.496-.65.804-.918Q8.844 9.002 8 9c-5 0-6 3-6 4s1 1 1 1z"/>
+        </svg>
+        Regisztráció
+    </a>
+</li>
+<li class="nav-item ms-lg-2">
+    <a class="nav-link nav-cart-btn" href="cart.html">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
+        </svg>
+        Kosár
+        <span class="cart-badge" id="cartCount">0</span>
+    </a>
+</li>
         `;
     }
 }

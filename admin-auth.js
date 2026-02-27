@@ -3,7 +3,8 @@
  * Hierarchia: customer < admin < restaurant_owner
  * 
  * - restaurant_owner: mindent lát és kezel (admin + customer felhasználókat is)
- * - admin: csak customer felhasználókat kezelheti
+ *                     + ÉS CSAK Ő törölhet/módosíthat éttermeket és ételeket
+ * - admin: csak customer felhasználókat kezelheti, NEM módosíthat éttermeket/ételeket
  * - customer: NEM férhet hozzá az admin felülethez
  */
 
@@ -33,6 +34,15 @@ function canManageUser(targetRole) {
     return myLevel > targetLevel;
 }
 
+/**
+ * Ellenőrzés: jogosult-e éttermeket/ételeket kezelni
+ * CSAK restaurant_owner szerepkörű felhasználók!
+ */
+function canManageRestaurantsAndDishes() {
+    return Session.getUserRole() === 'restaurant_owner';
+}
+
+// Belépési jogosultság ellenőrzés
 (function() {
     if (!Session.isLoggedIn()) {
         alert('Kérlek jelentkezz be!');

@@ -58,28 +58,31 @@
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section id="hero" class="hero-section">
-        <div class="container">
-            <h1>Friss ételek, Gyors Kiszállítás</h1>
-            <p>Pécs legjobb éttermei egy helyen - rendelj kényelmesen!</p>
-            <button class="btn btn-primary-custom" onclick="window.location.href='restaurants.html'">Éttermeink megtekintése</button>
-        </div>
-    </section>
+    <!-- Main Content with Background -->
+    <div class="main-content-bg">
+        <!-- Hero Section -->
+        <section id="hero" class="hero-section">
+            <div class="container">
+                <h1>Friss ételek, Gyors Kiszállítás</h1>
+                <p>Pécs legjobb éttermei egy helyen - rendelj kényelmesen!</p>
+                <button class="btn btn-primary-custom" onclick="window.location.href='restaurants.html'">Éttermeink megtekintése</button>
+            </div>
+        </section>
 
-    <!-- Menu Section -->
-    <section id="menu" class="menu-section">
-        <div class="container">
-            <h2 class="section-title">Népszerű Éttermeink</h2>
-            <div class="row g-4" id="popularRestaurantsContainer">
-                <div class="text-center py-4">
-                    <div class="spinner-border text-warning" role="status">
-                        <span class="visually-hidden">Betöltés...</span>
+        <!-- Menu Section -->
+        <section id="menu" class="menu-section">
+            <div class="container">
+                <h2 class="section-title">Népszerű Éttermeink</h2>
+                <div class="row g-4" id="popularRestaurantsContainer">
+                    <div class="text-center py-4">
+                        <div class="spinner-border text-warning" role="status">
+                            <span class="visually-hidden">Betöltés...</span>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+    </div>
 
     <!-- Features Section -->
     <section class="features-section">
@@ -95,7 +98,7 @@
                 <div class="col-md-4">
                     <div class="feature-box">
                         <h3>Elégedett vásárlók</h3>
-                        <p>Átlagosan 4.8/5 értékelés a felhasználóinktól</p>
+                        <p id="averageRating">Átlagosan .../5 értékelés a felhasználóinktól</p>
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -124,5 +127,6 @@
     <script src="api.js"></script>
     <script src="index.js"></script>
     <script src="navbar-scroll.js"></script>
+    <script src="average-rating.js"></script>
 </body>
 </html>

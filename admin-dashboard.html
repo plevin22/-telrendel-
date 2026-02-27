@@ -59,11 +59,17 @@
                         class="sidebar-icon">👥</span><span>Felhasználók</span></a></li>
             <li class="sidebar-item"><a href="admin-payments.html" class="sidebar-link"><span
                         class="sidebar-icon">💳</span><span>Fizetések</span></a></li>
+            <!-- Csak tulajdonos számára látható menüpontok -->
+            <li class="sidebar-item owner-only" style="display: none;"><a href="#" class="sidebar-link" onclick="showRestaurantsSection()"><span
+                        class="sidebar-icon">🏪</span><span>Éttermek kezelése</span></a></li>
+            <li class="sidebar-item owner-only" style="display: none;"><a href="#" class="sidebar-link" onclick="showDishesSection()"><span
+                        class="sidebar-icon">🍕</span><span>Ételek kezelése</span></a></li>
         </ul>
     </aside>
     <button class="sidebar-toggle" id="sidebarToggle">☰</button>
     <div class="main-content">
-        <section class="dashboard-section">
+        <!-- Dashboard szekció -->
+        <section class="dashboard-section" id="dashboardSection">
             <div class="container">
                 <h1 class="page-title">Admin Dashboard</h1>
                 <div class="stats-grid">
@@ -110,13 +116,194 @@
                             <p>Fizetési előzmények megtekintése</p>
                         </div>
                     </a>
+                    <!-- Csak tulajdonos számára látható kártyák -->
+                    <a href="#" class="quick-link-card owner-only" style="display: none;" onclick="showRestaurantsSection(); return false;">
+                        <div class="quick-link-icon restaurants">🏪</div>
+                        <div class="quick-link-info">
+                            <h3>Éttermek kezelése</h3>
+                            <p>Éttermek törlése, módosítása</p>
+                        </div>
+                    </a>
+                    <a href="#" class="quick-link-card owner-only" style="display: none;" onclick="showDishesSection(); return false;">
+                        <div class="quick-link-icon dishes">🍕</div>
+                        <div class="quick-link-info">
+                            <h3>Ételek kezelése</h3>
+                            <p>Ételek módosítása, törlése</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Éttermek kezelése szekció - CSAK TULAJDONOS -->
+        <section class="dashboard-section owner-only" id="restaurantsSection" style="display: none;">
+            <div class="container">
+                <div class="section-header">
+                    <h1 class="page-title">Éttermek kezelése</h1>
+                    <button class="btn btn-secondary" onclick="showDashboard()">← Vissza</button>
+                </div>
+                <div class="alert alert-info">
+                    <strong>🔒 Tulajdonosi jogosultság:</strong> Csak étterem tulajdonosok törölhetnek és módosíthatnak éttermeket.
+                </div>
+                <div class="table-responsive">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Név</th>
+                                <th>Cím</th>
+                                <th>Telefon</th>
+                                <th>Nyitvatartás</th>
+                                <th>Műveletek</th>
+                            </tr>
+                        </thead>
+                        <tbody id="restaurantsTableBody">
+                            <tr><td colspan="6" class="text-center">Betöltés...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Ételek kezelése szekció - CSAK TULAJDONOS -->
+        <section class="dashboard-section owner-only" id="dishesSection" style="display: none;">
+            <div class="container">
+                <div class="section-header">
+                    <h1 class="page-title">Ételek kezelése</h1>
+                    <button class="btn btn-secondary" onclick="showDashboard()">← Vissza</button>
+                </div>
+                <div class="alert alert-info">
+                    <strong>🔒 Tulajdonosi jogosultság:</strong> Csak étterem tulajdonosok módosíthatnak és törölhetnek ételeket.
+                </div>
+                <div class="filter-section">
+                    <label for="restaurantFilter">Szűrés étterem szerint:</label>
+                    <select id="restaurantFilter" class="form-select" onchange="filterDishesByRestaurant()">
+                        <option value="">Összes étterem</option>
+                    </select>
+                </div>
+                <div class="table-responsive">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Kép</th>
+                                <th>Név</th>
+                                <th>Leírás</th>
+                                <th>Ár</th>
+                                <th>Étterem</th>
+                                <th>Műveletek</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dishesTableBody">
+                            <tr><td colspan="7" class="text-center">Betöltés...</td></tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </section>
     </div>
+
+    <!-- Étterem szerkesztése Modal -->
+    <div class="modal fade" id="editRestaurantModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content bg-dark text-white">
+                <div class="modal-header">
+                    <h5 class="modal-title">Étterem szerkesztése</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editRestaurantForm">
+                        <input type="hidden" id="editRestaurantId">
+                        <div class="mb-3">
+                            <label class="form-label">Név</label>
+                            <input type="text" class="form-control" id="editRestaurantName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Leírás</label>
+                            <textarea class="form-control" id="editRestaurantDescription" rows="3"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Cím</label>
+                            <input type="text" class="form-control" id="editRestaurantAddress" required>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Telefon</label>
+                                <input type="text" class="form-control" id="editRestaurantPhone">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Nyitvatartás</label>
+                                <input type="text" class="form-control" id="editRestaurantHours" placeholder="pl. 10:00 - 22:00">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Kép URL</label>
+                            <input type="url" class="form-control" id="editRestaurantImage">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Mégse</button>
+                    <button type="button" class="btn btn-warning" onclick="saveRestaurant()">Mentés</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Étel szerkesztése Modal -->
+    <div class="modal fade" id="editDishModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content bg-dark text-white">
+                <div class="modal-header">
+                    <h5 class="modal-title">Étel szerkesztése</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editDishForm">
+                        <input type="hidden" id="editDishId">
+                        <div class="mb-3">
+                            <label class="form-label">Név</label>
+                            <input type="text" class="form-control" id="editDishName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Leírás</label>
+                            <textarea class="form-control" id="editDishDescription" rows="3"></textarea>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Ár (Ft)</label>
+                                <input type="number" class="form-control" id="editDishPrice" required min="0">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Étterem</label>
+                                <select class="form-select" id="editDishRestaurant" required>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Kép URL</label>
+                            <input type="url" class="form-control" id="editDishImage">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Elérhető</label>
+                            <select class="form-select" id="editDishAvailable">
+                                <option value="1">Igen</option>
+                                <option value="0">Nem</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Mégse</button>
+                    <button type="button" class="btn btn-warning" onclick="saveDish()">Mentés</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <footer>
         <div class="container">
-            <p>© 2025 Ételrendelés Pécs</p>
+            <p>© 2026 KLSZ Faloda</p>
             <div>
                 <a href="#">ÁSZF</a>
                 <span style="color: #666;">|</span>
