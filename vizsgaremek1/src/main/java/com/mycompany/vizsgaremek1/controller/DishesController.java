@@ -34,6 +34,7 @@ public class DishesController {
                 json.put("price", d.getPrice());
                 json.put("image_url", d.getImageUrl());
                 json.put("available", d.getAvailable());
+                json.put("type", d.getType());
                 jsonArray.put(json);
             }
             return Response.ok(jsonArray.toString()).build();
@@ -65,6 +66,7 @@ public class DishesController {
             json.put("price", d.getPrice());
             json.put("image_url", d.getImageUrl());
             json.put("available", d.getAvailable());
+            json.put("type", d.getType());
             return Response.ok(json.toString()).build();
         } catch (Exception e) {
             e.printStackTrace();
@@ -90,6 +92,7 @@ public class DishesController {
                 json.put("price", d.getPrice());
                 json.put("image_url", d.getImageUrl());
                 json.put("available", d.getAvailable());
+                json.put("type", d.getType());
                 jsonArray.put(json);
             }
             return Response.ok(jsonArray.toString()).build();
