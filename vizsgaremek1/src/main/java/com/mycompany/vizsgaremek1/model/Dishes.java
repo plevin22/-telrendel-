@@ -33,6 +33,9 @@ public class Dishes implements Serializable {
     @Column(name = "available")
     private Boolean available = true;
 
+    @Column(name = "type")
+    private String type = "étel";
+
     public Dishes() {
     }
 
@@ -99,5 +102,13 @@ public class Dishes implements Serializable {
 
     public void setAvailable(Boolean available) {
         this.available = available;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }
