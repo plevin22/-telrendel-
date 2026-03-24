@@ -148,4 +148,19 @@ public class UsersService {
     public boolean checkPassword(String plainPassword, String hashedPassword) {
         return BCrypt.checkpw(plainPassword, hashedPassword);
     }
+
+    /**
+     * Jelszó változtatása - ChangeUserPassword eljárás.
+     */
+    public void changeUserPassword(Integer userId, String newPassword) {
+        StoredProcedureQuery sp = em.createStoredProcedureQuery("ChangeUserPassword");
+        
+        sp.registerStoredProcedureParameter("p_user_id", Integer.class, ParameterMode.IN);
+        sp.registerStoredProcedureParameter("p_new_password", String.class, ParameterMode.IN);
+
+        sp.setParameter("p_user_id", userId);
+        sp.setParameter("p_new_password", newPassword);
+
+        sp.execute();
+    }
 }

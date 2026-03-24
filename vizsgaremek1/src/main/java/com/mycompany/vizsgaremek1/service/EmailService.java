@@ -19,40 +19,37 @@ public class EmailService {
     private static final String SMTP_HOST = "smtp.gmail.com";
     private static final String SMTP_PORT = "587";
 
-    /**
-     * Email küldése (aszinkron - nem blokkolja a fő szálat)
-     * 
-     */
     @Asynchronous
-public void sendEmail(String to, String subject, String htmlBody) {
-    try {
-        Properties props = new Properties();
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.host", SMTP_HOST);
-        props.put("mail.smtp.port", SMTP_PORT);
-        props.put("mail.smtp.ssl.trust", SMTP_HOST);
+    public void sendEmail(String to, String subject, String htmlBody) {
+        try {
+            Properties props = new Properties();
+            props.put("mail.smtp.auth", "true");
+            props.put("mail.smtp.starttls.enable", "true");
+            props.put("mail.smtp.host", SMTP_HOST);
+            props.put("mail.smtp.port", SMTP_PORT);
+            props.put("mail.smtp.ssl.trust", SMTP_HOST);
 
-        Session session = Session.getInstance(props);
+            Session session = Session.getInstance(props);
 
-        Message message = new MimeMessage(session);
-        message.setFrom(new InternetAddress(EMAIL_FROM, "KLSZ Faloda"));
-        message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
-        message.setSubject(subject);
-        message.setContent(htmlBody, "text/html; charset=UTF-8");
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(EMAIL_FROM, "KLSZ Faloda"));
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
+            message.setSubject(subject);
+            message.setContent(htmlBody, "text/html; charset=UTF-8");
 
-        Transport transport = session.getTransport("smtp");
-        transport.connect(SMTP_HOST, Integer.parseInt(SMTP_PORT), EMAIL_FROM, EMAIL_PASSWORD);
-        transport.sendMessage(message, message.getAllRecipients());
-        transport.close();
+            Transport transport = session.getTransport("smtp");
+            transport.connect(SMTP_HOST, Integer.parseInt(SMTP_PORT), EMAIL_FROM, EMAIL_PASSWORD);
+            transport.sendMessage(message, message.getAllRecipients());
+            transport.close();
 
-        System.out.println("Email sikeresen elküldve: " + to + " | Tárgy: " + subject);
+            System.out.println("Email sikeresen elküldve: " + to + " | Tárgy: " + subject);
 
-    } catch (Exception e) {
-        System.err.println("Email küldési hiba (" + to + "): " + e.getMessage());
-        e.printStackTrace();
+        } catch (Exception e) {
+            System.err.println("Email küldési hiba (" + to + "): " + e.getMessage());
+            e.printStackTrace();
+        }
     }
-}
+
     //regisztrációs email
     public void sendRegistrationEmail(String toEmail, String userName) {
         String subject = "Üdvözlünk a KLSZ Falodánál!";
@@ -70,9 +67,7 @@ public void sendEmail(String to, String subject, String htmlBody) {
     }
 
     //rendelés visszaigazoló email
-    /**
-     * Rendelés tételeit reprezentáló belső osztály
-     */
+    
     public static class OrderItemInfo {
 
         public String name;
@@ -191,6 +186,39 @@ public void sendEmail(String to, String subject, String htmlBody) {
         }
     }
 
+    // Jelszó változtatás értesítő email
+    public void sendPasswordChangedEmail(String toEmail, String userName) {
+        String subject = "Jelszavad megváltozott";
+        String html = buildEmailTemplate(
+                "Jelszó megváltozott",
+                "<p>Kedves " + userName + "!</p>"
+                + "<p>A jelszavad megváltozott.</p>"
+                + "<p style='color:#888; font-size:12px; margin-top:20px;'>Ha nem te végezted ezt a módosítást, "
+                + "kérjük azonnal vedd fel velünk a kapcsolatot!</p>"
+        );
+        sendEmail(toEmail, subject, html);
+    }
+// Jelszó visszaállítás email (Forgot Password)
+
+    public void sendPasswordResetEmail(String toEmail, String userName, String resetToken) {
+        String subject = "Jelszó visszaállítás";
+        String resetLink = "http://localhost:5500/reset-password.html?token=" + resetToken;
+        String html = buildEmailTemplate(
+                "Jelszó visszaállítás",
+                "<p>Kedves " + userName + "!</p>"
+                + "<p>Jelszó visszaállítási kérelmet kaptunk a fiókodhoz.</p>"
+                + "<p>Kattints az alábbi gombra a jelszavad visszaállításához:</p>"
+                + "<p style='text-align:center; margin:25px 0;'>"
+                + "<a href='" + resetLink + "' style='background-color:#f0c040; color:#1a1a2e; "
+                + "padding:14px 35px; text-decoration:none; border-radius:8px; font-weight:bold; display:inline-block;'>"
+                + "Jelszó visszaállítása</a></p>"
+                + "<p style='color:#888; font-size:12px;'>Ez a link <strong>1 órán belül</strong> lejár.</p>"
+                + "<p style='color:#888; font-size:12px; margin-top:15px;'>Ha nem te kérted a jelszó visszaállítást, "
+                + "nyugodtan hagyd figyelmen kívül ezt az emailt.</p>"
+        );
+        sendEmail(toEmail, subject, html);
+    }
+
     // Értékelés visszaigazoló email
     public void sendReviewConfirmationEmail(String toEmail, String userName,
             int orderId, int rating, String comment,
@@ -206,12 +234,24 @@ public void sendEmail(String to, String subject, String htmlBody) {
         // Értékelés címke
         String ratingLabel;
         switch (rating) {
-            case 1: ratingLabel = "Borzalmas"; break;
-            case 2: ratingLabel = "Rossz"; break;
-            case 3: ratingLabel = "Elmegy"; break;
-            case 4: ratingLabel = "Jó"; break;
-            case 5: ratingLabel = "Tökéletes"; break;
-            default: ratingLabel = "Ismeretlen"; break;
+            case 1:
+                ratingLabel = "Borzalmas";
+                break;
+            case 2:
+                ratingLabel = "Rossz";
+                break;
+            case 3:
+                ratingLabel = "Elmegy";
+                break;
+            case 4:
+                ratingLabel = "Jó";
+                break;
+            case 5:
+                ratingLabel = "Tökéletes";
+                break;
+            default:
+                ratingLabel = "Ismeretlen";
+                break;
         }
 
         // Rendelt ételek listája
@@ -306,9 +346,6 @@ public void sendEmail(String to, String subject, String htmlBody) {
         }
     }
 
-    /**
-     * Egységes email sablon - KLSZ Faloda arculat (sötét téma, sárga kiemelés)
-     */
     private String buildEmailTemplate(String title, String bodyContent) {
         return "<!DOCTYPE html>"
                 + "<html><head><meta charset='UTF-8'></head>"

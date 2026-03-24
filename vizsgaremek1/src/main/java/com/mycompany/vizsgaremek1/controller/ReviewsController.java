@@ -111,10 +111,7 @@ public class ReviewsController {
         }
     }
 
-    /**
-     * Étterem összes értékelése. GET
-     * /api/reviews/GetReviewsByRestaurant/{restaurantId}
-     */
+  
     @GET
     @Path("/GetReviewsByRestaurant/{restaurantId}")
     public Response getReviewsByRestaurant(@PathParam("restaurantId") Integer restaurantId) {
@@ -131,9 +128,7 @@ public class ReviewsController {
         }
     }
 
-    /**
-     * Felhasználó összes értékelése. GET /api/reviews/GetReviewsByUser/{userId}
-     */
+    
     @GET
     @Path("/GetReviewsByUser/{userId}")
     public Response getReviewsByUser(@PathParam("userId") Integer userId) {
@@ -150,10 +145,7 @@ public class ReviewsController {
         }
     }
 
-    /**
-     * Étterem átlagos értékelése. GET
-     * /api/reviews/GetAverageRating/{restaurantId}
-     */
+   
     @GET
     @Path("/GetAverageRating/{restaurantId}")
     public Response getAverageRating(@PathParam("restaurantId") Integer restaurantId) {
@@ -187,8 +179,7 @@ public class ReviewsController {
     }
 
     /**
-     * Legutóbbi értékelések (részletekkel). GET
-     * /api/reviews/GetRecentReviews/{limit}
+     * Legutóbbi értékelések (részletekkel). 
      */
     @GET
     @Path("/GetRecentReviews/{limit}")
@@ -218,15 +209,7 @@ public class ReviewsController {
         }
     }
 
-    /**
-     * Új értékelés hozzáadása. POST /api/reviews/AddReview
-     *
-     * Egy rendelést csak egyszer lehet értékelni. A rendelésnek completed
-     * státuszúnak kell lennie. Az étterem automatikusan a rendelésből jön.
-     *
-     * JSON body: { "user_id": 18, "order_id": 1, "rating": 4, "comment":
-     * "Nagyon finom volt!" }
-     */
+   
     @POST
     @Path("/AddReview")
     public Response addReview(String requestBody) {
@@ -340,9 +323,7 @@ public class ReviewsController {
         }
     }
 
-    /**
-     * Értékelés módosítása. PUT /api/reviews/UpdateReview/{id}
-     */
+    
     @PUT
     @Path("/UpdateReview/{id}")
     public Response updateReview(@PathParam("id") Integer id, String requestBody) {
@@ -389,9 +370,6 @@ public class ReviewsController {
         }
     }
 
-    /**
-     * Értékelés törlése. DELETE /api/reviews/DeleteReview/{id}
-     */
     @DELETE
     @Path("/DeleteReview/{id}")
     public Response deleteReview(@PathParam("id") Integer id) {
@@ -413,10 +391,7 @@ public class ReviewsController {
         }
     }
 
-    /**
-     * Értékelés keresése comment alapján. GET
-     * /api/reviews/SearchByComment/{keyword}
-     */
+   
     @GET
     @Path("/SearchByComment/{keyword}")
     public Response searchByComment(@PathParam("keyword") String keyword) {

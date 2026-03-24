@@ -11,6 +11,7 @@
     <class>com.mycompany.vizsgaremek1.model.Delivery</class>
     <class>com.mycompany.vizsgaremek1.model.Reviews</class>
     <class>com.mycompany.vizsgaremek1.model.ReviewItems</class>
+    <class>com.mycompany.vizsgaremek1.model.Passwcom.mycompany.vizsgaremek1.model.PasswordResetToken</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties/>
   </persistence-unit>

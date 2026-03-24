@@ -349,4 +349,77 @@ public class UsersController {
             return errorResponse("Adatbázis hiba történt.", Response.Status.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @PUT
+    @Path("/ChangeUserPassword/{id}")
+    public Response changePassword(@PathParam("id") Integer id, String requestBody) {
+        if (requestBody == null || requestBody.trim().isEmpty()) {
+            return errorResponse("A kérés törzse üres.", Response.Status.BAD_REQUEST);
+        }
+        
+        JSONObject request;
+        try {
+            request = new JSONObject(requestBody);
+        } catch (Exception e) {
+            return errorResponse("Érvénytelen JSON formátum.", Response.Status.BAD_REQUEST);
+        }
+
+        String oldPassword = request.optString("old_password", null);
+        String newPassword = request.optString("new_password", null);
+
+        // Validáció
+        if (oldPassword == null || oldPassword.trim().isEmpty()) {
+            return errorResponse("A régi jelszó megadása kötelező.", Response.Status.BAD_REQUEST);
+        }
+        if (newPassword == null || newPassword.trim().isEmpty()) {
+            return errorResponse("Az új jelszó megadása kötelező.", Response.Status.BAD_REQUEST);
+        }
+
+        // Új jelszó validálása
+        String passwordError = validatePassword(newPassword);
+        if (passwordError != null) {
+            return errorResponse(passwordError, Response.Status.BAD_REQUEST);
+        }
+
+        try {
+            // Felhasználó lekérése
+            Users user = usersService.findUserById(id);
+            if (user == null) {
+                return errorResponse("A felhasználó nem található.", Response.Status.NOT_FOUND);
+            }
+
+            // Régi jelszó ellenőrzése
+            boolean passwordMatch = false;
+            try {
+                passwordMatch = usersService.checkPassword(oldPassword, user.getPassword());
+            } catch (Exception e) {
+                // Ha a BCrypt nem működik, egyszerű összehasonlítás
+                passwordMatch = oldPassword.equals(user.getPassword());
+            }
+
+            if (!passwordMatch) {
+                return errorResponse("A régi jelszó hibás.", Response.Status.UNAUTHORIZED);
+            }
+
+            // Új jelszó hashelése és mentése
+            String hashedNewPassword = usersService.hashPassword(newPassword);
+            usersService.changeUserPassword(id, hashedNewPassword);
+
+            // Email küldése
+            try {
+                emailService.sendPasswordChangedEmail(user.getEmail(), user.getName());
+            } catch (Exception emailEx) {
+                System.err.println("Jelszó változtatás email küldési hiba: " + emailEx.getMessage());
+            }
+
+            JSONObject response = new JSONObject();
+            response.put("status", "success");
+            response.put("message", "A jelszó sikeresen megváltozott.");
+            return Response.ok(response.toString()).build();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return errorResponse("Adatbázis hiba történt.", Response.Status.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

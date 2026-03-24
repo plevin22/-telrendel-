@@ -14,6 +14,8 @@ com\mycompany\vizsgaremek1\model\Delivery$DeliveryStatus.class
 com\mycompany\vizsgaremek1\service\UsersService.class
 com\mycompany\vizsgaremek1\model\Payments.class
 com\mycompany\vizsgaremek1\model\Users.class
+com\mycompany\vizsgaremek1\controller\PasswordResetTokenController.class
+com\mycompany\vizsgaremek1\service\PasswordResetTokenService.class
 com\mycompany\vizsgaremek1\model\Delivery.class
 com\mycompany\vizsgaremek1\model\Reviews.class
 com\mycompany\vizsgaremek1\controller\DishesController.class
@@ -28,6 +30,7 @@ com\mycompany\vizsgaremek1\service\EmailService.class
 com\mycompany\vizsgaremek1\model\ReviewItems.class
 com\mycompany\vizsgaremek1\controller\OrderItemsController.class
 com\mycompany\vizsgaremek1\controller\ReviewsController.class
+com\mycompany\vizsgaremek1\model\PasswordResetToken.class
 com\mycompany\vizsgaremek1\service\DeliveryService.class
 com\mycompany\vizsgaremek1\service\OrderItemsService.class
 com\mycompany\vizsgaremek1\service\DishesService.class

@@ -6,6 +6,7 @@ C:\Suli\vizsgaremek\vizsgaremek1\src\main\java\com\mycompany\vizsgaremek1\contro
 C:\Suli\vizsgaremek\vizsgaremek1\src\main\java\com\mycompany\vizsgaremek1\controller\EmailController.java
 C:\Suli\vizsgaremek\vizsgaremek1\src\main\java\com\mycompany\vizsgaremek1\controller\OrderItemsController.java
 C:\Suli\vizsgaremek\vizsgaremek1\src\main\java\com\mycompany\vizsgaremek1\controller\OrdersController.java
+C:\Suli\vizsgaremek\vizsgaremek1\src\main\java\com\mycompany\vizsgaremek1\controller\PasswordResetTokenController.java
 C:\Suli\vizsgaremek\vizsgaremek1\src\main\java\com\mycompany\vizsgaremek1\controller\PaymentsController.java
 C:\Suli\vizsgaremek\vizsgaremek1\src\main\java\com\mycompany\vizsgaremek1\controller\RestaurantsController.java
 C:\Suli\vizsgaremek\vizsgaremek1\src\main\java\com\mycompany\vizsgaremek1\controller\ReviewsController.java
@@ -14,6 +15,7 @@ C:\Suli\vizsgaremek\vizsgaremek1\src\main\java\com\mycompany\vizsgaremek1\model\
 C:\Suli\vizsgaremek\vizsgaremek1\src\main\java\com\mycompany\vizsgaremek1\model\Dishes.java
 C:\Suli\vizsgaremek\vizsgaremek1\src\main\java\com\mycompany\vizsgaremek1\model\OrderItems.java
 C:\Suli\vizsgaremek\vizsgaremek1\src\main\java\com\mycompany\vizsgaremek1\model\Orders.java
+C:\Suli\vizsgaremek\vizsgaremek1\src\main\java\com\mycompany\vizsgaremek1\model\PasswordResetToken.java
 C:\Suli\vizsgaremek\vizsgaremek1\src\main\java\com\mycompany\vizsgaremek1\model\Payments.java
 C:\Suli\vizsgaremek\vizsgaremek1\src\main\java\com\mycompany\vizsgaremek1\model\Restaurants.java
 C:\Suli\vizsgaremek\vizsgaremek1\src\main\java\com\mycompany\vizsgaremek1\model\ReviewItems.java
@@ -24,6 +26,7 @@ C:\Suli\vizsgaremek\vizsgaremek1\src\main\java\com\mycompany\vizsgaremek1\servic
 C:\Suli\vizsgaremek\vizsgaremek1\src\main\java\com\mycompany\vizsgaremek1\service\EmailService.java
 C:\Suli\vizsgaremek\vizsgaremek1\src\main\java\com\mycompany\vizsgaremek1\service\OrderItemsService.java
 C:\Suli\vizsgaremek\vizsgaremek1\src\main\java\com\mycompany\vizsgaremek1\service\OrdersService.java
+C:\Suli\vizsgaremek\vizsgaremek1\src\main\java\com\mycompany\vizsgaremek1\service\PasswordResetTokenService.java
 C:\Suli\vizsgaremek\vizsgaremek1\src\main\java\com\mycompany\vizsgaremek1\service\PaymentsService.java
 C:\Suli\vizsgaremek\vizsgaremek1\src\main\java\com\mycompany\vizsgaremek1\service\RestaurantsService.java
 C:\Suli\vizsgaremek\vizsgaremek1\src\main\java\com\mycompany\vizsgaremek1\service\ReviewsService.java
