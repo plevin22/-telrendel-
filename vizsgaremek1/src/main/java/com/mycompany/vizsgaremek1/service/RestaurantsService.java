@@ -72,7 +72,7 @@ public class RestaurantsService {
 
     public boolean ownerExists(Integer ownerId) {
         Long count = em.createQuery("SELECT COUNT(u) FROM Users u WHERE u.userId = :id", Long.class)
-            .setParameter("id", ownerId).getSingleResult();
+                .setParameter("id", ownerId).getSingleResult();
         return count > 0;
     }
 }

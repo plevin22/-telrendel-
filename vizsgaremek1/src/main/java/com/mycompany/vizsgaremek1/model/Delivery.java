@@ -42,22 +42,48 @@ public class Delivery implements Serializable {
         pending, dispatched, delivering, completed, failed
     }
 
-    public Delivery() {}
+    public Delivery() {
+    }
 
-    public Integer getDeliveryId() { return deliveryId; }
-    public void setDeliveryId(Integer deliveryId) { this.deliveryId = deliveryId; }
+    public Integer getDeliveryId() {
+        return deliveryId;
+    }
 
-    public Integer getOrderId() { return orderId; }
-    public void setOrderId(Integer orderId) { this.orderId = orderId; }
+    public void setDeliveryId(Integer deliveryId) {
+        this.deliveryId = deliveryId;
+    }
 
-    public String getDeliveryAddress() { return deliveryAddress; }
-    public void setDeliveryAddress(String deliveryAddress) { this.deliveryAddress = deliveryAddress; }
+    public Integer getOrderId() {
+        return orderId;
+    }
 
-    public Date getDeliveryTime() { return deliveryTime; }
-    public void setDeliveryTime(Date deliveryTime) { this.deliveryTime = deliveryTime; }
+    public void setOrderId(Integer orderId) {
+        this.orderId = orderId;
+    }
 
-    public DeliveryStatus getStatus() { return status; }
-    public void setStatus(DeliveryStatus status) { this.status = status; }
+    public String getDeliveryAddress() {
+        return deliveryAddress;
+    }
+
+    public void setDeliveryAddress(String deliveryAddress) {
+        this.deliveryAddress = deliveryAddress;
+    }
+
+    public Date getDeliveryTime() {
+        return deliveryTime;
+    }
+
+    public void setDeliveryTime(Date deliveryTime) {
+        this.deliveryTime = deliveryTime;
+    }
+
+    public DeliveryStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(DeliveryStatus status) {
+        this.status = status;
+    }
 
     @Override
     public int hashCode() {
@@ -66,7 +92,9 @@ public class Delivery implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof Delivery)) return false;
+        if (!(obj instanceof Delivery)) {
+            return false;
+        }
         Delivery other = (Delivery) obj;
         return deliveryId != null && deliveryId.equals(other.deliveryId);
     }

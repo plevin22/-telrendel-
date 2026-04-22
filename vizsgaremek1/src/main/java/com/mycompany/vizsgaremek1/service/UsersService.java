@@ -12,54 +12,39 @@ public class UsersService {
     @PersistenceContext(unitName = "com.mycompany_vizsgaremek1_war_1.0-SNAPSHOTPU")
     private EntityManager em;
 
-    /**
-     * Felhasználó keresése ID alapján.
-     */
     public Users findUserById(Integer userId) {
         return em.find(Users.class, userId);
     }
 
-    /**
-     * Felhasználó keresése email alapján.
-     */
     public Users findUserByEmail(String email) {
         try {
             return em.createQuery(
-                "SELECT u FROM Users u WHERE u.email = :email", Users.class
+                    "SELECT u FROM Users u WHERE u.email = :email", Users.class
             ).setParameter("email", email).getSingleResult();
         } catch (NoResultException e) {
             return null;
         }
     }
 
-    /**
-     * Felhasználó keresése username alapján.
-     */
     public Users findUserByUsername(String username) {
         try {
             return em.createQuery(
-                "SELECT u FROM Users u WHERE u.username = :username", Users.class
+                    "SELECT u FROM Users u WHERE u.username = :username", Users.class
             ).setParameter("username", username).getSingleResult();
         } catch (NoResultException e) {
             return null;
         }
     }
 
-    /**
-     * Összes felhasználó lekérdezése.
-     */
     @SuppressWarnings("unchecked")
     public List<Users> getAllUsers() {
         StoredProcedureQuery sp = em.createStoredProcedureQuery("GetAllUsers", Users.class);
         return sp.getResultList();
     }
 
-    /**
-     * Új felhasználó létrehozása - CreateUser eljárás.
-     */
     public void createUser(String name, String username, String email, String password, String phone, String role) {
         StoredProcedureQuery sp = em.createStoredProcedureQuery("CreateUser");
-        
+
         sp.registerStoredProcedureParameter("p_name", String.class, ParameterMode.IN);
         sp.registerStoredProcedureParameter("p_username", String.class, ParameterMode.IN);
         sp.registerStoredProcedureParameter("p_email", String.class, ParameterMode.IN);
@@ -77,13 +62,10 @@ public class UsersService {
         sp.execute();
     }
 
-    /**
-     * Felhasználó frissítése - UpdateUser eljárás.
-     */
-    public void updateUser(Integer userId, String name, String username, String email, 
-                          String password, String phone, String role, Integer banned) {
+    public void updateUser(Integer userId, String name, String username, String email,
+            String password, String phone, String role, Integer banned) {
         StoredProcedureQuery sp = em.createStoredProcedureQuery("UpdateUser");
-        
+
         sp.registerStoredProcedureParameter("p_user_id", Integer.class, ParameterMode.IN);
         sp.registerStoredProcedureParameter("p_name", String.class, ParameterMode.IN);
         sp.registerStoredProcedureParameter("p_username", String.class, ParameterMode.IN);
@@ -105,9 +87,6 @@ public class UsersService {
         sp.execute();
     }
 
-    /**
-     * Felhasználó törlése - DeleteUser eljárás.
-     */
     public void deleteUser(Integer userId) {
         StoredProcedureQuery sp = em.createStoredProcedureQuery("DeleteUser");
         sp.registerStoredProcedureParameter("p_user_id", Integer.class, ParameterMode.IN);
@@ -115,46 +94,31 @@ public class UsersService {
         sp.execute();
     }
 
-    /**
-     * Email egyediség ellenőrzése.
-     */
     public boolean emailExists(String email) {
         Long count = em.createQuery(
-            "SELECT COUNT(u) FROM Users u WHERE u.email = :email", Long.class
+                "SELECT COUNT(u) FROM Users u WHERE u.email = :email", Long.class
         ).setParameter("email", email).getSingleResult();
         return count > 0;
     }
 
-    /**
-     * Username egyediség ellenőrzése.
-     */
     public boolean usernameExists(String username) {
         Long count = em.createQuery(
-            "SELECT COUNT(u) FROM Users u WHERE u.username = :username", Long.class
+                "SELECT COUNT(u) FROM Users u WHERE u.username = :username", Long.class
         ).setParameter("username", username).getSingleResult();
         return count > 0;
     }
 
-    /**
-     * Jelszó hash-elése BCrypt-tel.
-     */
     public String hashPassword(String plainPassword) {
         return BCrypt.hashpw(plainPassword, BCrypt.gensalt(10));
     }
 
-    /**
-     * Jelszó ellenőrzése BCrypt-tel.
-     */
     public boolean checkPassword(String plainPassword, String hashedPassword) {
         return BCrypt.checkpw(plainPassword, hashedPassword);
     }
 
-    /**
-     * Jelszó változtatása - ChangeUserPassword eljárás.
-     */
     public void changeUserPassword(Integer userId, String newPassword) {
         StoredProcedureQuery sp = em.createStoredProcedureQuery("ChangeUserPassword");
-        
+
         sp.registerStoredProcedureParameter("p_user_id", Integer.class, ParameterMode.IN);
         sp.registerStoredProcedureParameter("p_new_password", String.class, ParameterMode.IN);
 

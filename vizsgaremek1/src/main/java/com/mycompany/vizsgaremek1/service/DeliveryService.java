@@ -61,7 +61,7 @@ public class DeliveryService {
 
     public boolean orderExists(Integer orderId) {
         Long count = em.createQuery("SELECT COUNT(o) FROM Orders o WHERE o.orderId = :id", Long.class)
-            .setParameter("id", orderId).getSingleResult();
+                .setParameter("id", orderId).getSingleResult();
         return count > 0;
     }
 }

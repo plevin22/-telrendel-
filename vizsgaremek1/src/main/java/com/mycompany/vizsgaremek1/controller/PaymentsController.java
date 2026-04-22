@@ -160,7 +160,7 @@ public class PaymentsController {
                 return Response.status(Response.Status.CONFLICT).entity(response.toString()).build();
             }
 
-            // ÖSSZEG AUTOMATIKUSAN A RENDELÉSBŐL!
+            // összeg a rendelésből
             Orders order = ordersService.findOrderById(orderId);
             BigDecimal amount = order.getTotalPrice();
 
@@ -172,7 +172,7 @@ public class PaymentsController {
             }
 
             paymentsService.addPayment(orderId, amount, method, status);
-            
+
             response.put("status", "success");
             response.put("message", "A fizetés sikeresen létrehozva.");
             response.put("order_id", orderId);

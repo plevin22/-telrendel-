@@ -10,17 +10,10 @@ import java.util.Date;
 
 public class JWT {
 
-    // Titkos kulcs a token aláírásához
     private static final Key SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
-    
-    // Token érvényességi ideje (24 óra milliszekundumban)
+
     private static final long EXPIRATION_TIME = 24 * 60 * 60 * 1000;
 
-    /**
-     * JWT token létrehozása a felhasználó adatai alapján.
-     * @param user a bejelentkezett felhasználó
-     * @return generált JWT token
-     */
     public static String createToken(Users user) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + EXPIRATION_TIME);
@@ -36,11 +29,6 @@ public class JWT {
                 .compact();
     }
 
-    /**
-     * JWT token validálása és felhasználó ID kinyerése.
-     * @param token a validálandó token
-     * @return felhasználó ID vagy null ha érvénytelen
-     */
     public static Integer validateTokenAndGetUserId(String token) {
         try {
             Claims claims = Jwts.parserBuilder()
@@ -55,11 +43,6 @@ public class JWT {
         }
     }
 
-    /**
-     * Token érvényességének ellenőrzése.
-     * @param token a vizsgálandó token
-     * @return true ha érvényes, false egyébként
-     */
     public static boolean isTokenValid(String token) {
         try {
             Jwts.parserBuilder()
@@ -72,11 +55,6 @@ public class JWT {
         }
     }
 
-    /**
-     * Claims kinyerése a tokenből.
-     * @param token a JWT token
-     * @return Claims objektum vagy null ha érvénytelen
-     */
     public static Claims getClaims(String token) {
         try {
             return Jwts.parserBuilder()
@@ -89,11 +67,6 @@ public class JWT {
         }
     }
 
-    /**
-     * Szerepkör kinyerése a tokenből.
-     * @param token a JWT token
-     * @return szerepkör string vagy null
-     */
     public static String getRoleFromToken(String token) {
         Claims claims = getClaims(token);
         if (claims != null) {

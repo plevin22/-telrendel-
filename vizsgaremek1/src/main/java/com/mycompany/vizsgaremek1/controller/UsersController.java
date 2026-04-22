@@ -159,13 +159,13 @@ public class UsersController {
             if (usersService.usernameExists(username)) {
                 return errorResponse("Ez a felhasználónév már foglalt.", Response.Status.CONFLICT);
             }
-            
+
             String hashedPassword = usersService.hashPassword(password);
             usersService.createUser(name.trim(), username.trim(), email.trim(), hashedPassword, phone, role);
-            
+
             Users createdUser = usersService.findUserByEmail(email);
 
-            // REGISZTRÁCIÓS EMAIL KÜLDÉSE
+            // regisztrációs email
             try {
                 emailService.sendRegistrationEmail(email.trim(), name.trim());
             } catch (Exception emailEx) {
@@ -215,24 +215,24 @@ public class UsersController {
             if (user == null) {
                 return errorResponse("Felhasználó nem található.", Response.Status.NOT_FOUND);
             }
-            
+
             if (user.getBanned() != null && user.getBanned() == 1) {
                 return errorResponse("A fiókod tiltva van. Kérjük, vedd fel a kapcsolatot az adminisztrátorral.", Response.Status.FORBIDDEN);
             }
-            
+
             boolean passwordMatch = false;
             try {
                 passwordMatch = usersService.checkPassword(password, user.getPassword());
             } catch (Exception e) {
                 passwordMatch = password.equals(user.getPassword());
             }
-            
+
             if (!passwordMatch) {
                 return errorResponse("Hibás jelszó.", Response.Status.UNAUTHORIZED);
             }
-            
+
             String token = JWT.createToken(user);
-            
+
             JSONObject response = new JSONObject();
             response.put("status", "success");
             response.put("message", "Sikeres bejelentkezés.");
@@ -262,7 +262,7 @@ public class UsersController {
         } catch (Exception e) {
             return errorResponse("Érvénytelen JSON formátum.", Response.Status.BAD_REQUEST);
         }
-        
+
         try {
             Users existing = usersService.findUserById(id);
             if (existing == null) {
@@ -275,21 +275,21 @@ public class UsersController {
             String oldEmail = existing.getEmail();
             String oldPhone = existing.getPhone();
             String oldRole = existing.getRole().toString();
-            
+
             String name = request.optString("name", existing.getName());
             String username = request.optString("username", existing.getUsername());
             String email = request.optString("email", existing.getEmail());
             String phone = request.optString("phone", existing.getPhone());
             String role = request.optString("role", existing.getRole().toString());
             Integer banned = request.optInt("banned", existing.getBanned() != null ? existing.getBanned() : 0);
-            
+
             if (!username.equals(existing.getUsername()) && usersService.usernameExists(username)) {
                 return errorResponse("Ez a felhasználónév már foglalt.", Response.Status.CONFLICT);
             }
             if (!email.equals(existing.getEmail()) && usersService.emailExists(email)) {
                 return errorResponse("Ez az email cím már foglalt.", Response.Status.CONFLICT);
             }
-            
+
             String password = existing.getPassword();
             if (request.has("password") && !request.optString("password", "").isEmpty()) {
                 String newPassword = request.getString("password");
@@ -303,23 +303,23 @@ public class UsersController {
             if (!role.equals("customer") && !role.equals("admin") && !role.equals("restaurant_owner")) {
                 return errorResponse("Érvénytelen szerepkör.", Response.Status.BAD_REQUEST);
             }
-            
+
             usersService.updateUser(id, name, username, email, password, phone, role, banned);
 
-            // PROFIL MÓDOSÍTÁS EMAIL KÜLDÉSE
+            // profil módosítás email
             try {
                 emailService.sendProfileUpdateEmail(
-                    email, name,
-                    oldName, name,
-                    oldUsername, username,
-                    oldEmail, email,
-                    oldPhone, phone,
-                    oldRole, role
+                        email, name,
+                        oldName, name,
+                        oldUsername, username,
+                        oldEmail, email,
+                        oldPhone, phone,
+                        oldRole, role
                 );
             } catch (Exception emailEx) {
                 System.err.println("Profil módosítás email küldési hiba: " + emailEx.getMessage());
             }
-            
+
             JSONObject response = new JSONObject();
             response.put("status", "success");
             response.put("message", "A felhasználó sikeresen frissítve.");
@@ -339,7 +339,7 @@ public class UsersController {
                 return errorResponse("A felhasználó nem található.", Response.Status.NOT_FOUND);
             }
             usersService.deleteUser(id);
-            
+
             JSONObject response = new JSONObject();
             response.put("status", "success");
             response.put("message", "A felhasználó sikeresen törölve.");
@@ -356,7 +356,7 @@ public class UsersController {
         if (requestBody == null || requestBody.trim().isEmpty()) {
             return errorResponse("A kérés törzse üres.", Response.Status.BAD_REQUEST);
         }
-        
+
         JSONObject request;
         try {
             request = new JSONObject(requestBody);
@@ -393,7 +393,6 @@ public class UsersController {
             try {
                 passwordMatch = usersService.checkPassword(oldPassword, user.getPassword());
             } catch (Exception e) {
-                // Ha a BCrypt nem működik, egyszerű összehasonlítás
                 passwordMatch = oldPassword.equals(user.getPassword());
             }
 

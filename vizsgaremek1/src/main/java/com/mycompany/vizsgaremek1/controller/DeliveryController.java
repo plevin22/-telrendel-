@@ -155,8 +155,8 @@ public class DeliveryController {
     }
 
     private boolean isValidStatus(String status) {
-        return status != null && (status.equals("pending") || status.equals("dispatched") || 
-               status.equals("delivering") || status.equals("completed") || status.equals("failed"));
+        return status != null && (status.equals("pending") || status.equals("dispatched")
+                || status.equals("delivering") || status.equals("completed") || status.equals("failed"));
     }
 
     private JSONObject deliveryToJson(Delivery d) {

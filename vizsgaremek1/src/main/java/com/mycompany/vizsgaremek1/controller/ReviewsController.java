@@ -41,7 +41,7 @@ public class ReviewsController {
         }
     }
 
-    // Csillagok megjelenítése (★☆)
+    // Csillagok megjelenítése
     private String getStarsDisplay(int rating) {
         StringBuilder stars = new StringBuilder();
         for (int i = 0; i < 5; i++) {
@@ -93,9 +93,6 @@ public class ReviewsController {
         return Response.status(status).entity(response.toString()).build();
     }
 
-    /**
-     * Értékelés lekérdezése ID alapján. GET /api/reviews/GetReviewById/{id}
-     */
     @GET
     @Path("/GetReviewById/{id}")
     public Response getReviewById(@PathParam("id") Integer id) {
@@ -111,7 +108,6 @@ public class ReviewsController {
         }
     }
 
-  
     @GET
     @Path("/GetReviewsByRestaurant/{restaurantId}")
     public Response getReviewsByRestaurant(@PathParam("restaurantId") Integer restaurantId) {
@@ -128,7 +124,6 @@ public class ReviewsController {
         }
     }
 
-    
     @GET
     @Path("/GetReviewsByUser/{userId}")
     public Response getReviewsByUser(@PathParam("userId") Integer userId) {
@@ -145,7 +140,6 @@ public class ReviewsController {
         }
     }
 
-   
     @GET
     @Path("/GetAverageRating/{restaurantId}")
     public Response getAverageRating(@PathParam("restaurantId") Integer restaurantId) {
@@ -178,9 +172,6 @@ public class ReviewsController {
         }
     }
 
-    /**
-     * Legutóbbi értékelések (részletekkel). 
-     */
     @GET
     @Path("/GetRecentReviews/{limit}")
     public Response getRecentReviews(@PathParam("limit") Integer limit) {
@@ -209,7 +200,6 @@ public class ReviewsController {
         }
     }
 
-   
     @POST
     @Path("/AddReview")
     public Response addReview(String requestBody) {
@@ -290,11 +280,11 @@ public class ReviewsController {
                 String userEmail = reviewsService.getUserEmailById(userId);
                 if (userEmail != null) {
                     emailService.sendReviewConfirmationEmail(
-                        userEmail,
-                        userName != null ? userName : "Felhasználó",
-                        orderId, rating, comment,
-                        restaurantName != null ? restaurantName : "Étterem",
-                        dishNamesList
+                            userEmail,
+                            userName != null ? userName : "Felhasználó",
+                            orderId, rating, comment,
+                            restaurantName != null ? restaurantName : "Étterem",
+                            dishNamesList
                     );
                 }
             } catch (Exception emailEx) {
@@ -323,7 +313,6 @@ public class ReviewsController {
         }
     }
 
-    
     @PUT
     @Path("/UpdateReview/{id}")
     public Response updateReview(@PathParam("id") Integer id, String requestBody) {
@@ -391,7 +380,6 @@ public class ReviewsController {
         }
     }
 
-   
     @GET
     @Path("/SearchByComment/{keyword}")
     public Response searchByComment(@PathParam("keyword") String keyword) {

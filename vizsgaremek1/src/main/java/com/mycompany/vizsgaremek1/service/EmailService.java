@@ -15,7 +15,7 @@ public class EmailService {
 
     //smtp konfig
     private static final String EMAIL_FROM = "noreply.klszfaloda@gmail.com";        // Gmail cím
-    private static final String EMAIL_PASSWORD = "dtsn lvxn zwij hqbn";     // Gmail alkalmazásjelszó (NEM a sima jelszó!)
+    private static final String EMAIL_PASSWORD = "dtsn lvxn zwij hqbn";     // Gmail alkalmazásjelszó)
     private static final String SMTP_HOST = "smtp.gmail.com";
     private static final String SMTP_PORT = "587";
 
@@ -67,7 +67,6 @@ public class EmailService {
     }
 
     //rendelés visszaigazoló email
-    
     public static class OrderItemInfo {
 
         public String name;

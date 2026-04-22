@@ -2,6 +2,7 @@ package com.mycompany.vizsgaremek1.controller;
 
 import com.mycompany.vizsgaremek1.model.Orders;
 import com.mycompany.vizsgaremek1.model.Users;
+import com.mycompany.vizsgaremek1.service.DeliveryService;
 import com.mycompany.vizsgaremek1.service.EmailService;
 import com.mycompany.vizsgaremek1.service.OrdersService;
 import com.mycompany.vizsgaremek1.service.UsersService;
@@ -30,6 +31,9 @@ public class OrdersController {
 
     @EJB
     private EmailService emailService;
+
+    @EJB
+    private DeliveryService deliveryService;
 
     @GET
     @Path("/GetAllOrders")
@@ -166,8 +170,8 @@ public class OrdersController {
             response.put("message", "A végösszeg nem lehet negatív.");
             return Response.status(Response.Status.BAD_REQUEST).entity(response.toString()).build();
         }
-        if (!status.equals("pending") && !status.equals("preparing") && 
-            !status.equals("delivering") && !status.equals("completed") && !status.equals("cancelled")) {
+        if (!status.equals("pending") && !status.equals("preparing")
+                && !status.equals("delivering") && !status.equals("completed") && !status.equals("cancelled")) {
             response.put("status", "error");
             response.put("message", "Érvénytelen státusz.");
             return Response.status(Response.Status.BAD_REQUEST).entity(response.toString()).build();
@@ -188,7 +192,21 @@ public class OrdersController {
             ordersService.addOrder(userId, restaurantId, deliveryAddress, status, totalPrice);
             Orders createdOrder = ordersService.getLastOrderByUserAndRestaurant(userId, restaurantId);
 
-            // RENDELÉS VISSZAIGAZOLÓ EMAIL KÜLDÉSE
+            // delivery rekord létrehozása
+            if (createdOrder != null) {
+                try {
+                    deliveryService.addDelivery(
+                            createdOrder.getOrderId(),
+                            deliveryAddress,
+                            null,
+                            "pending" // Kezdeti státusz: függőben
+                    );
+                } catch (Exception deliveryEx) {
+                    System.err.println("Delivery létrehozási hiba: " + deliveryEx.getMessage());
+                }
+            }
+
+            // rendelést visszaigazoló email
             try {
                 Users user = usersService.findUserById(userId);
                 if (user != null && createdOrder != null && itemsArray != null) {
@@ -204,17 +222,17 @@ public class OrdersController {
 
                     String paymentMethod = request.optString("payment_method", "card");
                     String orderTime = LocalDateTime.now()
-                        .format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm"));
+                            .format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm"));
 
                     emailService.sendOrderConfirmationEmail(
-                        user.getEmail(),
-                        user.getName(),
-                        createdOrder.getOrderId(),
-                        emailItems,
-                        totalPrice,
-                        paymentMethod,
-                        deliveryAddress,
-                        orderTime
+                            user.getEmail(),
+                            user.getName(),
+                            createdOrder.getOrderId(),
+                            emailItems,
+                            totalPrice,
+                            paymentMethod,
+                            deliveryAddress,
+                            orderTime
                     );
                 }
             } catch (Exception emailEx) {
@@ -262,10 +280,10 @@ public class OrdersController {
                 return Response.status(Response.Status.NOT_FOUND).entity(response.toString()).build();
             }
             String status = request.optString("status", existingOrder.getStatus().toString());
-            BigDecimal totalPrice = request.has("total_price") ? 
-                    request.getBigDecimal("total_price") : existingOrder.getTotalPrice();
-            if (!status.equals("pending") && !status.equals("preparing") && 
-                !status.equals("delivering") && !status.equals("completed") && !status.equals("cancelled")) {
+            BigDecimal totalPrice = request.has("total_price")
+                    ? request.getBigDecimal("total_price") : existingOrder.getTotalPrice();
+            if (!status.equals("pending") && !status.equals("preparing")
+                    && !status.equals("delivering") && !status.equals("completed") && !status.equals("cancelled")) {
                 response.put("status", "error");
                 response.put("message", "Érvénytelen státusz.");
                 return Response.status(Response.Status.BAD_REQUEST).entity(response.toString()).build();

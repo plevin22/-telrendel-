@@ -17,41 +17,26 @@ public class OrderItemsService {
     @EJB
     private OrdersService ordersService;
 
-    /**
-     * Rendelési tétel keresése ID alapján.
-     */
     public OrderItems findOrderItemById(Integer orderItemId) {
         return em.find(OrderItems.class, orderItemId);
     }
 
-    /**
-     * Összes rendelési tétel lekérdezése.
-     */
     @SuppressWarnings("unchecked")
     public List<OrderItems> getAllOrderItems() {
         StoredProcedureQuery sp = em.createStoredProcedureQuery("GetAllOrderItems", OrderItems.class);
         return sp.getResultList();
     }
 
-    /**
-     * Rendelési tételek lekérdezése rendelés alapján.
-     */
     public List<OrderItems> getOrderItemsByOrderId(Integer orderId) {
         return em.createQuery(
-            "SELECT oi FROM OrderItems oi WHERE oi.orderId = :orderId", OrderItems.class
+                "SELECT oi FROM OrderItems oi WHERE oi.orderId = :orderId", OrderItems.class
         ).setParameter("orderId", orderId).getResultList();
     }
 
-    /**
-     * Étel lekérdezése ID alapján (ár ellenőrzéshez).
-     */
     public Dishes findDishById(Integer dishId) {
         return em.find(Dishes.class, dishId);
     }
 
-    /**
-     * Étel árának lekérdezése.
-     */
     public BigDecimal getDishPrice(Integer dishId) {
         Dishes dish = findDishById(dishId);
         if (dish != null) {
@@ -60,13 +45,9 @@ public class OrderItemsService {
         return null;
     }
 
-    /**
-     * Új rendelési tétel létrehozása - AddOrderItem eljárás.
-     * AUTOMATIKUSAN FRISSÍTI a rendelés végösszegét!
-     */
     public void addOrderItem(Integer orderId, Integer dishId, Integer quantity, BigDecimal price) {
         StoredProcedureQuery sp = em.createStoredProcedureQuery("AddOrderItem");
-        
+
         sp.registerStoredProcedureParameter("p_order_id", Integer.class, ParameterMode.IN);
         sp.registerStoredProcedureParameter("p_dish_id", Integer.class, ParameterMode.IN);
         sp.registerStoredProcedureParameter("p_quantity", Integer.class, ParameterMode.IN);
@@ -79,21 +60,16 @@ public class OrderItemsService {
 
         sp.execute();
 
-        // AUTOMATIKUS: Rendelés végösszeg frissítése
         ordersService.recalculateOrderTotal(orderId);
     }
 
-    /**
-     * Rendelési tétel frissítése - UpdateOrderItem eljárás.
-     * AUTOMATIKUSAN FRISSÍTI a rendelés végösszegét!
-     */
     public void updateOrderItem(Integer orderItemId, Integer quantity, BigDecimal price) {
         // Először lekérjük a tételt, hogy tudjuk melyik rendeléshez tartozik
         OrderItems item = findOrderItemById(orderItemId);
         Integer orderId = item != null ? item.getOrderId() : null;
 
         StoredProcedureQuery sp = em.createStoredProcedureQuery("UpdateOrderItem");
-        
+
         sp.registerStoredProcedureParameter("p_order_item_id", Integer.class, ParameterMode.IN);
         sp.registerStoredProcedureParameter("p_quantity", Integer.class, ParameterMode.IN);
         sp.registerStoredProcedureParameter("p_price", BigDecimal.class, ParameterMode.IN);
@@ -104,16 +80,11 @@ public class OrderItemsService {
 
         sp.execute();
 
-        // AUTOMATIKUS: Rendelés végösszeg frissítése
         if (orderId != null) {
             ordersService.recalculateOrderTotal(orderId);
         }
     }
 
-    /**
-     * Rendelési tétel törlése - DeleteOrderItem eljárás.
-     * AUTOMATIKUSAN FRISSÍTI a rendelés végösszegét!
-     */
     public void deleteOrderItem(Integer orderItemId) {
         // Először lekérjük a tételt, hogy tudjuk melyik rendeléshez tartozik
         OrderItems item = findOrderItemById(orderItemId);
@@ -124,35 +95,25 @@ public class OrderItemsService {
         sp.setParameter("p_order_item_id", orderItemId);
         sp.execute();
 
-        // AUTOMATIKUS: Rendelés végösszeg frissítése
         if (orderId != null) {
             ordersService.recalculateOrderTotal(orderId);
         }
     }
 
-    /**
-     * Rendelés létezésének ellenőrzése.
-     */
     public boolean orderExists(Integer orderId) {
         Long count = em.createQuery(
-            "SELECT COUNT(o) FROM Orders o WHERE o.orderId = :id", Long.class
+                "SELECT COUNT(o) FROM Orders o WHERE o.orderId = :id", Long.class
         ).setParameter("id", orderId).getSingleResult();
         return count > 0;
     }
 
-    /**
-     * Étel létezésének ellenőrzése.
-     */
     public boolean dishExists(Integer dishId) {
         Long count = em.createQuery(
-            "SELECT COUNT(d) FROM Dishes d WHERE d.dishId = :id", Long.class
+                "SELECT COUNT(d) FROM Dishes d WHERE d.dishId = :id", Long.class
         ).setParameter("id", dishId).getSingleResult();
         return count > 0;
     }
 
-    /**
-     * Étel elérhetőségének ellenőrzése.
-     */
     public boolean isDishAvailable(Integer dishId) {
         Dishes dish = findDishById(dishId);
         return dish != null && dish.getAvailable();

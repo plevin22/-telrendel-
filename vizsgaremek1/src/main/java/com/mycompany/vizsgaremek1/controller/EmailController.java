@@ -24,14 +24,13 @@ public class EmailController {
     @Context
     private UriInfo context;
 
-    /**
-     * Creates a new instance of EmailController
-     */
     public EmailController() {
     }
 
     /**
-     * Retrieves representation of an instance of com.mycompany.vizsgaremek1.controller.EmailController
+     * Retrieves representation of an instance of
+     * com.mycompany.vizsgaremek1.controller.EmailController
+     *
      * @return an instance of java.lang.String
      */
     @GET
@@ -43,6 +42,7 @@ public class EmailController {
 
     /**
      * PUT method for updating or creating an instance of EmailController
+     *
      * @param content representation for the resource
      */
     @PUT
