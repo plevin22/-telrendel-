@@ -1,0 +1,468 @@
+body {
+    background-image: linear-gradient(rgba(26, 26, 26, 0.85), rgba(26, 26, 26, 0.85)), url('foodbg.avif');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    color: #ffffff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    padding-top: 70px;
+}
+
+/* Navbar - eredeti stílus */
+.navbar {
+    background-color: #1a1a1a !important;
+    padding: 1rem 0;
+    transition: all 0.3s ease;
+}
+
+.navbar.scrolled {
+    background-color: rgba(26, 26, 26, 0.95) !important;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    font-weight: 700;
+    font-size: 1.4rem;
+}
+
+.brand-icon {
+    font-size: 1.8rem;
+    margin-right: 0.5rem;
+}
+
+.brand-text {
+    color: #ffffff;
+}
+
+.brand-highlight {
+    color: #d4a528;
+}
+
+.navbar-nav {
+    align-items: center;
+}
+
+.nav-link {
+    color: #ffffff !important;
+    font-weight: 500;
+    padding: 0.5rem 1rem !important;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+    color: #d4a528 !important;
+}
+
+.nav-link svg {
+    width: 18px;
+    height: 18px;
+}
+
+.nav-cart-btn {
+    border: 2px solid #d4a528 !important;
+    border-radius: 25px !important;
+    padding: 0.4rem 1rem !important;
+    margin-left: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.nav-cart-btn:hover {
+    background-color: rgba(212, 165, 40, 0.1);
+}
+
+.cart-badge {
+    background-color: #d4a528;
+    color: #1a1a1a;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.15rem 0.5rem;
+    border-radius: 50%;
+    min-width: 20px;
+    text-align: center;
+}
+
+.navbar-toggler {
+    border: none;
+    padding: 0.5rem;
+}
+
+.navbar-toggler:focus {
+    box-shadow: none;
+}
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+@media (max-width: 991.98px) {
+    .navbar-collapse {
+        background-color: #1a1a1a;
+        padding: 1rem;
+        margin-top: 0.5rem;
+        border-radius: 10px;
+    }
+    
+    .nav-cart-btn {
+        margin-left: 0;
+        margin-top: 0.5rem;
+        justify-content: center;
+    }
+}
+
+/* Payment Section */
+.payment-section {
+    padding: 60px 0;
+    min-height: calc(100vh - 200px);
+}
+
+.payment-container {
+    max-width: 520px;
+    margin: 0 auto;
+    background: linear-gradient(145deg, #252525 0%, #1e1e1e 100%);
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    border: 1px solid #333;
+}
+
+.payment-title {
+    text-align: center;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 35px;
+}
+
+/* Delivery Card - Modern Design */
+.delivery-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    background: linear-gradient(135deg, #2a2a2a 0%, #333 100%);
+    border: 2px solid #444;
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 30px;
+    transition: all 0.3s ease;
+}
+
+.delivery-card:focus-within {
+    border-color: #ffc107;
+    box-shadow: 0 0 20px rgba(255, 193, 7, 0.15);
+}
+
+.delivery-icon {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.delivery-icon svg {
+    color: #000;
+}
+
+.delivery-content {
+    flex: 1;
+}
+
+.delivery-label {
+    display: block;
+    font-size: 0.85rem;
+    color: #888;
+    margin-bottom: 8px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.delivery-input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid #444;
+    color: #fff;
+    font-size: 1.1rem;
+    padding: 8px 0;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.delivery-input:focus {
+    border-bottom-color: #ffc107;
+}
+
+.delivery-input::placeholder {
+    color: #666;
+}
+
+/* Payment Method Title */
+.payment-method-title {
+    font-size: 0.9rem;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+/* Payment Methods */
+.payment-methods {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 25px;
+}
+
+.pm-btn {
+    flex: 1;
+    padding: 18px 12px;
+    border: 2px solid #444;
+    background: linear-gradient(145deg, #2a2a2a 0%, #222 100%);
+    color: #999;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.pm-btn:hover {
+    border-color: #666;
+    background: linear-gradient(145deg, #333 0%, #2a2a2a 100%);
+    color: #fff;
+    transform: translateY(-2px);
+}
+
+.pm-btn.active {
+    background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
+    color: #000;
+    border-color: #ffc107;
+    box-shadow: 0 8px 25px rgba(255, 193, 7, 0.3);
+}
+
+.pm-icon {
+    font-size: 1.8rem;
+}
+
+.pm-text {
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+/* Method Info Sections */
+.method-info-section {
+    margin-bottom: 25px;
+}
+
+.method-info {
+    background: linear-gradient(135deg, #2a2a2a 0%, #222 100%);
+    border: 1px solid #444;
+    border-radius: 16px;
+    padding: 30px;
+    text-align: center;
+}
+
+.method-icon {
+    font-size: 3rem;
+    margin-bottom: 15px;
+}
+
+.method-info h3 {
+    color: #fff;
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.method-info p {
+    color: #888;
+    font-size: 0.95rem;
+    margin-bottom: 20px;
+}
+
+/* Order Summary */
+.order-summary {
+    background: linear-gradient(135deg, #1a1a1a 0%, #222 100%);
+    border-radius: 12px;
+    padding: 20px;
+    margin-top: 15px;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.1rem;
+}
+
+.summary-row span:first-child {
+    color: #888;
+}
+
+.summary-price {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #ffc107;
+}
+
+/* Pay Button */
+.btn-pay {
+    width: 100%;
+    padding: 18px;
+    background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
+    color: #000;
+    border: none;
+    border-radius: 14px;
+    font-size: 1.15rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.btn-pay:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 35px rgba(255, 193, 7, 0.4);
+}
+
+.btn-pay:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.btn-pay-icon {
+    font-size: 1.3rem;
+}
+
+/* Alert Box */
+.alert-box {
+    margin-top: 20px;
+    padding: 15px 20px;
+    border-radius: 12px;
+    font-weight: 500;
+    text-align: center;
+}
+
+.alert-box.alert-danger {
+    background: rgba(220, 53, 69, 0.15);
+    border: 1px solid #dc3545;
+    color: #ff6b6b;
+}
+
+.alert-box.alert-success {
+    background: rgba(40, 167, 69, 0.15);
+    border: 1px solid #28a745;
+    color: #5cb85c;
+}
+
+/* Features Section */
+.features-section {
+    background-color: #1a1a1a;
+    padding: 60px 0;
+}
+
+.features-title {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 3rem;
+    color: #fff;
+}
+
+.feature-box {
+    text-align: center;
+    padding: 2rem 1rem;
+}
+
+.feature-box h3 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #ffc107;
+}
+
+.feature-box p {
+    color: #999;
+    font-size: 0.95rem;
+    margin: 0;
+}
+
+/* Footer */
+footer {
+    background-color: #0d0d0d;
+    padding: 30px 0;
+    text-align: center;
+    border-top: 1px solid #222;
+}
+
+footer p {
+    margin: 0.5rem 0;
+    color: #666;
+}
+
+footer a {
+    color: #ffc107;
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+footer a:hover {
+    color: #ff9800;
+}
+
+/* Responsive */
+@media (max-width: 576px) {
+    .payment-container {
+        padding: 25px 20px;
+        margin: 0 15px;
+        border-radius: 16px;
+    }
+
+    .payment-methods {
+        flex-direction: column;
+    }
+
+    .pm-btn {
+        flex-direction: row;
+        justify-content: center;
+        padding: 15px;
+    }
+
+    .delivery-card {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .delivery-icon {
+        margin: 0 auto;
+    }
+
+    .method-features {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .method-features span {
+        display: block;
+    }
+}
