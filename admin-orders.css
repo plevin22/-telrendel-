@@ -471,3 +471,137 @@ body {
                 text-align: left;
             }
         }
+        /* ============================================
+   STÁTUSZ DROPDOWN STÍLUSOK
+   Add hozzá az admin-orders.css végéhez
+   ============================================ */
+
+/* Dropdown wrapper */
+.status-dropdown-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+/* Státusz gomb */
+.status-badge-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: #2a2a2a;
+    color: #fff;
+}
+
+.status-badge-btn:hover {
+    filter: brightness(1.1);
+}
+
+.status-badge-btn:disabled {
+    cursor: wait;
+    opacity: 0.7;
+}
+
+.status-badge-btn .dropdown-arrow {
+    transition: transform 0.2s ease;
+    font-size: 0.7rem;
+}
+
+.status-badge-btn.open .dropdown-arrow {
+    transform: rotate(180deg);
+}
+
+/* Státusz színek */
+.status-badge-btn.status-pending {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    color: #fff;
+}
+
+.status-badge-btn.status-preparing {
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    color: #fff;
+}
+
+.status-badge-btn.status-delivering {
+    background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+    color: #fff;
+}
+
+.status-badge-btn.status-completed {
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: #fff;
+}
+
+.status-badge-btn.status-cancelled {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    color: #fff;
+}
+
+/* Dropdown menü */
+.status-dropdown-menu {
+    position: absolute;
+    top: calc(100% + 5px);
+    left: 0;
+    z-index: 1000;
+    min-width: 180px;
+    background: #1e1e1e;
+    border: 1px solid #333;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.2s ease;
+    overflow: hidden;
+}
+
+.status-dropdown-menu.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/* Dropdown elemek */
+.status-dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 10px 14px;
+    border: none;
+    background: transparent;
+    color: #ccc;
+    font-size: 0.9rem;
+    text-align: left;
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+
+.status-dropdown-item:hover {
+    background: #2a2a2a;
+    color: #fff;
+}
+
+.status-dropdown-item.active {
+    background: rgba(212, 165, 40, 0.15);
+    color: #d4a528;
+}
+
+/* Státusz pont */
+.status-dropdown-item .status-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.status-dot.pending { background: #f59e0b; }
+.status-dot.preparing { background: #3b82f6; }
+.status-dot.delivering { background: #8b5cf6; }
+.status-dot.completed { background: #10b981; }
+.status-dot.cancelled { background: #ef4444; }

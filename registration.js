@@ -79,6 +79,15 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
+        // Telefonszám validáció (magyar formátum: +36 XX XXX XXXX vagy 06 XX XXX XXXX)
+        const phoneRegex = /^(\+36|06)\s?(20|30|31|50|70)\s?[0-9]{3}\s?[0-9]{4}$/;
+        
+        if (!phoneRegex.test(phone)) {
+            errorMessage.textContent = 'Kérlek adj meg egy érvényes magyar telefonszámot! Formátum: +36 50 111 1111 vagy 06 50 111 1111';
+            errorMessage.style.display = 'block';
+            return;
+        }
+
         // Email formátum ellenőrzése
         const emailRegex = /^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
         if (!emailRegex.test(email)) {

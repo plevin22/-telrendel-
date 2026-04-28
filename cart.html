@@ -52,38 +52,55 @@
     <!-- Cart Section -->
     <section class="cart-section">
         <div class="container">
-            <h1 class="cart-title">Kosár</h1>
-            
-            <div id="restaurantInfo" class="restaurant-info" style="display: none; margin-bottom: 1rem; color: #ffc107;">
-                <strong>Étterem: </strong><span id="restaurantName"></span>
+            <div class="cart-header">
+                <h1 class="cart-title">🛒 Kosár</h1>
+                <div id="restaurantInfo" class="restaurant-badge" style="display: none;">
+                    <span id="restaurantName"></span>
+                </div>
             </div>
             
-            <div class="cart-table-container">
-                <table class="cart-table">
-                    <thead>
-                        <tr>
-                            <th>Termék</th>
-                            <th>Mennyiség</th>
-                            <th>Ár</th>
-                            <th>Művelet</th>
-                        </tr>
-                    </thead>
-                    <tbody id="cartItems">
-                        <tr>
-                            <td colspan="5" class="empty-cart-message">
-                                A kosár üres
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+            <!-- Kosár tartalom -->
+            <div class="cart-content">
+                <div id="cartItems" class="cart-items">
+                    <!-- JS tölti be -->
+                </div>
+
+                <!-- Összegző panel -->
+                <div id="cartSummary" class="cart-summary-panel" style="display: none;">
+                    <div class="summary-card">
+                        <h3>Rendelés összegzése</h3>
+                        <div class="summary-row">
+                            <span>Részösszeg</span>
+                            <span id="subtotalPrice">0 Ft</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Szállítási díj</span>
+                            <span class="free-delivery">Ingyenes</span>
+                        </div>
+                        <div class="summary-divider"></div>
+                        <div class="summary-row total">
+                            <span>Végösszeg</span>
+                            <span id="totalPrice">0 Ft</span>
+                        </div>
+                        <button class="btn-checkout" onclick="goToCheckout()">
+                            Tovább a fizetéshez
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8"/>
+                            </svg>
+                        </button>
+                        <a href="restaurants.html" class="continue-shopping">
+                            ← Vásárlás folytatása
+                        </a>
+                    </div>
+                </div>
             </div>
 
-            <div id="cartSummary" class="cart-summary" style="display: none; margin: 1.5rem 0; text-align: right;">
-                <h4>Összesen: <span id="totalPrice">0 Ft</span></h4>
-            </div>
-
-            <div id="cartButtons" class="cart-buttons" style="display: none;">
-                <button class="btn btn-continue" onclick="goToCheckout()">Tovább a fizetéshez</button>
+            <!-- Üres kosár -->
+            <div id="emptyCart" class="empty-cart" style="display: none;">
+                <div class="empty-cart-icon">🛒</div>
+                <h2>A kosarad üres</h2>
+                <p>Adj hozzá finomságokat az éttermeinkből!</p>
+                <a href="restaurants.html" class="btn-browse">Éttermek böngészése</a>
             </div>
         </div>
     </section>
@@ -108,7 +125,7 @@
                 <div class="col-md-4">
                     <div class="feature-box">
                         <h3>Nagy választék</h3>
-                        <p>Több mint 9 pécsi étterem kínálata egy helyen.</p>
+                        <p>9 pécsi étterem kínálata egy helyen.</p>
                     </div>
                 </div>
             </div>
@@ -118,10 +135,8 @@
     <!-- Footer -->
     <footer>
         <div class="container">
-            <p>© 2026 KLSZ Faloda</p>
+            <p>© 2026 KLSZ Faloda Pécs</p>
             <div>
-                <a href="#">ÁSZF</a>
-                <span style="color: #666;">|</span>
                 <a href="connections.html">Kapcsolat</a>
             </div>
         </div>

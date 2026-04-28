@@ -1,9 +1,3 @@
-/**
- * KLSZ Faloda - Kártya UI JavaScript
- * Csak a bankkártya vizuális megjelenítés és input formázás
- * A fizetési logika a payment.js-ben van!
- */
-
 document.addEventListener('DOMContentLoaded', function () {
 
     // --- Kártya beviteli mezők és forgatás ---

@@ -71,6 +71,7 @@
                         <button type="submit" class="btn btn-login" id="loginBtn">Bejelentkezés</button>
                     </form>
                     <div class="login-link mt-3 text-center">
+                        <p><a href="#" data-bs-toggle="modal" data-bs-target="#forgotPasswordModal">Elfelejtettem a jelszavam</a></p>
                         <p>Még nincs fiókod? <a href="registration.html">Regisztrálj!</a></p>
                     </div>
                 </div>
@@ -78,7 +79,41 @@
         </div>
     </section>
 
-    <!-- Features Section -->
+    <!-- Elfelejtett Jelszó Modal -->
+    <div class="modal fade" id="forgotPasswordModal" tabindex="-1" aria-labelledby="forgotPasswordModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="forgotPasswordModalLabel">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="me-2" viewBox="0 0 16 16">
+                            <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2zM5 8h6a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/>
+                        </svg>
+                        Elfelejtett jelszó
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Bezárás"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="text-muted mb-3">Add meg az email címed és küldünk egy linket a jelszavad visszaállításához.</p>
+                    <div id="forgotPasswordError" class="alert alert-danger" style="display: none;"></div>
+                    <div id="forgotPasswordSuccess" class="alert alert-success" style="display: none;"></div>
+                    <form id="forgotPasswordForm">
+                        <div class="mb-3">
+                            <label for="forgotEmail" class="form-label">Email cím:</label>
+                            <input type="email" class="form-control" id="forgotEmail" placeholder="pelda@email.com" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-modal-secondary" data-bs-dismiss="modal">Mégse</button>
+                    <button type="button" class="btn btn-modal-primary" id="forgotPasswordBtn" onclick="forgotPassword()">
+                        Visszaállító link küldése
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- Features Section -->
     <section class="features-section">
         <div class="container">
             <h2 class="features-title">Miért válassz minket?</h2>
@@ -98,7 +133,7 @@
                 <div class="col-md-4">
                     <div class="feature-box">
                         <h3>Nagy választék</h3>
-                        <p>Több mint 9 pécsi étterem kínálata egy helyen.</p>
+                        <p>9 pécsi étterem kínálata egy helyen.</p>
                     </div>
                 </div>
             </div>
@@ -108,10 +143,8 @@
     <!-- Footer -->
     <footer>
         <div class="container">
-            <p>© 2026 KLSZ Faloda</p>
+            <p>© 2026 KLSZ Faloda Pécs</p>
             <div>
-                <a href="#">ÁSZF</a>
-                <span style="color: #666;">|</span>
                 <a href="connections.html">Kapcsolat</a>
             </div>
         </div>

@@ -25,12 +25,25 @@ document.addEventListener('DOMContentLoaded', function() {
     // Navigáció frissítése
     updateNavigation();
 
+    // Végösszeg megjelenítése
+    updateTotalDisplay();
+
     // Fizetési módok kezelése
     initPaymentMethods();
 
     // Fizetés gomb
     document.getElementById('pay').addEventListener('click', processPayment);
 });
+
+// Végösszeg frissítése minden szekcióban
+function updateTotalDisplay() {
+    const total = Cart.getTotal();
+    const formattedTotal = total.toLocaleString('hu-HU') + ' Ft';
+    
+    document.getElementById('card-total').textContent = formattedTotal;
+    document.getElementById('paypal-total').textContent = formattedTotal;
+    document.getElementById('cash-total').textContent = formattedTotal;
+}
 
 // Fizetési módok inicializálása
 function initPaymentMethods() {
@@ -57,8 +70,6 @@ function updatePaymentSections(method) {
     const cardSection = document.getElementById('card-section');
     const paypalSection = document.getElementById('paypal-section');
     const cashSection = document.getElementById('cash-section');
-    const cardFront = document.getElementById('card-front');
-    const cardBack = document.getElementById('card-back');
     
     // Összes szekció elrejtése
     cardSection.style.display = 'none';
@@ -67,20 +78,8 @@ function updatePaymentSections(method) {
     
     // Megfelelő szekció megjelenítése
     switch(method) {
-        case 'visa':
-        case 'mastercard':
+        case 'card':
             cardSection.style.display = 'block';
-            // Kártya típus frissítése
-            cardFront.className = 'card-face card-front ' + method;
-            cardBack.className = 'card-face card-back ' + method;
-            
-            if (method === 'visa') {
-                document.getElementById('visa-logo').style.display = 'block';
-                document.getElementById('mastercard-logo').style.display = 'none';
-            } else {
-                document.getElementById('visa-logo').style.display = 'none';
-                document.getElementById('mastercard-logo').style.display = 'flex';
-            }
             currentPaymentMethod = 'card';
             break;
         case 'paypal':
@@ -101,7 +100,7 @@ async function processPayment() {
     
     // Gomb letiltása
     payBtn.disabled = true;
-    payBtn.textContent = 'Feldolgozás...';
+    payBtn.innerHTML = '<span class="btn-pay-icon">⏳</span> Feldolgozás...';
     alertBox.style.display = 'none';
     
     try {
@@ -110,26 +109,15 @@ async function processPayment() {
         if (!deliveryAddress) {
             showAlert('Kérlek add meg a szállítási címet!', 'danger');
             document.getElementById('delivery-address').focus();
-            payBtn.disabled = false;
-            payBtn.textContent = 'Fizetés véglegesítése';
+            resetPayButton();
             return;
         }
 
         if (deliveryAddress.length < 5) {
             showAlert('A szállítási cím túl rövid. Kérlek adj meg egy pontos címet!', 'danger');
             document.getElementById('delivery-address').focus();
-            payBtn.disabled = false;
-            payBtn.textContent = 'Fizetés véglegesítése';
+            resetPayButton();
             return;
-        }
-
-        // Kártyás fizetés esetén validáció
-        if (currentPaymentMethod === 'card') {
-            if (!validateCardData()) {
-                payBtn.disabled = false;
-                payBtn.textContent = 'Fizetés véglegesítése';
-                return;
-            }
         }
         
         // Felhasználó és kosár adatok
@@ -140,13 +128,11 @@ async function processPayment() {
         
         if (!userId || !restaurantId || cartItems.length === 0) {
             showAlert('Hiányzó adatok. Kérlek próbáld újra!', 'danger');
-            payBtn.disabled = false;
-            payBtn.textContent = 'Fizetés véglegesítése';
+            resetPayButton();
             return;
         }
         
-        // 1. LÉPÉS: Rendelés létrehozása (szállítási címmel!)
-        // Az items tömböt is elküldjük az email visszaigazoláshoz
+        // 1. LÉPÉS: Rendelés létrehozása
         const orderItems = cartItems.map(item => ({
             name: item.name,
             quantity: item.quantity,
@@ -165,8 +151,7 @@ async function processPayment() {
         
         if (!orderResult.success) {
             showAlert('Hiba a rendelés létrehozásakor: ' + (orderResult.data.message || 'Ismeretlen hiba'), 'danger');
-            payBtn.disabled = false;
-            payBtn.textContent = 'Fizetés véglegesítése';
+            resetPayButton();
             return;
         }
         
@@ -201,8 +186,7 @@ async function processPayment() {
         
         if (!paymentResult.success) {
             showAlert('Hiba a fizetés feldolgozásakor: ' + (paymentResult.data.message || 'Ismeretlen hiba'), 'danger');
-            payBtn.disabled = false;
-            payBtn.textContent = 'Fizetés véglegesítése';
+            resetPayButton();
             return;
         }
         
@@ -212,7 +196,7 @@ async function processPayment() {
         });
         
         // SIKER!
-        showAlert('Sikeres rendelés! Rendelésszám: #' + orderId + ' | Szállítási cím: ' + deliveryAddress, 'success');
+        showAlert('✅ Sikeres rendelés! Rendelésszám: #' + orderId, 'success');
         
         // Kosár ürítése
         Cart.clear();
@@ -225,51 +209,25 @@ async function processPayment() {
     } catch (error) {
         console.error('Fizetési hiba:', error);
         showAlert('Hálózati hiba történt. Próbáld újra később!', 'danger');
-        payBtn.disabled = false;
-        payBtn.textContent = 'Fizetés véglegesítése';
+        resetPayButton();
     }
 }
 
-// Kártya adatok validálása
-function validateCardData() {
-    const cardNumber = document.getElementById('card-number').value.replace(/\s/g, '');
-    const cardName = document.getElementById('card-name').value.trim();
-    const cardExpiry = document.getElementById('card-expiry').value.trim();
-    const cardCvc = document.getElementById('card-cvc').value.trim();
-    
-    if (!cardNumber || cardNumber.length < 16) {
-        showAlert('Kérlek add meg a helyes kártyaszámot!', 'danger');
-        return false;
-    }
-    
-    if (!cardName) {
-        showAlert('Kérlek add meg a kártyabirtokos nevét!', 'danger');
-        return false;
-    }
-    
-    if (!cardExpiry || !/^\d{2}\/\d{2}$/.test(cardExpiry)) {
-        showAlert('Kérlek add meg a helyes lejárati dátumot (MM/YY)!', 'danger');
-        return false;
-    }
-    
-    if (!cardCvc || cardCvc.length < 3) {
-        showAlert('Kérlek add meg a CVC kódot!', 'danger');
-        return false;
-    }
-    
-    return true;
+// Pay gomb visszaállítása
+function resetPayButton() {
+    const payBtn = document.getElementById('pay');
+    payBtn.disabled = false;
+    payBtn.innerHTML = '<span class="btn-pay-icon">🛒</span> Rendelés leadása';
 }
 
 // Alert megjelenítése
 function showAlert(message, type) {
     const alertBox = document.getElementById('alert-box');
-    alertBox.className = `alert alert-${type}`;
+    alertBox.className = `alert-box alert-${type}`;
     alertBox.textContent = message;
     alertBox.style.display = 'block';
     
-    if (type === 'success') {
-        // Sikeres üzenetnél nem tűnik el
-    } else {
+    if (type !== 'success') {
         setTimeout(() => {
             alertBox.style.display = 'none';
         }, 5000);

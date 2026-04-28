@@ -3,7 +3,7 @@ document.getElementById('sidebarToggle').addEventListener('click', () => documen
         // JAVÍTOTT API URL - a backend-hez igazítva
         const API_BASE = 'http://localhost:8080/vizsgaremek1/webresources';
 
-        let orders = [], users = [], currentFilter = 'all', selectedOrderId = null;
+        let orders = [], users = [], currentFilter = 'all';
 
         async function loadData() {
             try {
@@ -37,8 +37,29 @@ document.getElementById('sidebarToggle').addEventListener('click', () => documen
                         <div class="order-date">${formatDate(o.created_at)}</div>
                     </div>
                     <div class="order-amount">${formatPrice(o.total_price)}</div>
-                    <div class="order-status status-${o.status}">${getStatusName(o.status)}</div>
-                    <button class="btn-action btn-details" onclick="showStatusModal(${o.order_id}, '${o.status}')">Státusz</button>
+                    <div class="status-dropdown-wrapper" data-order-id="${o.order_id}">
+                        <button type="button" class="status-badge-btn status-${o.status}">
+                            ${getStatusName(o.status)}
+                            <span class="dropdown-arrow">▼</span>
+                        </button>
+                        <div class="status-dropdown-menu">
+                            <button type="button" class="status-dropdown-item ${o.status === 'pending' ? 'active' : ''}" data-status="pending">
+                                <span class="status-dot pending"></span>Függőben
+                            </button>
+                            <button type="button" class="status-dropdown-item ${o.status === 'preparing' ? 'active' : ''}" data-status="preparing">
+                                <span class="status-dot preparing"></span>Készül
+                            </button>
+                            <button type="button" class="status-dropdown-item ${o.status === 'delivering' ? 'active' : ''}" data-status="delivering">
+                                <span class="status-dot delivering"></span>Kiszállítás alatt
+                            </button>
+                            <button type="button" class="status-dropdown-item ${o.status === 'completed' ? 'active' : ''}" data-status="completed">
+                                <span class="status-dot completed"></span>Teljesítve
+                            </button>
+                            <button type="button" class="status-dropdown-item ${o.status === 'cancelled' ? 'active' : ''}" data-status="cancelled">
+                                <span class="status-dot cancelled"></span>Törölve
+                            </button>
+                        </div>
+                    </div>
                 </div>`;
             }).join('');
         }
@@ -50,40 +71,114 @@ document.getElementById('sidebarToggle').addEventListener('click', () => documen
             renderOrders();
         }));
 
-        function showStatusModal(id, status) {
-            selectedOrderId = id;
-            document.getElementById('statusSelect').value = status;
-            new bootstrap.Modal(document.getElementById('statusModal')).show();
+        // Dropdown eseménykezelők inicializálása
+        function initDropdownEvents() {
+            document.addEventListener('click', function(e) {
+                const wrapper = e.target.closest('.status-dropdown-wrapper');
+                const badgeBtn = e.target.closest('.status-badge-btn');
+                const dropdownItem = e.target.closest('.status-dropdown-item');
+
+                // Ha badge gombra kattintottak - toggle dropdown
+                if (badgeBtn && wrapper) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    // Minden más dropdown bezárása
+                    document.querySelectorAll('.status-dropdown-menu.show').forEach(menu => {
+                        if (menu !== wrapper.querySelector('.status-dropdown-menu')) {
+                            menu.classList.remove('show');
+                            menu.closest('.status-dropdown-wrapper').querySelector('.status-badge-btn').classList.remove('open');
+                        }
+                    });
+                    
+                    // Aktuális dropdown toggle
+                    const menu = wrapper.querySelector('.status-dropdown-menu');
+                    menu.classList.toggle('show');
+                    badgeBtn.classList.toggle('open');
+                    return;
+                }
+
+                // Ha dropdown elemre kattintottak - státusz váltás
+                if (dropdownItem && wrapper) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    const newStatus = dropdownItem.dataset.status;
+                    const orderId = parseInt(wrapper.dataset.orderId);
+                    
+                    updateOrderStatus(orderId, newStatus, wrapper);
+                    return;
+                }
+
+                // Kattintás máshol - dropdownok bezárása
+                document.querySelectorAll('.status-dropdown-menu.show').forEach(menu => {
+                    menu.classList.remove('show');
+                    menu.closest('.status-dropdown-wrapper').querySelector('.status-badge-btn').classList.remove('open');
+                });
+            });
+
+            // ESC gomb kezelése
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    document.querySelectorAll('.status-dropdown-menu.show').forEach(menu => {
+                        menu.classList.remove('show');
+                        menu.closest('.status-dropdown-wrapper').querySelector('.status-badge-btn').classList.remove('open');
+                    });
+                }
+            });
         }
 
-        document.getElementById('confirmStatus').addEventListener('click', async () => {
-            if (!selectedOrderId) return;
-            const newStatus = document.getElementById('statusSelect').value;
-            const order = orders.find(o => o.order_id === selectedOrderId);
-            if (order) {
-                try {
-                    // JAVÍTOTT VÉGPONT: /orders/UpdateOrder/{id}
-                    const res = await fetch(`${API_BASE}/orders/UpdateOrder/${selectedOrderId}`, {
-                        method: 'PUT',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            status: newStatus,
-                            total_price: order.total_price
-                        })
+        // Státusz frissítése API híváson keresztül
+        async function updateOrderStatus(orderId, newStatus, wrapper) {
+            const menu = wrapper.querySelector('.status-dropdown-menu');
+            const badgeBtn = wrapper.querySelector('.status-badge-btn');
+            const order = orders.find(o => o.order_id === orderId);
+            
+            if (!order) return;
+
+            // Dropdown bezárása
+            menu.classList.remove('show');
+            badgeBtn.classList.remove('open');
+            
+            // Loading állapot
+            const originalContent = badgeBtn.innerHTML;
+            badgeBtn.disabled = true;
+            badgeBtn.innerHTML = '<span class="spinner-border spinner-border-sm"></span>';
+
+            try {
+                const res = await fetch(`${API_BASE}/orders/UpdateOrder/${orderId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        status: newStatus,
+                        total_price: order.total_price
+                    })
+                });
+
+                if (res.ok) {
+                    // Sikeres frissítés - UI és orders tömb frissítése
+                    order.status = newStatus;
+                    badgeBtn.className = `status-badge-btn status-${newStatus}`;
+                    badgeBtn.innerHTML = `${getStatusName(newStatus)}<span class="dropdown-arrow">▼</span>`;
+                    badgeBtn.disabled = false;
+
+                    // Active osztály frissítése
+                    wrapper.querySelectorAll('.status-dropdown-item').forEach(item => {
+                        item.classList.toggle('active', item.dataset.status === newStatus);
                     });
-                    if (res.ok) {
-                        bootstrap.Modal.getInstance(document.getElementById('statusModal')).hide();
-                        loadData();
-                    } else {
-                        const error = await res.json();
-                        alert('Hiba: ' + (error.message || 'Ismeretlen hiba'));
-                    }
-                } catch (e) {
-                    alert('Hiba történt a művelet során!');
-                    console.error(e);
+                } else {
+                    const error = await res.json();
+                    alert('Hiba: ' + (error.message || 'Ismeretlen hiba'));
+                    badgeBtn.innerHTML = originalContent;
+                    badgeBtn.disabled = false;
                 }
+            } catch (e) {
+                console.error('Hiba a státusz frissítésekor:', e);
+                alert('Hiba történt a művelet során!');
+                badgeBtn.innerHTML = originalContent;
+                badgeBtn.disabled = false;
             }
-        });
+        }
 
         function getStatusName(s) {
             return {
@@ -103,4 +198,7 @@ document.getElementById('sidebarToggle').addEventListener('click', () => documen
             return d ? new Date(d).toLocaleString('hu-HU') : 'N/A';
         }
 
-        document.addEventListener('DOMContentLoaded', loadData);
+        document.addEventListener('DOMContentLoaded', () => {
+            loadData();
+            initDropdownEvents();
+        });

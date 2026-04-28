@@ -151,7 +151,7 @@ function updateMenuSection(section, dishes, title) {
                     <div class="item-description">${dish.description || 'Nincs leírás'}</div>
                     <div class="item-price">${formatPrice(dish.price)}</div>
                 </div>
-                <button class="btn-add-to-cart" onclick="addToCart(${dish.dish_id}, '${escapeHtml(dish.name)}', ${dish.price})">Kosárba</button>
+                <button class="btn-add-to-cart" onclick="addToCart(${dish.dish_id}, '${escapeHtml(dish.name)}', ${dish.price}, '${dish.image_url || ''}')">Kosárba</button>
             </div>
         `;
     });
@@ -178,7 +178,7 @@ function displayError(message) {
 }
 
 // Kosárba helyezés
-function addToCart(dishId, name, price) {
+function addToCart(dishId, name, price, imageUrl) {
     // Ellenőrizzük, hogy a kosárban van-e már másik étteremből termék
     const currentCartRestaurant = Cart.getRestaurantId();
     
@@ -195,7 +195,8 @@ function addToCart(dishId, name, price) {
         name: name,
         price: price,
         quantity: 1,
-        restaurant_id: currentRestaurantId
+        restaurant_id: currentRestaurantId,
+        image_url: imageUrl || null
     });
 
     // Étterem ID és név mentése

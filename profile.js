@@ -558,4 +558,114 @@ function goToReview(orderId) {
     window.location.href = `reviews.html?order_id=${orderId}`;
 }
 
+/**
+ * Jelszó mező láthatóságának kapcsolása
+ */
+function togglePassword(inputId) {
+    const input = document.getElementById(inputId);
+    if (input.type === 'password') {
+        input.type = 'text';
+    } else {
+        input.type = 'password';
+    }
+}
+
+/**
+ * Jelszó változtatás
+ */
+async function changePassword() {
+    const oldPassword = document.getElementById('oldPassword').value.trim();
+    const newPassword = document.getElementById('newPassword').value.trim();
+    const confirmPassword = document.getElementById('confirmPassword').value.trim();
+    const changeBtn = document.getElementById('changePasswordBtn');
+    const originalText = changeBtn.innerHTML;
+
+    // Validáció
+    if (!oldPassword) {
+        showToast('A jelenlegi jelszó megadása kötelező!', 'error');
+        document.getElementById('oldPassword').focus();
+        return;
+    }
+
+    if (!newPassword) {
+        showToast('Az új jelszó megadása kötelező!', 'error');
+        document.getElementById('newPassword').focus();
+        return;
+    }
+
+    if (newPassword.length < 8) {
+        showToast('Az új jelszónak minimum 8 karakter hosszúnak kell lennie!', 'error');
+        document.getElementById('newPassword').focus();
+        return;
+    }
+
+    // Nagybetű ellenőrzése
+    if (!/[A-Z]/.test(newPassword)) {
+        showToast('Az új jelszónak tartalmaznia kell legalább egy nagybetűt!', 'error');
+        document.getElementById('newPassword').focus();
+        return;
+    }
+
+    // Speciális karakter ellenőrzése
+    if (!/[!@#$%^&*()_+\-=\[\]{}|;':",./<>?`~]/.test(newPassword)) {
+        showToast('Az új jelszónak tartalmaznia kell legalább egy speciális karaktert!', 'error');
+        document.getElementById('newPassword').focus();
+        return;
+    }
+
+    if (newPassword !== confirmPassword) {
+        showToast('Az új jelszavak nem egyeznek!', 'error');
+        document.getElementById('confirmPassword').focus();
+        return;
+    }
+
+    if (oldPassword === newPassword) {
+        showToast('Az új jelszó nem egyezhet a régivel!', 'error');
+        document.getElementById('newPassword').focus();
+        return;
+    }
+
+    // Gomb letiltása
+    changeBtn.disabled = true;
+    changeBtn.innerHTML = '<span class="btn-spinner"></span>Feldolgozás...';
+
+    try {
+        const userId = Session.getUserId();
+        
+        const response = await fetch(`${API_BASE_URL}/users/ChangeUserPassword/${userId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                old_password: oldPassword,
+                new_password: newPassword
+            })
+        });
+
+        const result = await response.json();
+
+        if (response.ok && result.status === 'success') {
+            // Modal bezárása
+            const modal = bootstrap.Modal.getInstance(document.getElementById('changePasswordModal'));
+            modal.hide();
+
+            // Form ürítése
+            document.getElementById('changePasswordForm').reset();
+
+            // Sikeres üzenet
+            showToast('Jelszó sikeresen megváltoztatva!', 'success');
+        } else {
+            showToast(result.message || 'Hiba történt a jelszó változtatása során.', 'error');
+        }
+    } catch (error) {
+        console.error('Jelszó változtatási hiba:', error);
+        showToast('Hálózati hiba történt.', 'error');
+    } finally {
+        // Gomb visszaállítása
+        changeBtn.disabled = false;
+        changeBtn.innerHTML = originalText;
+    }
+}
+
 console.log('Profile.js betöltve');
