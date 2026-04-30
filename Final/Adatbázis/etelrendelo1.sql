@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: localhost:3306
--- Létrehozás ideje: 2026. Ápr 27. 10:52
+-- Létrehozás ideje: 2026. Ápr 30. 20:44
 -- Kiszolgáló verziója: 5.7.24
 -- PHP verzió: 8.3.1
 
@@ -573,7 +573,7 @@ INSERT INTO `dishes` (`dish_id`, `restaurant_id`, `name`, `description`, `price`
 (43, 8, 'COCA COLA 0,5L', 'Frissítő üdítő', '995.00', 'https://image2url.com/r2/default/images/1770973095228-563ffe69-f83d-44bd-835b-17d6d6488c4d.png', 1, 'ital'),
 (44, 8, 'Fanta Narancs 0,5L', 'Frissítő üdítő', '995.00', 'https://image2url.com/r2/default/images/1770973155532-9475c1e9-c742-4cfd-93f7-f7a3b2d0c7bc.png', 1, 'ital'),
 (45, 8, 'NaturAqua szénsavas ásványvíz 0,5L', 'Friss Víz ', '845.00', 'https://image2url.com/r2/default/images/1770973214272-24d75e45-273b-48af-85ca-475c86fa3faa.png', 1, 'ital'),
-(46, 1, 'Buddha Tál', 'friss saláta, marinált csicseriborsó, fekete homoki bab, paradicsom, tofu, cukkínis vinaigrette, pirított magvak, csírák, onsen tojás', '5800.00', 'https://image2url.com/r2/default/images/1770973285113-64662e22-f968-4b2a-ab09-0ba8c4485979.png', 1, 'étel'),
+(46, 1, 'Buddha Tál', 'friss saláta, marinált csicseriborsó, fekete homoki bab, paradicsom, tofu, cukkínis vinaigrette, pirított magvak, csírák, onsen tojás', '6000.00', 'https://image2url.com/r2/default/images/1770973285113-64662e22-f968-4b2a-ab09-0ba8c4485979.png', 1, 'étel'),
 (47, 1, 'Angol Reggeli', '2 tükörtojás, kolbász, pirított gomba, hurka, bacon, paradicsomos bab, sült paradicsom, angol muffin', '3850.00', 'https://image2url.com/r2/default/images/1770973338365-75d0983c-3c6c-40bf-9fd1-b4b8e19258a6.png', 1, 'étel'),
 (48, 1, 'Diet_Etikus Angol reggeli', '1 tükörtojás, kolbász, bacon, dupla pirított gomba, dupla paradicsomos bab, sült paradicsom, angol muffin', '3850.00', 'https://image2url.com/r2/default/images/1770973625474-f681e05e-357a-42c7-89ef-ead9c03e04f0.png', 1, 'étel'),
 (49, 1, 'Reggeli Bagel', 'szalonnás rántotta, sajt, majonéz házi bagelben, savanyúsággal', '3450.00', 'https://image2url.com/r2/default/images/1770973713823-cb25042a-2bb7-4d44-9578-5f92296381f9.png', 1, 'étel'),
@@ -866,7 +866,14 @@ INSERT INTO `orders` (`order_id`, `user_id`, `restaurant_id`, `delivery_address`
 (33, 17, 2, 'Pécs, Citrom utca 9', 'preparing', '3055.00', '2026-03-13 09:27:06'),
 (34, 43, 1, 'Pécs, Siklósi út 5', 'completed', '7900.00', '2026-03-27 10:02:55'),
 (35, 17, 2, 'Pécs, király utca 4', 'preparing', '6265.00', '2026-03-30 08:01:06'),
-(36, 17, 2, 'Pécs, király utca 4', 'preparing', '3055.00', '2026-04-22 08:36:45');
+(36, 17, 2, 'Pécs, király utca 4', 'completed', '3055.00', '2026-04-22 08:36:45'),
+(37, 17, 2, 'Pécs, Citrom utca 4', 'preparing', '3055.00', '2026-04-30 15:54:27'),
+(38, 17, 2, 'Pécs, király utca 4', 'completed', '3055.00', '2026-04-30 16:06:45'),
+(39, 17, 3, 'Pécs, Citrom utca 7', 'completed', '12980.00', '2026-04-30 16:09:53'),
+(40, 45, 3, 'Pécs, Citrom utca 4', 'preparing', '6350.00', '2026-04-30 16:34:02'),
+(41, 17, 3, 'Pécs, Citrom utca 9', 'preparing', '2200.00', '2026-04-30 18:07:46'),
+(42, 28, 1, 'Pécs, Citrom utca 4', 'preparing', '18000.00', '2026-04-30 18:15:54'),
+(43, 46, 2, 'Pécs, Citrom utca 4', 'preparing', '6265.00', '2026-04-30 18:27:45');
 
 -- --------------------------------------------------------
 
@@ -918,7 +925,15 @@ INSERT INTO `order_items` (`order_item_id`, `order_id`, `dish_id`, `quantity`, `
 (66, 34, 56, 1, '2750.00'),
 (67, 35, 329, 1, '3055.00'),
 (68, 35, 330, 1, '3210.00'),
-(69, 36, 329, 1, '3055.00');
+(69, 36, 329, 1, '3055.00'),
+(70, 37, 329, 1, '3055.00'),
+(71, 38, 329, 1, '3055.00'),
+(72, 39, 146, 2, '12980.00'),
+(73, 40, 147, 1, '6350.00'),
+(74, 41, 174, 2, '2200.00'),
+(75, 42, 46, 3, '18000.00'),
+(76, 43, 329, 1, '3055.00'),
+(77, 43, 330, 1, '3210.00');
 
 -- --------------------------------------------------------
 
@@ -940,8 +955,8 @@ CREATE TABLE `password_reset_tokens` (
 --
 
 INSERT INTO `password_reset_tokens` (`token_id`, `user_id`, `token`, `expires_at`, `created_at`, `used`) VALUES
-(6, 17, '37847024-25b6-4306-aa96-bd932672776e', '2026-03-24 11:27:03', '2026-03-24 10:27:02', 1),
-(7, 37, '7a379aec-c4e3-4ebc-b53a-933cde9cdfd4', '2026-03-24 11:28:30', '2026-03-24 10:28:29', 0);
+(7, 37, '7a379aec-c4e3-4ebc-b53a-933cde9cdfd4', '2026-03-24 11:28:30', '2026-03-24 10:28:29', 0),
+(9, 17, 'fb498f73-74f2-4fb3-a7a8-352cb707c42c', '2026-04-30 21:32:30', '2026-04-30 20:32:29', 1);
 
 -- --------------------------------------------------------
 
@@ -994,7 +1009,14 @@ INSERT INTO `payments` (`payment_id`, `order_id`, `amount`, `method`, `status`, 
 (33, 33, '3055.00', 'card', 'paid', '2026-03-13 09:27:08'),
 (34, 34, '7900.00', 'cash', 'pending', '2026-03-27 10:02:58'),
 (35, 35, '6265.00', 'paypal', 'paid', '2026-03-30 08:01:10'),
-(36, 36, '3055.00', 'paypal', 'paid', '2026-04-22 08:36:50');
+(36, 36, '3055.00', 'paypal', 'paid', '2026-04-22 08:36:50'),
+(37, 37, '3055.00', 'card', 'paid', '2026-04-30 15:54:32'),
+(38, 38, '3055.00', 'card', 'paid', '2026-04-30 16:06:47'),
+(39, 39, '12980.00', 'paypal', 'paid', '2026-04-30 16:09:55'),
+(40, 40, '6350.00', 'paypal', 'paid', '2026-04-30 16:34:04'),
+(41, 41, '2200.00', 'paypal', 'paid', '2026-04-30 18:07:49'),
+(42, 42, '18000.00', 'card', 'paid', '2026-04-30 18:15:58'),
+(43, 43, '6265.00', 'paypal', 'paid', '2026-04-30 18:27:48');
 
 --
 -- Eseményindítók `payments`
@@ -1074,7 +1096,6 @@ INSERT INTO `reviews` (`review_id`, `user_id`, `restaurant_id`, `dish_id`, `orde
 (1, 17, 2, NULL, 15, 5, 'Nagyon finom volt de fogalmam sincs már mit vettem.', '2026-02-18 16:43:48'),
 (3, 24, 2, NULL, 17, 4, 'szuper', '2026-02-18 17:05:03'),
 (7, 17, 2, NULL, 22, 5, 'szupi', '2026-02-19 08:33:15'),
-(8, 27, 2, NULL, 23, 1, 'Ehetetlen volt, kibasztam a kukába', '2026-02-19 12:26:30'),
 (9, 17, 3, NULL, 10, 5, 'oké', '2026-02-23 12:11:02'),
 (10, 17, 4, NULL, 14, 5, 'Nagyon finom volt az étel, gyors kiszállítás!', '2026-02-23 12:33:46'),
 (12, 17, 2, NULL, 25, 4, 'jó', '2026-02-24 09:19:20'),
@@ -1083,7 +1104,10 @@ INSERT INTO `reviews` (`review_id`, `user_id`, `restaurant_id`, `dish_id`, `orde
 (15, 17, 5, NULL, 12, 4, 'good', '2026-03-02 08:30:32'),
 (16, 38, 2, NULL, 28, 1, 'bad', '2026-03-02 08:32:45'),
 (17, 39, 1, NULL, 29, 5, 'great', '2026-03-02 10:02:05'),
-(18, 41, 1, NULL, 31, 1, 'really bad taste', '2026-03-03 08:45:34');
+(18, 41, 1, NULL, 31, 1, 'really bad taste', '2026-03-03 08:45:34'),
+(19, 17, 3, NULL, 39, 5, NULL, '2026-04-30 16:17:20'),
+(20, 17, 2, NULL, 38, 5, NULL, '2026-04-30 16:17:37'),
+(21, 17, 2, NULL, 36, 5, NULL, '2026-04-30 16:17:46');
 
 -- --------------------------------------------------------
 
@@ -1110,7 +1134,10 @@ INSERT INTO `review_items` (`review_item_id`, `review_id`, `dish_id`) VALUES
 (27, 15, 234),
 (28, 16, 329),
 (29, 17, 49),
-(30, 18, 47);
+(30, 18, 47),
+(31, 19, 146),
+(32, 20, 329),
+(33, 21, 329);
 
 -- --------------------------------------------------------
 
@@ -1135,10 +1162,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`user_id`, `name`, `username`, `email`, `password`, `phone`, `role`, `created_at`, `banned`) VALUES
-(1, 'KLSZ', 'klsz', 'klsz@gmail.com', 'klsz12345', '+36201234567', 'restaurant_owner', '2025-10-03 09:37:09', 0),
 (2, 'Teszt Vásárló', 'tesztvásárló9', 'vasarlo@example.com', 'ds14%w5', '+36201112222', 'admin', '2025-10-03 09:37:09', 0),
-(4, 'exampleadmind', 'exampleadmind', 'exampleadmind@gmail.com', '12sd5@z2', '+360301245235', 'admin', '2025-12-05 10:02:44', 0),
-(5, 'exaplerestaurant_owner', 'exaplerestaurant_owner', 'exaplerestaurant_owner@gmail.com', 'tM6%qaR5', '+363042523434', 'restaurant_owner', '2025-12-05 10:03:25', 0),
 (7, 'teszt2', 'teszt2', 'teszt2@gmail.com', 'K3m!4tRa', '+3630324246', 'customer', '2025-12-05 10:16:55', 0),
 (8, 'teszt3', 'teszt3', 'teszt3@gmail.com', 'pS9#wB2n', '+36301244', 'customer', '2025-12-05 10:18:08', 0),
 (9, 'teszt4', 'teszt4', 'teszt4@gmail.com', 'vT9@qR1m', '+2388247849825', 'customer', '2025-12-05 10:19:07', 0),
@@ -1146,7 +1170,7 @@ INSERT INTO `users` (`user_id`, `name`, `username`, `email`, `password`, `phone`
 (11, 'teszt6', 'teszt6', 'teszt6@gmail.com', 'tk569%h', '+363057456', 'customer', '2025-12-05 10:20:58', 0),
 (13, 'teszt8', 'teszt8', 'teszt8@gmail.com', '3kt6s2&g', '+363043422', 'customer', '2025-12-05 10:22:41', 0),
 (14, 'teszt9', 'teszt9', 'teszt9@gmail.com', 'ycg42@gj', '+363012345', 'customer', '2025-12-05 10:23:19', 0),
-(17, 'Pásztor Kevin Ispán', 'pkevin22', 'kevinpasztor10@gmail.com', '$2a$10$srYW6Pro1CnyxsJmXTCpbeU8rRS2jI2I3GKd7u4fzULW57CneWxV.', '06205038648', 'admin', '2026-02-09 10:21:41', 0),
+(17, 'Pásztor Kevin Ispán', 'pkevin22', 'kevinpasztor10@gmail.com', '$2a$10$Nk.M5ObhXwaNNNYv88qX1.YiuWjV3uJe66UZMZpOz45idtvlNv0bC', '06205038648', 'admin', '2026-02-09 10:21:41', 0),
 (18, 'Kocsis Szabolcs', 'Yolo', 'kocsis.szabolcs.erno@szechenyi.hu', '$2a$10$Nt2YIrBRwQrOPaFXMxoRnurN1/CWSK9.cuo0EgN2lhNYvJeG31v42', '+36 30 8145152', 'customer', '2026-02-09 12:15:02', 0),
 (19, 'John Doe', 'jdoe', 'johndoe@gmail.com', '$2a$10$96oB3ipZVVEJ8R5cXV1ZhuY5Q34u4irBkBO50e20ibTs6.MF8k3t2', '0616704201', 'customer', '2026-02-09 13:10:40', 0),
 (20, 'Kocsis Legolas', 'legolas34', 'lajossziauram509@gmail.com', '$2a$10$wPlR/y2t.BmplbY6XZuTyeIH4lvXCPd3CjNyPiqTRSvqIxSmHog5i', '06204325438', 'admin', '2026-02-11 10:06:30', 0),
@@ -1170,7 +1194,9 @@ INSERT INTO `users` (`user_id`, `name`, `username`, `email`, `password`, `phone`
 (41, 'Kocsis Szabolcs Ernő', 'Szabika023', 'szabika123@gmail.com', '$2a$10$cXhrJARUa7N1uBKFAdqSiOO5eRG67.qqpjfys8S77wxI8/8jyT6Z2', '36305401243', 'customer', '2026-03-03 08:41:35', 0),
 (42, 'Kevin Pasztor', 'kevin', 'kevinke@gmail.com', '$2a$10$FDRh5qyHwVH/aGhxowewhOBQqtGJ/q92KSomgp168SFNPqsyFUlD.', '999999999999', 'customer', '2026-03-03 08:54:20', 0),
 (43, 'Kis Pista', 'kpisti69420', 'kpisti67@gmail.com', '$2a$10$Q6lvwPJY2UPEyLkTXNsMguL5n9baMW4j1vcepmmK9CjYSBL3.316C', '+36205038648', 'customer', '2026-03-27 09:38:10', 0),
-(44, 'Kis Ádám', 'kadam2', 'kadam@gmail.com', '$2a$10$WCF14Y2jevjePU7OVdNzsefzMUl2U/mEt2RKbV3fuw.VKGEIg0yMu', '06201239876', 'customer', '2026-04-22 08:40:48', 0);
+(44, 'Kis Ádám', 'kadam2', 'kadam@gmail.com', '$2a$10$WCF14Y2jevjePU7OVdNzsefzMUl2U/mEt2RKbV3fuw.VKGEIg0yMu', '06201239876', 'customer', '2026-04-22 08:40:48', 0),
+(45, 'Kis János', 'kpjani3', 'kpjani@gmail.com', '$2a$10$hX6RG/Fc8uMPFY9jluHNee.9S9TKv4hurGYIsZ12KTd3tkLukhX3a', '06207125346', 'customer', '2026-04-30 16:33:21', 0),
+(46, 'Utolsó Próba', 'utsoproba', 'utsoproba@gmail.com', '$2a$10$oM3iXRyy8jBwY7ULBcuoK.GcoDwuRMYxZF.gf4sgznREfXvPMBCgi', '06306280035', 'customer', '2026-04-30 18:27:20', 0);
 
 --
 -- Indexek a kiírt táblákhoz
@@ -1274,25 +1300,25 @@ ALTER TABLE `dishes`
 -- AUTO_INCREMENT a táblához `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
 
 --
 -- AUTO_INCREMENT a táblához `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `order_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=70;
+  MODIFY `order_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=78;
 
 --
 -- AUTO_INCREMENT a táblához `password_reset_tokens`
 --
 ALTER TABLE `password_reset_tokens`
-  MODIFY `token_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `token_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT a táblához `payments`
 --
 ALTER TABLE `payments`
-  MODIFY `payment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `payment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
 
 --
 -- AUTO_INCREMENT a táblához `restaurants`
@@ -1304,19 +1330,19 @@ ALTER TABLE `restaurants`
 -- AUTO_INCREMENT a táblához `reviews`
 --
 ALTER TABLE `reviews`
-  MODIFY `review_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `review_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT a táblához `review_items`
 --
 ALTER TABLE `review_items`
-  MODIFY `review_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `review_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT a táblához `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
 
 --
 -- Megkötések a kiírt táblákhoz
