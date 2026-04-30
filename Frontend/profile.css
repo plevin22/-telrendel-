@@ -1,0 +1,943 @@
+body {
+    background-image: linear-gradient(rgba(26, 26, 26, 0.85), rgba(26, 26, 26, 0.85)), url('foodbg.avif');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    color: #ffffff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    padding-top: 70px;
+}
+
+.navbar {
+    background-color: #1a1a1a !important;
+    padding: 1rem 0;
+    transition: all 0.3s ease;
+}
+
+.navbar.scrolled {
+    background-color: rgba(26, 26, 26, 0.95) !important;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    font-weight: 700;
+    font-size: 1.4rem;
+}
+
+.brand-icon {
+    font-size: 1.8rem;
+    margin-right: 0.5rem;
+}
+
+.brand-text {
+    color: #ffffff;
+}
+
+.brand-highlight {
+    color: #d4a528;
+}
+
+.navbar-nav {
+    align-items: center;
+}
+
+.nav-link {
+    color: #ffffff !important;
+    font-weight: 500;
+    padding: 0.5rem 1rem !important;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+    color: #d4a528 !important;
+}
+
+.nav-link svg {
+    width: 18px;
+    height: 18px;
+}
+
+/* Kosár gomb speciális stílus */
+.nav-cart-btn {
+    border: 2px solid #d4a528 !important;
+    border-radius: 25px !important;
+    padding: 0.4rem 1rem !important;
+    margin-left: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.nav-cart-btn:hover {
+    background-color: rgba(212, 165, 40, 0.1);
+}
+
+.cart-badge {
+    background-color: #d4a528;
+    color: #1a1a1a;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.15rem 0.5rem;
+    border-radius: 50%;
+    min-width: 20px;
+    text-align: center;
+}
+
+/* Navbar toggler */
+.navbar-toggler {
+    border: none;
+    padding: 0.5rem;
+}
+
+.navbar-toggler:focus {
+    box-shadow: none;
+}
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+/* Mobile responsiveness */
+@media (max-width: 991.98px) {
+    .navbar-collapse {
+        background-color: #1a1a1a;
+        padding: 1rem;
+        margin-top: 0.5rem;
+        border-radius: 10px;
+    }
+    
+    .nav-cart-btn {
+        margin-left: 0;
+        margin-top: 0.5rem;
+        justify-content: center;
+    }
+}
+
+.profile-section {
+    padding: 30px 0;
+}
+
+/* JAVÍTOTT PROFIL HEADER - kép és név balra, gomb jobbra */
+.profile-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    padding: 0 1rem;
+}
+
+.profile-header-left {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.profile-avatar {
+    width: 70px;
+    height: 70px;
+    background-color: #aaa;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.profile-avatar svg {
+    width: 40px;
+    height: 40px;
+    fill: #555;
+}
+
+.profile-name {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #ffffff;
+    margin: 0;
+}
+
+.profile-header-right {
+    display: flex;
+    align-items: center;
+}
+
+.btn-edit-profile {
+    border: 2px solid #ffc107;
+    color: #ffc107;
+    background: transparent;
+    padding: 0.5rem 1.5rem;
+    border-radius: 25px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn-edit-profile:hover {
+    background-color: #ffc107;
+    color: #1a1a1a;
+}
+
+.btn-change-password {
+    border: 2px solid #17a2b8;
+    color: #17a2b8;
+    background: transparent;
+    padding: 0.5rem 1.5rem;
+    border-radius: 25px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    margin-left: 0.5rem;
+}
+
+.btn-change-password:hover {
+    background-color: #17a2b8;
+    color: #ffffff;
+}
+
+.profile-header-right {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+/* Password input wrapper */
+.password-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.password-input-wrapper .form-control {
+    padding-right: 45px;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 10px;
+    background: none;
+    border: none;
+    color: #888;
+    cursor: pointer;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.3s ease;
+}
+
+.password-toggle:hover {
+    color: #ffc107;
+}
+
+.divider {
+    height: 3px;
+    background-color: #ffc107;
+    margin-bottom: 3rem;
+}
+
+.content-wrapper {
+    display: flex;
+    gap: 2rem;
+}
+
+.left-column {
+    flex: 0 0 320px;
+    background: linear-gradient(145deg, #2a2a2a 0%, #222 100%);
+    border: 1px solid #3a3a3a;
+    border-radius: 16px;
+    padding: 25px;
+    height: fit-content;
+    align-self: flex-start;
+}
+
+.info-item {
+    margin-bottom: 1.2rem;
+    padding-bottom: 1.2rem;
+    border-bottom: 1px solid #3a3a3a;
+}
+
+.info-item:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.info-label {
+    color: #888;
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin-bottom: 0.4rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.info-value {
+    color: #ffffff;
+    font-size: 1.05rem;
+    font-weight: 500;
+}
+
+.vertical-divider {
+    display: none;
+}
+
+.right-column {
+    flex: 1;
+    background: linear-gradient(145deg, #2a2a2a 0%, #222 100%);
+    border: 1px solid #3a3a3a;
+    border-radius: 16px;
+    padding: 25px;
+}
+
+.orders-header {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #d4a528;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #3a3a3a;
+}
+
+.order-tabs {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.order-tab {
+    background: none;
+    border: none;
+    color: #aaa;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 0.5rem 0;
+    transition: color 0.3s;
+}
+
+.order-tab:hover {
+    color: #ffffff;
+}
+
+.order-tab.active {
+    color: #ffffff;
+    border-bottom: 2px solid #ffc107;
+}
+
+.empty-orders {
+    color: #aaa;
+    font-size: 1rem;
+    padding: 2rem 0;
+}
+
+/* Features Section */
+.features-section {
+    background-color: #1a1a1a;
+    padding: 60px 0;
+    margin-top: auto;
+}
+
+.features-title {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 3rem;
+    color: #fff;
+}
+
+.feature-box {
+    text-align: center;
+    padding: 2rem 1rem;
+}
+
+.feature-box h3 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #d4a528;
+}
+
+.feature-box p {
+    color: #888;
+    font-size: 0.95rem;
+    margin: 0;
+}
+
+
+footer {
+    background-color: #0d0d0d;
+    padding: 30px 0;
+    text-align: center;
+    border-top: 1px solid #333333;
+}
+
+footer p {
+    margin: 0.5rem 0;
+    color: #cccccc;
+}
+
+footer a {
+    color: #ffc107;
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+footer a:hover {
+    color: #ffb300;
+    text-decoration: underline;
+}
+/* Modal stílusok */
+        .modal-content {
+            background-color: #2a2a2a;
+            border: 1px solid #3a3a3a;
+            border-radius: 15px;
+        }
+        
+        .modal-header {
+            border-bottom: 1px solid #3a3a3a;
+            padding: 1.5rem;
+        }
+        
+        .modal-title {
+            color: #d4a528;
+            font-weight: 600;
+        }
+        
+        .modal-header .btn-close {
+            filter: invert(1);
+            opacity: 0.8;
+        }
+        
+        .modal-header .btn-close:hover {
+            opacity: 1;
+        }
+        
+        .modal-body {
+            padding: 1.5rem;
+            color: #ffffff;
+        }
+        
+        .modal-footer {
+            border-top: 1px solid #3a3a3a;
+            padding: 1rem 1.5rem;
+        }
+        
+        /* Form stílusok a modalban */
+        .modal .form-label {
+            color: #d4a528;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+        
+        .modal .form-control {
+            background-color: #1a1a1a;
+            border: 1px solid #3a3a3a;
+            color: #ffffff;
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .modal .form-control:focus {
+            background-color: #1a1a1a;
+            border-color: #d4a528;
+            color: #ffffff;
+            box-shadow: 0 0 0 3px rgba(212, 165, 40, 0.2);
+        }
+        
+        .modal .form-control::placeholder {
+            color: #888;
+        }
+        
+        .modal .form-control:disabled {
+            background-color: #252525;
+            color: #888;
+        }
+        
+        /* Modal gombok */
+        .btn-modal-primary {
+            background-color: #d4a528;
+            border: none;
+            color: #1a1a1a;
+            font-weight: 600;
+            padding: 0.6rem 1.5rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-modal-primary:hover {
+            background-color: #e6b82e;
+            color: #1a1a1a;
+            transform: scale(1.02);
+        }
+        
+        .btn-modal-primary:disabled {
+            background-color: #666;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .btn-modal-secondary {
+            background-color: transparent;
+            border: 1px solid #666;
+            color: #ffffff;
+            font-weight: 500;
+            padding: 0.6rem 1.5rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-modal-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-color: #888;
+            color: #ffffff;
+        }
+        
+        /* Rendelés részletek modal */
+        .order-detail-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #3a3a3a;
+        }
+        
+        .order-detail-item:last-child {
+            border-bottom: none;
+        }
+        
+        .order-detail-name {
+            font-weight: 500;
+        }
+        
+        .order-detail-quantity {
+            color: #888;
+            font-size: 0.9rem;
+        }
+        
+        .order-detail-price {
+            color: #d4a528;
+            font-weight: 600;
+        }
+        
+        .order-summary {
+            background-color: #1a1a1a;
+            border-radius: 10px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .order-summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+        }
+        
+        .order-summary-total {
+            border-top: 1px solid #3a3a3a;
+            margin-top: 0.5rem;
+            padding-top: 0.75rem;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        .order-summary-total .order-detail-price {
+            font-size: 1.2rem;
+        }
+        
+        .payment-info {
+            background-color: #1a1a1a;
+            border-radius: 10px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .payment-info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.4rem 0;
+        }
+        
+        .payment-info-label {
+            color: #888;
+        }
+        
+        .payment-info-value {
+            font-weight: 500;
+        }
+        
+        /* Toast / Alert stílus */
+        .toast-container {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            z-index: 9999;
+        }
+        
+        .custom-toast {
+            background-color: #2a2a2a;
+            border: 1px solid #3a3a3a;
+            border-radius: 10px;
+            padding: 1rem 1.5rem;
+            color: #fff;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            animation: slideIn 0.3s ease;
+            margin-bottom: 10px;
+        }
+        
+        .custom-toast.success {
+            border-left: 4px solid #28a745;
+        }
+        
+        .custom-toast.error {
+            border-left: 4px solid #dc3545;
+        }
+        
+        .custom-toast.info {
+            border-left: 4px solid #d4a528;
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        /* Spinner */
+        .btn-spinner {
+            width: 16px;
+            height: 16px;
+            border: 2px solid transparent;
+            border-top-color: #1a1a1a;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            display: inline-block;
+            margin-right: 0.5rem;
+        }
+        
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Order info row */
+        .order-info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+        }
+        
+        .order-info-label {
+            color: #888;
+        }
+
+/* Tablet responsive */
+@media (max-width: 991px) {
+    .content-wrapper {
+        flex-direction: column;
+    }
+
+    .left-column {
+        flex: 1;
+    }
+
+    .vertical-divider {
+        width: 100%;
+        height: 2px;
+        margin: 2rem 0;
+    }
+    
+    .navbar-nav {
+        padding: 1rem 0;
+        gap: 0.3rem;
+    }
+
+    .navbar-nav .nav-link {
+        padding: 0.6rem 1rem !important;
+    }
+
+    .nav-item.ms-lg-2 {
+        margin-top: 0.3rem;
+    }
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .profile-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+    }
+
+    .profile-header-left {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .profile-name {
+        font-size: 1.6rem;
+    }
+}
+.contact-section {
+            padding-top: 120px;
+            padding-bottom: 60px;
+            min-height: 100vh;
+            background-color: #121212;
+        }
+        
+        .contact-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .contact-header h1 {
+            color: #d4a528;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        
+        .contact-header p {
+            color: #888;
+            font-size: 1.1rem;
+        }
+        
+        .contact-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+        
+        @media (max-width: 991px) {
+            .contact-wrapper {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .contact-card {
+            background-color: #1a1a1a;
+            border-radius: 15px;
+            padding: 2rem;
+            border: 1px solid #2a2a2a;
+        }
+        
+        .contact-card h2 {
+            color: #d4a528;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid #2a2a2a;
+        }
+        
+        .contact-item:last-child {
+            border-bottom: none;
+        }
+        
+        .contact-icon {
+            width: 45px;
+            height: 45px;
+            background-color: rgba(212, 165, 40, 0.1);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        
+        .contact-icon svg {
+            width: 22px;
+            height: 22px;
+            fill: #d4a528;
+        }
+        
+        .contact-info h3 {
+            color: #888;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+        
+        .contact-info p {
+            color: #ffffff;
+            font-size: 1.1rem;
+            margin: 0;
+        }
+        
+        .contact-info a {
+            color: #d4a528;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .contact-info a:hover {
+            color: #e6b82e;
+        }
+        
+        /* Nyitvatartás */
+        .hours-table {
+            width: 100%;
+        }
+        
+        .hours-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #2a2a2a;
+        }
+        
+        .hours-row:last-child {
+            border-bottom: none;
+        }
+        
+        .hours-day {
+            color: #ffffff;
+            font-weight: 500;
+        }
+        
+        .hours-time {
+            color: #d4a528;
+            font-weight: 600;
+        }
+        
+        .hours-row.today {
+            background-color: rgba(212, 165, 40, 0.1);
+            margin: 0 -1rem;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+        }
+        
+        /* Térkép placeholder */
+        .map-container {
+            background-color: #2a2a2a;
+            border-radius: 10px;
+            height: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 1.5rem;
+            overflow: hidden;
+        }
+        
+        .map-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 10px;
+        }
+        
+        /* Social media */
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .social-link {
+            width: 50px;
+            height: 50px;
+            background-color: rgba(212, 165, 40, 0.1);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .social-link:hover {
+            background-color: #d4a528;
+        }
+        
+        .social-link svg {
+            width: 24px;
+            height: 24px;
+            fill: #d4a528;
+            transition: fill 0.3s ease;
+        }
+        
+        .social-link:hover svg {
+            fill: #1a1a1a;
+        }
+        
+        /* Navbar stílusok */
+        .navbar {
+            background-color: #1a1a1a !important;
+            padding: 1rem 0;
+        }
+        
+        .brand-highlight {
+            color: #d4a528;
+        }
+        
+        .nav-link {
+            color: #ffffff !important;
+            font-weight: 500;
+            padding: 0.5rem 1rem !important;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            color: #d4a528 !important;
+        }
+        
+        .nav-cart-btn {
+            border: 2px solid #d4a528 !important;
+            border-radius: 25px !important;
+            padding: 0.4rem 1rem !important;
+            margin-left: 0.5rem;
+        }
+        
+        .nav-cart-btn:hover {
+            background-color: rgba(212, 165, 40, 0.1);
+        }
+        
+        /* Footer */
+        footer {
+            background-color: #1a1a1a;
+            padding: 2rem 0;
+            border-top: 1px solid #2a2a2a;
+        }
+        
+        footer p {
+            color: #888;
+            margin: 0;
+        }
+        
+        footer a {
+            color: #d4a528;
+            text-decoration: none;
+        }
+        
+        footer a:hover {
+            color: #e6b82e;
+        }
