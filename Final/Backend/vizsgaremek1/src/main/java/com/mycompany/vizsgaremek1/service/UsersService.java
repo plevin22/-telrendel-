@@ -1,0 +1,130 @@
+package com.mycompany.vizsgaremek1.service;
+
+import com.mycompany.vizsgaremek1.model.Users;
+import java.util.List;
+import javax.ejb.Stateless;
+import javax.persistence.*;
+import org.mindrot.jbcrypt.BCrypt;
+
+@Stateless
+public class UsersService {
+
+    @PersistenceContext(unitName = "com.mycompany_vizsgaremek1_war_1.0-SNAPSHOTPU")
+    private EntityManager em;
+
+    public Users findUserById(Integer userId) {
+        return em.find(Users.class, userId);
+    }
+
+    public Users findUserByEmail(String email) {
+        try {
+            return em.createQuery(
+                    "SELECT u FROM Users u WHERE u.email = :email", Users.class
+            ).setParameter("email", email).getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+
+    public Users findUserByUsername(String username) {
+        try {
+            return em.createQuery(
+                    "SELECT u FROM Users u WHERE u.username = :username", Users.class
+            ).setParameter("username", username).getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<Users> getAllUsers() {
+        StoredProcedureQuery sp = em.createStoredProcedureQuery("GetAllUsers", Users.class);
+        return sp.getResultList();
+    }
+
+    public void createUser(String name, String username, String email, String password, String phone, String role) {
+        StoredProcedureQuery sp = em.createStoredProcedureQuery("CreateUser");
+
+        sp.registerStoredProcedureParameter("p_name", String.class, ParameterMode.IN);
+        sp.registerStoredProcedureParameter("p_username", String.class, ParameterMode.IN);
+        sp.registerStoredProcedureParameter("p_email", String.class, ParameterMode.IN);
+        sp.registerStoredProcedureParameter("p_password", String.class, ParameterMode.IN);
+        sp.registerStoredProcedureParameter("p_phone", String.class, ParameterMode.IN);
+        sp.registerStoredProcedureParameter("p_role", String.class, ParameterMode.IN);
+
+        sp.setParameter("p_name", name);
+        sp.setParameter("p_username", username);
+        sp.setParameter("p_email", email);
+        sp.setParameter("p_password", password);
+        sp.setParameter("p_phone", phone);
+        sp.setParameter("p_role", role);
+
+        sp.execute();
+    }
+
+    public void updateUser(Integer userId, String name, String username, String email,
+            String password, String phone, String role, Integer banned) {
+        StoredProcedureQuery sp = em.createStoredProcedureQuery("UpdateUser");
+
+        sp.registerStoredProcedureParameter("p_user_id", Integer.class, ParameterMode.IN);
+        sp.registerStoredProcedureParameter("p_name", String.class, ParameterMode.IN);
+        sp.registerStoredProcedureParameter("p_username", String.class, ParameterMode.IN);
+        sp.registerStoredProcedureParameter("p_email", String.class, ParameterMode.IN);
+        sp.registerStoredProcedureParameter("p_password", String.class, ParameterMode.IN);
+        sp.registerStoredProcedureParameter("p_phone", String.class, ParameterMode.IN);
+        sp.registerStoredProcedureParameter("p_role", String.class, ParameterMode.IN);
+        sp.registerStoredProcedureParameter("p_banned", Integer.class, ParameterMode.IN);
+
+        sp.setParameter("p_user_id", userId);
+        sp.setParameter("p_name", name);
+        sp.setParameter("p_username", username);
+        sp.setParameter("p_email", email);
+        sp.setParameter("p_password", password);
+        sp.setParameter("p_phone", phone);
+        sp.setParameter("p_role", role);
+        sp.setParameter("p_banned", banned);
+
+        sp.execute();
+    }
+
+    public void deleteUser(Integer userId) {
+        StoredProcedureQuery sp = em.createStoredProcedureQuery("DeleteUser");
+        sp.registerStoredProcedureParameter("p_user_id", Integer.class, ParameterMode.IN);
+        sp.setParameter("p_user_id", userId);
+        sp.execute();
+    }
+
+    public boolean emailExists(String email) {
+        Long count = em.createQuery(
+                "SELECT COUNT(u) FROM Users u WHERE u.email = :email", Long.class
+        ).setParameter("email", email).getSingleResult();
+        return count > 0;
+    }
+
+    public boolean usernameExists(String username) {
+        Long count = em.createQuery(
+                "SELECT COUNT(u) FROM Users u WHERE u.username = :username", Long.class
+        ).setParameter("username", username).getSingleResult();
+        return count > 0;
+    }
+
+    public String hashPassword(String plainPassword) {
+        return BCrypt.hashpw(plainPassword, BCrypt.gensalt(10));
+    }
+
+    public boolean checkPassword(String plainPassword, String hashedPassword) {
+        return BCrypt.checkpw(plainPassword, hashedPassword);
+    }
+
+    public void changeUserPassword(Integer userId, String newPassword) {
+        StoredProcedureQuery sp = em.createStoredProcedureQuery("ChangeUserPassword");
+
+        sp.registerStoredProcedureParameter("p_user_id", Integer.class, ParameterMode.IN);
+        sp.registerStoredProcedureParameter("p_new_password", String.class, ParameterMode.IN);
+
+        sp.setParameter("p_user_id", userId);
+        sp.setParameter("p_new_password", newPassword);
+
+        sp.execute();
+    }
+}
